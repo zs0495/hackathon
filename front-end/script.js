@@ -1,30 +1,5 @@
 // script.js
 document.addEventListener("DOMContentLoaded", () => {
-    const loginBtn = document.getElementById("loginBtn");
-    const loginModal = document.getElementById("loginModal");
-    const closeBtn = document.querySelector('.close-btn');
-
-    loginBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        loginModal.style.display = "flex";
-    });
-
-    loginModal.addEventListener("click", (e) => {
-        if (e.target === loginModal) {
-            loginModal.style.display = "none";
-        }
-    });
-
-    closeBtn.addEventListener('click', () => {
-        loginModal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-        if (e.target === loginModal) {
-            loginModal.style.display = 'none';
-        }
-    });
-
     /* -----------------------------
        ★ 히어로 슬라이더 기능
     ----------------------------- */

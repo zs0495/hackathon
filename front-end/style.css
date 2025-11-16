@@ -361,100 +361,118 @@
     border-top: 1px solid #eee;
 }
 
-.login-modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    display: none; /* 처음엔 숨김 */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
+/* ... (이전 CSS 코드 - 전체 공통, 네비게이션, Hero 영역 등은 유지) ... */
 
-.login-box {
+/* -------------------
+ * 로그인 페이지 스타일
+ * ------------------- */
+
+/* login.html에서 전체 화면 중앙에 박스가 오도록 설정하는 클래스 */
+/* .login-modal 스타일은 index.html에서만 사용되므로, login.html에서 필요한 스타일만 남깁니다. */
+
+/* 기존 .login-modal, .login-box 스타일을 .login-page-container로 통합 및 조정 */
+.login-page-container {
+    /* 모달 박스 스타일 재정의 */
     position: relative;
-    background: #fff;
-    width: 400px;
-    border-radius: 15px;
-    padding: 40px;
+    width: 100%;
+    max-width: 440px; /* 로그인 폼의 최대 너비 고정 */
+    padding: 60px 0;
     text-align: center;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.1);
-    animation: fadeIn 0.3s ease;
+    margin: 40px 0; /* body의 flex와 함께 중앙에 배치 */
 }
 
-.close-btn {
+/* 닫기 버튼은 login.html에서 제거되었으므로, .close-btn은 제거하거나 유지해도 무방합니다. */
+
+/* ★ 뒤로 가기 버튼 스타일 */
+.back-btn {
     position: absolute;
-    top: 15px;
-    right: 20px;
+    top: 25px;
+    left: 25px;
     background: none;
     border: none;
     font-size: 24px;
-    color: #888;
+    color: #333;
     cursor: pointer;
-    transition: color 0.2s;
+    text-decoration: none;
+    font-weight: 600;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* 제목 스타일 (login.html에서 재사용) */
+.login-page-container h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 40px;
 }
 
-.login-box h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 30px;
-}
-
-.login-box input {
+/* 입력 필드 (기존 스타일 재사용) */
+/* .login-box input { ... } 대신 .login-page-container input을 사용할 수 있으나, 
+   기존 input 스타일을 그대로 쓰려면 login.html에서 input에 별도 클래스 없이 사용합니다. */
+.login-page-container input {
     width: 100%;
-    padding: 12px;
+    padding: 14px; /* 높이 증가 */
     margin: 10px 0;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
-.login-btn {
+/* 로그인 버튼 (기존 스타일 재사용 및 보강) */
+.login-page-container .login-btn {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background: #111;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 15px;
-    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 30px;
     cursor: pointer;
     transition: background 0.2s;
 }
 
-.login-btn:hover {
+.login-page-container .login-btn:hover {
     background: #333;
 }
 
-.login-links {
-    font-size: 13px;
+/* 링크 스타일 (기존 스타일 재사용) */
+.login-page-container .login-links {
+    font-size: 14px;
     color: #666;
     margin-top: 15px;
 }
 
-.login-links a {
-    text-decoration: none;
-    color: inherit;
-    margin: 0 5px;
+/* SNS 구분선 및 텍스트 */
+.login-page-container hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 40px 0 30px;
+}
+.sns-login-text {
+    font-size: 13px;
+    color: #777;
+    position: relative;
+    top: -15px;
+    background: #fff;
+    display: inline-block;
+    padding: 0 10px;
 }
 
-.kakao {
+/* 카카오 버튼 (기존 스타일 재사용) */
+.login-page-container .kakao {
     background: #FEE500;
     border: none;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border-radius: 8px;
-    font-weight: 500;
+    font-weight: 600;
     color: #3A1D1D;
-    margin-top: 20px;
+    margin-top: 0;
     cursor: pointer;
+    font-size: 15px;
 }
+
+/* ... (나머지 푸터, FAQ 섹션 등은 유지) ... */
 
 hr {
     border: none;

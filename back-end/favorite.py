@@ -1,0 +1,121 @@
+#찜하기 찜하기 취소하기 코드
+from flask import Flask, render_template, session, redirect, url_for
+import pymysql
+
+app = Flask(__name__)
+app.secret_key = "SECRET_KEY"
+
+#MYSQL 연결함수
+def get_db():
+    return pymysql.connect(
+        host='localhost',
+        user='root',
+        password='PASSWORD',
+        db='welfaredb',
+        charset='utf8mb4',
+        autocommit=True
+    )
+
+#마이페이지 라우트
+@app.route('/mypage')
+def mypage():
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    user_id = session['user_id']
+    db = get_db()
+    try:
+        cur = db.cursor(pymysql.cursors.DictCursor)
+
+        #전체 혜택 목록 -> 수정필요*******
+        cur.execute("SELECT * FROM benefits")
+        benefits = cur.fetchall()
+
+        #찜한 항목
+        cur.execute("SELECT benefit_no FROM liked_benefits WHERE id=%s", (user_id,))
+        liked_raw = cur.fetchall()
+        liked_set = {row['benefit_no'] for row in liked_raw}
+    finally:
+        db.close()
+        
+    #프론트엔드 (임시)mypage.html 만들면 연결하기 -> 마이페이지
+    return render_template("mypage.html", benefits=benefits, liked_set=liked_set)
+
+
+#찜하기 라우트
+@app.route('/like/<int:benefit_no>')
+def like(benefit_no):
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    user_id = session['user_id']
+
+    db = get_db()
+    try:
+        cur = db.cursor()
+
+        # 이미 찜한 상태인지 확인
+        cur.execute("SELECT * FROM liked_benefits WHERE id=%s AND benefit_no=%s",
+                    (user_id, benefit_no))
+        exists = cur.fetchone()
+
+        if not exists: #찜한 상태가 아니라면
+            # 찜하기 목록에 추가
+            cur.execute("INSERT INTO liked_benefits (id, benefit_no) VALUES (%s, %s)",
+                        (user_id, benefit_no))
+
+    finally:
+        db.close()
+
+    return redirect('/mypage')
+
+#찜하기 취소 라우트
+@app.route('/unlike/<int:benefit_no>')
+def unlike(benefit_no):
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    user_id = session['user_id']
+
+    db = get_db()
+    try:
+        cur = db.cursor()
+
+        #이미 찜했으면 찜하기 취소
+        cur.execute("DELETE FROM liked_benefits WHERE id=%s AND benefit_no=%s",
+                    (user_id, benefit_no))
+
+    finally:
+        db.close()
+
+    return redirect('/mypage')
+
+#찜한 항목 라우트
+@app.route('/liked')
+def liked():
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    user_id = session['user_id']
+    db = get_db()
+    try:
+        cur = db.cursor(pymysql.cursors.DictCursor)
+
+        sql = """
+        SELECT b.*
+        FROM liked_benefits lb
+        JOIN benefits b ON lb.benefit_no = b.benefit_no
+        WHERE lb.id=%s
+        """
+        cur.execute(sql, (user_id,))
+        liked_list = cur.fetchall()
+    
+    finally:
+        db.close()
+
+    #프론트엔드 (임시)liked.html 만들면 연결하기 -> 찜한 목록
+    return render_template("liked.html", liked_list=liked_list)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

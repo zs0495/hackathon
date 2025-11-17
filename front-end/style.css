@@ -154,6 +154,18 @@
   margin: 0;
 }
 
+.team-title {
+  max-width: 1100px;
+  margin: 80px auto 120px;   
+  padding: 0 40px;
+}
+
+.team-title p {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 30px auto 20px;
+}
+
 .team-container {
   max-width: 1100px;
   margin: 80px auto 120px;   
@@ -185,6 +197,29 @@
   font-size: 14px;
   color: #666;
   margin: 0;
+}
+
+.character-container {
+  max-width: 1100px;
+  margin: 80px auto 120px;   
+  padding: 0 40px;
+}
+
+.character-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 30px auto 20px;
+}
+
+.team-mascot-wrap {
+  max-width: 900px;
+  margin: 100px auto 0px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.team-mascot {
+  width: 140px;
 }
 
 /* ### 공공복지 페이지 추가 */

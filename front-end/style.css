@@ -245,10 +245,9 @@
 }
 
 /* -------------------
- * Hero 슬라이더 스타일 (배경 이미지 기반으로 대폭 수정)
+ * Hero 슬라이더
  * ------------------- */
 
-/* 실제 슬라이더: hero-wrapper와 hero-slider 스타일은 유지 */
 .hero-wrapper {
   width: 100%;
   background: #ffffff;
@@ -263,10 +262,15 @@
   overflow: hidden;
 }
 
+.slider-container {
+  display: flex;              /* 가로로 나열되도록 */
+  transition: transform 0.4s ease;
+}
+
 /* 슬라이드: 오직 100%만 차지 */
 .slide {
   min-width: 100%;
-  width: 100%;
+  height: 100%;
   display: block;
   overflow: hidden;
   /* background-color 설정은 이제 이미지로 대체됩니다. */
@@ -290,57 +294,18 @@
 
 /* ★ 1번 슬라이드: banner_1.png 설정 */
 .slide-1 .slide-content { 
-    background-image: url('images/banner_1.png'); /* 이미지 경로 확인 */
+    background-image: url('../images/banner_1.png'); /* 이미지 경로 확인 */
 }
 
 /* ★ 2번 슬라이드: banner_2.png 설정 */
 .slide-2 .slide-content { 
-    background-image: url('images/banner_2.png');
+    background-image: url('../images/banner_2.png');
 }
 
 /* ★ 3번 슬라이드: banner_3.png 설정 */
 .slide-3 .slide-content { 
-    background-image: url('images/banner_3.png');
+    background-image: url('../images/banner_3.png');
 }
-
-
-/* 좌우 버튼 위치 조정 (슬라이더 박스 밖으로) */
-.slider-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255,255,255,0.8);
-  border: none;
-  padding: 12px 16px;
-  font-size: 2rem;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 10; 
-}
-
-.prev { left: 20px; }
-.next { right: 20px; }
-
-/* ★ 하단 인디케이터 스타일 (추가) */
-.indicator {
-  margin-top: 14px;
-  text-align: center;
-}
-
-.dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin: 0 6px;
-  background: #ccc;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.dot.active {
-  background: #555;
-}
-
 
 /* ### 바로가기 아이콘 */
 .icon {
@@ -378,7 +343,7 @@
   object-fit: contain;
 }
 
-/* 검색창 */
+/* 검색창 
 .search-section {
     display: flex;
     justify-content: center;
@@ -408,6 +373,7 @@
     font-size: 1.4rem;
     cursor: pointer;
 }
+*/
 
 /* 주요 기능 카드 */
 .feature-section {

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>로그인 | bokbok</title>
+    <link rel="stylesheet" href="style.css" /> 
+    
+    <style>
+    
+    /* 1. 전체 화면 배경 및 중앙 정렬 */
+    body {
+        background-color: #ffffff; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0 20px;
+    }
+    
+    /* 2. 회원가입 컨테이너: 박스 스타일 제거 (핵심 수정) */
+    .signup-page-container {
+        position: relative;
+        width: 100%;
+        max-width: 440px; /* 최대 너비만 유지하여 내용이 중앙에 모이도록 */
+        padding: 60px 0; /* 좌우 패딩 제거, 상하 패딩만 유지 */
+        text-align: center;
+        margin: 40px 0;
+    }
+
+    /* 3. 뒤로 가기 버튼 (와이어프레임 기준) */
+    .back-btn {
+        position: absolute;
+        top: 25px;
+        left: 0; /* 좌측 끝에 붙도록 조정 */
+        background: none;
+        border: none;
+        font-size: 36px;
+        color: #333;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .fixed-top-left {
+        position: fixed; /* 뷰포트 기준으로 위치 고정 */
+        top: 25px;       /* 상단에서 25px */
+        left: 25px;      /* 좌측에서 25px */
+        z-index: 100;    /* 다른 요소 위에 보이도록 */
+    }
+
+    .back-btn {
+        /* 위치 스타일은 .fixed-top-left가 담당하므로 여기서는 제거 */
+        background: none;
+        border: none;
+        font-size: px;
+        color: #333;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    /* 4. SNS 로그인 텍스트 스타일 */
+    .sns-login-text {
+        font-size: 13px;
+        color: #777;
+        position: relative;
+        top: -15px; 
+        background: none; /* 배경색 제거 */
+        display: inline-block;
+        padding: 0 10px;
+    }
+
+    /* login-box 내부 스타일 재정의 (패딩 조정) */
+    .signup-page-container h2 {
+        font-size: 28px;
+        font-weight: 800;
+        margin-top: 30px;
+        margin-bottom: 17px;
+    }
+
+    .login-page-container input {
+        /* ... (기존 스타일 유지) ... */
+    }
+    /* 나머지 내부 요소 스타일은 그대로 유지 */
+
+    .login-logo {
+    position: fixed;  /* 스크롤해도 유지됨 */
+    top: 50px;        /* 화면 상단에서 40px 아래 */
+    left: 50%;
+    transform: translateX(-50%); /* 정확한 가로 중앙 정렬 */
+    width: 160px;     /* 로고 크기 */
+    height: auto;
+    z-index: 200; 
+    }
+
+    /* 로그인 버튼 (기존 스타일 재사용 및 보강) */
+    .signup-page-container .login-btn {
+        width: 100%;
+        padding: 14px;
+        background: #111;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 30px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .signup-page-container .login-btn:hover {
+        background: #333;
+    }
+
+    /* 링크 스타일 (기존 스타일 재사용) */
+    .signup-page-container .login-links {
+        font-size: 14px;
+        color: #666;
+        margin-top: 15px;
+    }
+
+    /* SNS 구분선 및 텍스트 */
+    .signup-page-container hr {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 40px 0 30px;
+    }
+    .sns-login-text {
+        font-size: 13px;
+        color: #777;
+        position: relative;
+        top: -15px;
+        background: #fff;
+        display: inline-block;
+        padding: 0 10px;
+    }
+
+    /* 카카오 버튼 (기존 스타일 재사용) */
+    .signup-page-container .kakao {
+        background: #FEE500;
+        border: none;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        color: #3A1D1D;
+        margin-top: 0;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+/* 단계 표시 */
+.steps {
+  font-size: 14px;
+  color: #8c8c8c;
+  margin-bottom: 50px;
+}
+
+.step-item {
+  margin: 0 6px;
+}
+
+.step-item.active {
+  color: #000000;
+}
+
+/* 1단계 */
+.section-title {
+  text-align: left;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.checkbox-group {
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.checkbox-group label.all-agree-text {
+  font-weight: 600;
+  margin: 15px 0 40px; 
+}
+
+.view-detail {
+  font-size: 12px;
+  color: #9d9d9d;
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+</style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn fixed-top-left">‹</a>
+    <a href="index.html">
+        <img src="../images/bokbok_typo.png" alt="로고" class="login-logo">
+    </a>
+
+    <div class="signup-page-container">
+        <h2>회원가입</h2>
+        <section class="steps">
+            <span class="step-item active" data-step="1">1. 약관동의</span>
+            <span class="step-item" data-step="2">2. 정보입력</span>
+            <span class="step-item" data-step="3">3. 가입완료</span>
+        </section>
+
+        <form id="signupForm">
+        <!-- 1단계 -->
+            <section class="step step-1 active">
+            <h3 class="section-title">전체동의</h3>
+
+            <div class="checkbox-group">
+                <label class="all-agree-text">
+                    <input type="checkbox" id="allAgree" />
+                    <span>모든 약관을 확인하고 전체 동의합니다.</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" class="agree required-agree" />
+                    <span>이용약관 동의 (필수)</span>
+                    <a href="input.html" target="_blank" class="view-detail">전문보기</a>
+                </label>
+
+                <label>
+                    <input type="checkbox" class="agree required-agree" />
+                    <span>개인정보 수집 및 이용 동의 (필수)</span>
+                    <a href="input.html" target="_blank" class="view-detail">전문보기</a>
+                </label>
+            </div>
+            </section>
+
+            <!-- 2단계 -->
+            <section class="step step-2">
+                <!-- 내용입력 -->
+            </section>
+
+            <!-- 3단계 -->
+            <section class="step step-3">
+                <!-- 내용입력 -->
+            </section>
+
+            <!-- 4단계(완료) -->
+            <section class="step step-4">
+                <!-- 내용입력 -->
+            </section>
+        </form>
+
+        <button class="login-btn">다음</button>
+        <hr />
+        <p class="sns-login-text">SNS 계정으로 로그인</p>
+        <button class="kakao">카카오로 시작하기</button>
+    </div>
+
+</body>
+</html>

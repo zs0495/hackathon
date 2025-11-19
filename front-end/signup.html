@@ -256,6 +256,187 @@
         flex-basis: 30%;
         flex-grow: 0;
     }
+    /* --- 2-2단계 추가 스타일 --- */
+
+    /* 섹션 제목 (나의 키워드, 소득 분위) */
+    .section-title-2 {
+        text-align: left;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 30px 0 15px;
+        display: flex;
+        align-items: center;
+    }
+    .section-title-2:first-child {
+        margin-top: 0;
+    }
+
+    /* 키워드 버튼 그룹 */
+    .keyword-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+
+    /* 개별 키워드 버튼 */
+    .keyword-btn {
+        padding: 10px 18px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        background-color: #f7f7f7;
+        color: #555;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+    }
+
+    /* 선택된 키워드 버튼 스타일 */
+    .keyword-btn.selected {
+        background-color: #111;
+        color: white;
+        border-color: #111;
+        font-weight: 600;
+    }
+
+    /* 소득 분위 드롭다운 */
+    .income-group select {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 15px;
+        color: #333;
+        margin-top: 8px;
+    }
+
+    /* 나의 상황 텍스트 영역 */
+    .status-group {
+        text-align: left;
+    }
+    .status-group textarea {
+        width: 100%;
+        min-height: 150px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 15px;
+        resize: vertical;
+        transition: min-height 0.3s ease-out;
+    }
+
+    /* 텍스트 영역 축소 시 스타일 */
+    .status-group.collapsed textarea {
+        min-height: 0;
+        height: 0; /* 시각적으로 완전히 접힘 */
+        padding-top: 0;
+        padding-bottom: 0;
+        border-color: transparent;
+    }
+    .status-group.collapsed .status-description {
+        display: none;
+    }
+    .status-group.collapsed .input-later-btn {
+        text-align: right;
+        margin-top: 15px;
+    }
+    /* 다음에 입력할게요 버튼 */
+    .input-later-btn {
+        display: block;
+        text-align: right;
+        font-size: 14px;
+        color: #999;
+        text-decoration: underline;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    /* 툴팁 (소득 분위 ?) */
+    .tooltip-container {
+        position: relative;
+        display: inline-block;
+        margin-left: 5px;
+        cursor: pointer;
+    }
+
+    .tooltip-icon {
+        font-size: 16px;
+        color: #777;
+        line-height: 1;
+    }
+
+    .tooltip-box {
+        position: absolute;
+        top: 100%; /* 위쪽으로 표시 */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 350px; /* 넓게 설정 */
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        z-index: 50;
+        text-align: left;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+        margin-top: 10px;
+    }
+
+    /* 툴팁 활성화 시 */
+    .tooltip-container:hover .tooltip-box {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* 툴팁 내부 표 스타일 */
+    .tooltip-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+    .tooltip-table th, .tooltip-table td {
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+        text-align: center;
+    }
+    .tooltip-table th {
+        background-color: #f5f5f5;
+        font-weight: 600;
+    }
+    .tooltip-table tr:last-child td {
+        border-bottom: none;
+    }
+    .tooltip-table .note {
+        font-size: 11px;
+        color: #888;
+        margin-top: 5px;
+        display: block;
+        text-align: left;
+    }
+
+    /* --- 3단계 (가입 완료) 추가 스타일 --- */
+    .step-3-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+    .step-3-content img {
+        width: 200px; /* 이미지 크기 조정 */
+        height: auto;
+        margin-bottom: 50px;
+    }
+
+    /* 완료 버튼 (기존 .login-btn 스타일을 재사용하되 텍스트 변경을 위해 스크립트 사용) */
 
     </style>
 </head>
@@ -354,21 +535,87 @@
                             <option value="1">1월</option>
                             <option value="12">12월</option>
                             </select>
-                        <select name="birthDay" required>
-                            <option value="">일</option>
-                            <option value="1">1일</option>
-                            <option value="31">31일</option>
-                            </select>
                     </div>
                 </div>
 
             </section>
+            <section class="step step-2-2">
+        
+                <h3 class="section-title-2">나의 키워드</h3>
+                <div class="keyword-group">
+                    <div class="keyword-btn" data-keyword="single">1인 가구</div>
+                    <div class="keyword-btn" data-keyword="child">아동</div>
+                    <div class="keyword-btn" data-keyword="self">자영업</div>
+                    <div class="keyword-btn" data-keyword="student">학생</div>
+                    <div class="keyword-btn" data-keyword="youth">청년</div>
+                    <div class="keyword-btn" data-keyword="disease">질병</div>
+                    <div class="keyword-btn" data-keyword="mother">한부모가정</div>
+                    <div class="keyword-btn" data-keyword="job">취업</div>
+                    <div class="keyword-btn" data-keyword="scholarship">장학금</div>
+                </div>
 
+                <h3 class="section-title-2">
+                    소득 분위
+                    <span class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-box">
+                            <p style="font-size:15px; font-weight:700;">기준 중위소득별 소득분위</p>
+                            <table class="tooltip-table">
+                                <thead>
+                                    <tr>
+                                        <th>구분</th>
+                                        <th>소득구간</th>
+                                        <th>기준 중위소득</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>1분위</td><td>1,719,000</td><td>30%</td></tr>
+                                    <tr><td>2분위</td><td>2,865,000</td><td>50%</td></tr>
+                                    <tr><td>3분위</td><td>4,011,000</td><td>70%</td></tr>
+                                    <tr><td>4분위</td><td>5,157,000</td><td>90%</td></tr>
+                                    <tr><td>5분위</td><td>5,730,000</td><td>100%</td></tr>
+                                    <tr><td>6분위</td><td>7,449,000</td><td>130%</td></tr>
+                                    <tr><td>7분위</td><td>8,595,000</td><td>150%</td></tr>
+                                    <tr><td>8분위</td><td>11,460,000</td><td>200%</td></tr>
+                                    <tr><td>9분위</td><td>17,190,000</td><td>300%</td></tr>
+                                    <tr><td>10분위</td><td>17,190,000 초과</td><td>-</td></tr>
+                                </tbody>
+                            </table>
+                            <!-- <span class="note"> 1인 가구 기준. 가구원 수에 따라 소득 기준이 달라집니다.</span> -->
+                        </div>
+                    </span>
+                </h3>
+                <div class="income-group">
+                    <select name="incomeQuartile" required>
+                        <option value="">모르겠어요</option>
+                        <option value="1">1분위</option>
+                        <option value="1">2분위</option>
+                        <option value="1">3분위</option>
+                        <option value="1">4분위</option>
+                        <option value="5">5분위 </option>
+                        <option value="1">6분위</option>
+                        <option value="1">7분위</option>
+                        <option value="1">8분위</option>
+                        <option value="1">9분위</option>
+                        <option value="10">10분위</option>
+                    </select>
+                </div>
+
+                <h3 class="section-title-2">나의 상황</h3>
+                <div class="status-group" id="statusGroup">
+                    <textarea 
+                        id="myStatus" 
+                        name="myStatus" 
+                        placeholder='"이번 달 월세가 너무 부담돼요"와 같은 실직, 주거 부담, 의료비 필요, 교육/양육, 긴급 생계 등 직접적인 키워드가 들어갈수록 정확한 결과가 나와요'
+                    ></textarea>
+                    <span class="input-later-btn" id="inputLaterBtn">다음에 입력할게요</span>
+                </div>
+            </section>
             <section class="step step-3">
-                </section>
-
-            <section class="step step-4">
-                </section>
+                <div class="step-3-content">
+                    <img src="../images/done_bok.png" alt="가입 완료 캐릭터" class="complete-image">
+                </div>
+            </section>
         </form>
 
         <button class="login-btn">다음</button>
@@ -378,68 +625,126 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const nextButton = document.querySelector('.login-btn');
-        const step1 = document.querySelector('.step-1');
-        const step2 = document.querySelector('.step-2');
-        
-        // 단계 표시 아이템들을 선택합니다.
-        const step1Indicator = document.querySelector('.step-item[data-step="1"]');
-        const step2Indicator = document.querySelector('.step-item[data-step="2"]');
+        document.addEventListener('DOMContentLoaded', function() {
+            const nextButton = document.querySelector('.login-btn');
+            const step1 = document.querySelector('.step-1');
+            const step2 = document.querySelector('.step-2');
+            const step2_2 = document.querySelector('.step-2-2');
+            const step3 = document.querySelector('.step-3'); // 3단계 요소 추가
+            
+            // 단계 표시 아이템들
+            const step1Indicator = document.querySelector('.step-item[data-step="1"]');
+            const step2Indicator = document.querySelector('.step-item[data-step="2"]');
+            const step3Indicator = document.querySelector('.step-item[data-step="3"]'); // 3단계 표시 추가
 
-        // 전체 동의 체크박스 이벤트
-        const allAgreeCheckbox = document.getElementById('allAgree');
-        const requiredAgrees = document.querySelectorAll('.required-agree');
+            // 약관 동의 관련 요소
+            const allAgreeCheckbox = document.getElementById('allAgree');
+            const requiredAgrees = document.querySelectorAll('.required-agree');
+            
+            // 키워드 및 나의 상황 관련 요소
+            const keywordButtons = document.querySelectorAll('.keyword-btn');
+            const inputLaterBtn = document.getElementById('inputLaterBtn');
+            const statusGroup = document.getElementById('statusGroup');
+            const myStatusTextarea = document.getElementById('myStatus');
+            
+            const defaultPlaceholder = '"이번 달 월세가 너무 부담돼요"와 같은 실직, 주거 부담, 의료비 필요, 교육/양육, 긴급 생계 등 직접적인 키워드가 들어갈수록 정확한 결과가 나와요';
 
-        allAgreeCheckbox.addEventListener('change', function() {
-            requiredAgrees.forEach(checkbox => {
-                checkbox.checked = this.checked;
-            });
-        });
+            // 초기 상태: 1단계 활성화 (페이지 로딩 시)
+            step1.classList.add('active');
+            nextButton.textContent = '다음';
 
-        // '다음' 버튼 클릭 이벤트 리스너
-        nextButton.addEventListener('click', function(e) {
-            e.preventDefault(); // 폼 제출 방지
-
-            // --- 1단계 (약관 동의) 처리 ---
-            if (step1.classList.contains('active')) {
-                
-                let allRequiredAgreed = true;
+            /* --- 1. 전체 동의 체크박스 연동 기능 --- */
+            allAgreeCheckbox.addEventListener('change', function() {
                 requiredAgrees.forEach(checkbox => {
-                    if (!checkbox.checked) {
-                        allRequiredAgreed = false;
-                    }
+                    checkbox.checked = this.checked;
                 });
+            });
+            
+            requiredAgrees.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    let allChecked = true;
+                    requiredAgrees.forEach(cb => {
+                        if (!cb.checked) {
+                            allChecked = false;
+                        }
+                    });
+                    allAgreeCheckbox.checked = allChecked;
+                });
+            });
 
-                if (allRequiredAgreed) {
-                    // 1. 현재 단계 비활성화 (숨기기)
-                    step1.classList.remove('active');
-                    
-                    // 2. 다음 단계 활성화 (보이기)
-                    step2.classList.add('active');
-                    
-                    // 3. 단계 표시 업데이트
-                    step1Indicator.classList.remove('active');
-                    step2Indicator.classList.add('active');
-                    
-                    // 버튼 텍스트는 그대로 '다음'으로 유지
-                    nextButton.textContent = '다음';
+            /* --- 2. 키워드 복수 선택 기능 --- */
+            keywordButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                });
+            });
 
+            /* --- 3. '나의 상황' 입력창 축소/확대 기능 --- */
+            inputLaterBtn.addEventListener('click', function() {
+                if (statusGroup.classList.contains('collapsed')) {
+                    statusGroup.classList.remove('collapsed');
+                    myStatusTextarea.style.minHeight = '150px';
+                    this.textContent = '다음에 입력할게요';
+                    myStatusTextarea.placeholder = defaultPlaceholder;
+                    myStatusTextarea.value = ''; 
+                    myStatusTextarea.focus();
                 } else {
-                    alert('필수 약관에 모두 동의해야 다음 단계로 이동할 수 있습니다.');
+                    myStatusTextarea.style.minHeight = '0'; 
+                    statusGroup.classList.add('collapsed');
+                    this.textContent = '나의 상황 입력';
+                    myStatusTextarea.placeholder = '';
+                    myStatusTextarea.value = ''; 
                 }
+            });
+            
 
-            // --- 2단계 (정보 입력) 처리 ---
-            } else if (step2.classList.contains('active')) {
-                // TODO: 여기에 2단계 유효성 검사 로직 추가 (아이디, 비밀번호, 이름 등)
+            /* --- 4. 단계 전환 로직 (수정된 부분) --- */
+            nextButton.addEventListener('click', function(e) {
+                e.preventDefault(); 
                 
-                // 임시로 3단계로 이동하는 알림
-                alert('2단계 정보 입력 완료 (3단계로 이동 예정)');
+                if (step1.classList.contains('active')) {
+                    // 1단계 -> 2단계
+                    let allRequiredAgreed = true;
+                    requiredAgrees.forEach(checkbox => { if (!checkbox.checked) allRequiredAgreed = false; });
+                    if (allRequiredAgreed) {
+                        step1.classList.remove('active');
+                        step2.classList.add('active');
+                        step1Indicator.classList.remove('active');
+                        step2Indicator.classList.add('active');
+                        nextButton.textContent = '다음';
+                        window.scrollTo(0, 0); // 스크롤 초기화
+                    } else { alert('필수 약관에 모두 동의해야 다음 단계로 이동할 수 있습니다.'); }
                 
-                // 실제 구현: 2단계 유효성 검사 통과 후 3단계로 이동 로직 작성
-            }
+                } else if (step2.classList.contains('active')) {
+                    // 2단계 -> 2-2단계
+                    // TODO: 2단계 유효성 검사 추가
+                    step2.classList.remove('active');
+                    step2_2.classList.add('active');
+                    nextButton.textContent = '다음';
+                    window.scrollTo(0, 0); // 스크롤 초기화
+
+                } else if (step2_2.classList.contains('active')) {
+                    // 2-2단계 -> 3단계 (가입 완료)
+                    // TODO: 2-2단계 데이터 전송 로직 추가 (필요시)
+                    step2_2.classList.remove('active');
+                    step3.classList.add('active');
+                    
+                    step2Indicator.classList.remove('active');
+                    step3Indicator.classList.add('active');
+                    
+                    // 버튼 텍스트를 '완료'로 변경
+                    nextButton.textContent = '완료'; 
+
+                    window.scrollTo(0, 0); // 스크롤 초기화
+                
+                } else if (step3.classList.contains('active')) {
+                    // 3단계 -> 랜딩 페이지로 이동
+                    window.location.href = 'index.html'; // 'index.html'을 랜딩 페이지 URL로 가정
+
+                }
+            });
+
         });
-    });
     </script>
 </body>
 </html>

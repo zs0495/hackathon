@@ -271,34 +271,81 @@
         margin-top: 0;
     }
 
-    /* 키워드 버튼 그룹 */
-    .keyword-group {
+    /* --- 2-2단계 추가 스타일 --- */
+
+    /* 섹션 제목 (나의 키워드, 소득 분위) */
+    .section-title-2 {
+        text-align: left;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 30px 0 15px;
+        display: flex;
+        align-items: center;
+    }
+    .section-title-2:first-child {
+        margin-top: 0;
+    }
+
+    /* ★★★ 새로운 키워드 드롭다운 스타일 ★★★ */
+    .keyword-select-group select {
+        /* 기존 폼 입력 필드 스타일 재사용 */
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box; 
+        font-size: 15px;
+        color: #333;
+        transition: border-color 0.2s;
+    }
+
+    /* ★★★ 선택된 키워드 컨테이너 스타일 ★★★ */
+    .selected-keywords-container {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-bottom: 30px;
+        text-align: left;
+        min-height: 40px; /* 키워드가 없을 때도 공간 유지 */
+        margin-bottom: 20px;
     }
 
-    /* 개별 키워드 버튼 */
-    .keyword-btn {
-        padding: 10px 18px;
-        border: 1px solid #ccc;
+    /* ★★★ 개별 선택된 키워드 태그 스타일 ★★★ */
+    .selected-keyword-tag {
+        display: flex;
+        align-items: center;
+        background-color: #79A0DF; /* 배경색: 청년색(파란색 계열) */
+        color: white;
+        padding: 8px 12px;
+        padding-right: 5px; /* X 버튼 공간 확보 */
         border-radius: 20px;
-        background-color: #f7f7f7;
-        color: #555;
         font-size: 14px;
-        cursor: pointer;
-        transition: all 0.2s;
+        font-weight: 600;
         user-select: none;
     }
 
-    /* 선택된 키워드 버튼 스타일 */
-    .keyword-btn.selected {
-        background-color: #111;
+    /* ★★★ 태그 내 취소 버튼 스타일 (X) ★★★ */
+    .remove-tag-btn {
+        background: none;
+        border: none;
         color: white;
-        border-color: #111;
-        font-weight: 600;
+        margin-left: 8px;
+        font-size: 18px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0 4px;
+        opacity: 0.8;
+        transition: opacity 0.2s;
     }
+
+    .remove-tag-btn:hover {
+        opacity: 1;
+    }
+
+    /* 소득 분위 드롭다운 */ /* (이 부분은 유지됩니다) */
+    /* ... */
+
+    /* 나의 상황 텍스트 영역 */ /* (이 부분은 유지됩니다) */
+    /* ... */
 
     /* 소득 분위 드롭다운 */
     .income-group select {
@@ -352,72 +399,6 @@
         text-decoration: underline;
         cursor: pointer;
         margin-top: 10px;
-    }
-
-    /* 툴팁 (소득 분위 ?) */
-    .tooltip-container {
-        position: relative;
-        display: inline-block;
-        margin-left: 5px;
-        cursor: pointer;
-    }
-
-    .tooltip-icon {
-        font-size: 16px;
-        color: #777;
-        line-height: 1;
-    }
-
-    .tooltip-box {
-        position: absolute;
-        top: 100%; /* 위쪽으로 표시 */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 350px; /* 넓게 설정 */
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        z-index: 50;
-        text-align: left;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s, visibility 0.3s;
-        margin-top: 10px;
-    }
-
-    /* 툴팁 활성화 시 */
-    .tooltip-container:hover .tooltip-box {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    /* 툴팁 내부 표 스타일 */
-    .tooltip-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-        font-size: 13px;
-    }
-    .tooltip-table th, .tooltip-table td {
-        padding: 8px;
-        border-bottom: 1px solid #eee;
-        text-align: center;
-    }
-    .tooltip-table th {
-        background-color: #f5f5f5;
-        font-weight: 600;
-    }
-    .tooltip-table tr:last-child td {
-        border-bottom: none;
-    }
-    .tooltip-table .note {
-        font-size: 11px;
-        color: #888;
-        margin-top: 5px;
-        display: block;
-        text-align: left;
     }
 
     /* --- 3단계 (가입 완료) 추가 스타일 --- */
@@ -540,76 +521,44 @@
 
             </section>
             <section class="step step-2-2">
-        
-                <h3 class="section-title-2">나의 키워드</h3>
-                <div class="keyword-group">
-                    <div class="keyword-btn" data-keyword="single">1인 가구</div>
-                    <div class="keyword-btn" data-keyword="child">아동</div>
-                    <div class="keyword-btn" data-keyword="self">자영업</div>
-                    <div class="keyword-btn" data-keyword="student">학생</div>
-                    <div class="keyword-btn" data-keyword="youth">청년</div>
-                    <div class="keyword-btn" data-keyword="disease">질병</div>
-                    <div class="keyword-btn" data-keyword="mother">한부모가정</div>
-                    <div class="keyword-btn" data-keyword="job">취업</div>
-                    <div class="keyword-btn" data-keyword="scholarship">장학금</div>
+    
+            <h3 class="section-title-2">나의 키워드</h3>
+            
+            <div class="form-group keyword-select-group">
+                <select id="keywordSelect" name="keywordSelect">
+                    <option value="" disabled selected>키워드 선택 (하나씩 선택)</option>
+                    <option value="국가유공자">국가유공자</option>
+                    <option value="아동">아동</option>
+                    <option value="자영업">자영업</option>
+                    <option value="학생(청소년)">학생(청소년)</option>
+                    <option value="청년">청년</option>
+                    <option value="질병">질병</option>
+                    <option value="한부모가정">한부모가정</option>
+                    <option value="취업">취업</option>
+                    <option value="장학금">장학금</option>
+                    <option value="차상위/저소득">차상위/저소득</option>
+                    <option value="장애인">장애인</option>
+                    <option value="교육">교육</option>
+                    <option value="임산부">임산부</option>
+                    <option value="금융">금융</option>
+                    <option value="노인">노인</option>
+                    <option value="거주">거주</option>
+                    <option value="(신혼)부부">(신혼)부부</option>
+                </select>
+            </div>
+            
+            <div id="selectedKeywordsContainer" class="selected-keywords-container">
                 </div>
 
-                <h3 class="section-title-2">
-                    소득 분위
-                    <span class="tooltip-container">
-                        <span class="tooltip-icon">?</span>
-                        <div class="tooltip-box">
-                            <p style="font-size:15px; font-weight:700;">기준 중위소득별 소득분위</p>
-                            <table class="tooltip-table">
-                                <thead>
-                                    <tr>
-                                        <th>구분</th>
-                                        <th>소득구간</th>
-                                        <th>기준 중위소득</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td>1분위</td><td>1,719,000</td><td>30%</td></tr>
-                                    <tr><td>2분위</td><td>2,865,000</td><td>50%</td></tr>
-                                    <tr><td>3분위</td><td>4,011,000</td><td>70%</td></tr>
-                                    <tr><td>4분위</td><td>5,157,000</td><td>90%</td></tr>
-                                    <tr><td>5분위</td><td>5,730,000</td><td>100%</td></tr>
-                                    <tr><td>6분위</td><td>7,449,000</td><td>130%</td></tr>
-                                    <tr><td>7분위</td><td>8,595,000</td><td>150%</td></tr>
-                                    <tr><td>8분위</td><td>11,460,000</td><td>200%</td></tr>
-                                    <tr><td>9분위</td><td>17,190,000</td><td>300%</td></tr>
-                                    <tr><td>10분위</td><td>17,190,000 초과</td><td>-</td></tr>
-                                </tbody>
-                            </table>
-                            <!-- <span class="note"> 1인 가구 기준. 가구원 수에 따라 소득 기준이 달라집니다.</span> -->
-                        </div>
-                    </span>
-                </h3>
-                <div class="income-group">
-                    <select name="incomeQuartile" required>
-                        <option value="">모르겠어요</option>
-                        <option value="1">1분위</option>
-                        <option value="1">2분위</option>
-                        <option value="1">3분위</option>
-                        <option value="1">4분위</option>
-                        <option value="5">5분위 </option>
-                        <option value="1">6분위</option>
-                        <option value="1">7분위</option>
-                        <option value="1">8분위</option>
-                        <option value="1">9분위</option>
-                        <option value="10">10분위</option>
-                    </select>
-                </div>
-
-                <h3 class="section-title-2">나의 상황</h3>
-                <div class="status-group" id="statusGroup">
-                    <textarea 
-                        id="myStatus" 
-                        name="myStatus" 
-                        placeholder='"이번 달 월세가 너무 부담돼요"와 같은 실직, 주거 부담, 의료비 필요, 교육/양육, 긴급 생계 등 직접적인 키워드가 들어갈수록 정확한 결과가 나와요'
-                    ></textarea>
-                    <span class="input-later-btn" id="inputLaterBtn">다음에 입력할게요</span>
-                </div>
+            <h3 class="section-title-2" style="margin-top: 50px;">나의 상황</h3>
+            <div class="status-group" id="statusGroup">
+                <textarea 
+                    id="myStatus" 
+                    name="myStatus" 
+                    placeholder='"이번 달 월세가 너무 부담돼요"와 같은 실직, 주거 부담, 의료비 필요, 교육/양육, 긴급 생계 등 직접적인 키워드가 들어갈수록 정확한 결과가 나와요'
+                ></textarea>
+                <span class="input-later-btn" id="inputLaterBtn">다음에 입력할게요</span>
+            </div>
             </section>
             <section class="step step-3">
                 <div class="step-3-content">
@@ -672,13 +621,62 @@
                 });
             });
 
-            /* --- 2. 키워드 복수 선택 기능 --- */
-            keywordButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.classList.toggle('selected');
-                });
-            });
+            /* --- 2. 키워드 드롭다운 및 태그 생성 기능 --- */
+            const keywordSelect = document.getElementById('keywordSelect');
+            const selectedKeywordsContainer = document.getElementById('selectedKeywordsContainer');
+            
+            // 현재 선택된 키워드를 저장하는 배열
+            let selectedKeywords = [];
 
+            // 헬퍼: 키워드 태그를 DOM에 렌더링
+            function renderKeywords() {
+                selectedKeywordsContainer.innerHTML = ''; // 컨테이너 초기화
+                
+                selectedKeywords.forEach(keyword => {
+                    // 태그 엘리먼트 생성
+                    const tag = document.createElement('div');
+                    tag.classList.add('selected-keyword-tag');
+                    tag.textContent = keyword;
+                    tag.dataset.keyword = keyword; // 데이터 저장을 위해 data-* 사용
+
+                    // 취소 버튼 (X) 생성
+                    const removeBtn = document.createElement('button');
+                    removeBtn.classList.add('remove-tag-btn');
+                    removeBtn.innerHTML = '&times;'; // 'x' 기호
+                    
+                    // 삭제 이벤트 리스너 추가
+                    removeBtn.addEventListener('click', function() {
+                        removeKeyword(keyword);
+                    });
+
+                    tag.appendChild(removeBtn);
+                    selectedKeywordsContainer.appendChild(tag);
+                });
+                
+                // 드롭다운 초기 상태로 복원
+                keywordSelect.value = ""; 
+            }
+
+            // 헬퍼: 키워드 제거
+            function removeKeyword(keyword) {
+                selectedKeywords = selectedKeywords.filter(k => k !== keyword);
+                renderKeywords();
+            }
+
+            // 드롭다운 선택 이벤트 리스너
+            keywordSelect.addEventListener('change', function() {
+                const selectedKeyword = this.value;
+
+                if (selectedKeyword && !selectedKeywords.includes(selectedKeyword)) {
+                    selectedKeywords.push(selectedKeyword);
+                    renderKeywords();
+                } else if (selectedKeywords.includes(selectedKeyword)) {
+                    alert('이미 선택된 키워드입니다.');
+                    // 선택 후 드롭다운을 다시 초기 상태로 되돌립니다.
+                    this.value = ""; 
+                }
+            });
+            
             /* --- 3. '나의 상황' 입력창 축소/확대 기능 --- */
             inputLaterBtn.addEventListener('click', function() {
                 if (statusGroup.classList.contains('collapsed')) {

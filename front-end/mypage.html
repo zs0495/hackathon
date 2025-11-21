@@ -164,7 +164,8 @@
   <footer class="footer">
     © 2025 bokbok. All rights reserved.
   </footer>
-
+  
+  <script src="auth.js"></script>
   <script>
     // 로그인해야 접근 가능
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -172,8 +173,7 @@
       alert('로그인이 필요한 서비스입니다.');
       location.href = 'login.html';
     }
-
-
   </script>
+  
 </body>
 </html>

@@ -37,9 +37,10 @@
         z-index: 200; 
     }
 
+    /* 2. 페이지 제목 */
     .mypage-page {
     margin: 80px 0 40px; 
-    padding: 0 0 40px;
+    padding: 30px 0 40px;
     box-sizing: border-box;
     }
     
@@ -64,14 +65,14 @@
     padding: 0 24px;
     }
 
-    /* 2. 개인정보영역 */
+    /* 3. 개인정보영역 */
     .info-box {
-    padding: 16px 30px 0;
+    padding: 16px 20px 10px;
     }
 
     .info-box .row {
     display: flex;
-    gap: 80px;
+    gap: 150px;
     margin-bottom: 19px;
     font-size: 16px;
     }
@@ -90,6 +91,74 @@
     line-height: 1.5;
     }
 
+    /* 4. 찜한 복지 영역  */
+    .fav-list {
+    width: 100%;
+    padding: 16px 20px 10px;
+    margin-top: 8px;
+    }
+
+    .fav-row {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    }
+
+    .fav-row:last-child .fav-cell {
+    border-bottom: none;
+    }
+
+    .fav-title-cell {
+    display: table-cell;
+    width: 26%;
+    padding: 10px 0;
+    vertical-align: middle;
+    font-size: 16px;
+    }
+
+    .fav-cell {
+    display: table-cell;
+    width: 27%;
+    padding: 10px 0;
+    vertical-align: middle;
+    font-size: 16px;
+    border-bottom: 1px solid #eee;
+    }
+
+    .fav-heart {
+    display: table-cell;
+    width: 20%;
+    padding: 10px 0;
+    text-align: right;
+    vertical-align: middle;
+    font-size: 18px;
+    }
+
+    .fav-heart::before {
+    content: "♥";
+    color: #7ca2e0;
+    }
+
+    .fav-heart:not(.liked)::before {
+    content: "♡";
+    color: #7ca2e0;
+    }
+
+    /* 5. 수정 완료 버튼  */
+    .mypage-page .login-btn {
+    display: block;
+    width: 70%;
+    margin: 80px auto 0;
+    padding: 12px 0;
+    border: none;
+    border-radius: 6px;
+    background-color: #111111;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    }
+
     </style>
 </head>
 <body>
@@ -97,7 +166,7 @@
     <div class="top-bar">
         <a href="index.html" class="back-btn fixed-top-left">‹</a>
         <a href="index.html">
-            <img src="../images/bokbok_typo.png" alt="로고" class="login-logo">
+            <img src="../images/bokbok_logo.png" alt="로고" class="login-logo">
         </a>
     </div>
     
@@ -110,22 +179,22 @@
     <section class="info-box">
         <div class="row">
         <span class="label">이름</span>
-        <span class="value">김복복</span>
+        <span class="value editable" data-field="name">김복복</span>
         </div>
 
         <div class="row">
         <span class="label">생년월일</span>
-        <span class="value">2002년 6월 2일</span>
+        <span class="value editable" data-field="birth">2002년 6월 2일</span>
         </div>
 
         <div class="row">
         <span class="label">주소</span>
-        <span class="value">서울특별시 구로구</span>
+        <span class="value editable" data-field="address">서울특별시 구로구</span>
         </div>
 
         <div class="row">
         <span class="label">현재 상황</span>
-        <span class="value long-text">
+        <span class="value long-text editable" data-field="status">
             자취를 하고 있는데 이번달 월세를 낼 수가 없어요..  
             알바는 하고 있지만 생활비로 다 나가고 있고 
             부모님과 연락은 안하고 있는 상황이라 돈 빌릴 곳도 없어요
@@ -136,23 +205,25 @@
     <hr />
 
     <section class="fav-list">
-    <div class="fav-title">찜한 복지</div>
     <div class="fav-row">
-        <span class="inst">기관명</span>
-        <span class="benefit">혜택명</span>
-        <span class="heart"></span>
+        <div class="fav-title-cell">찜한 복지</div>
+        <div class="fav-cell">서울시청</div>
+        <div class="fav-cell">청년 월세 지원</div>
+        <div class="fav-heart"></div>
     </div>
 
     <div class="fav-row">
-        <span class="inst">기관명</span>
-        <span class="benefit">혜택명</span>
-        <span class="heart"></span>
+        <div class="fav-title-cell"></div>
+        <div class="fav-cell">보건복지부</div>
+        <div class="fav-cell">긴급 복지 지원</div>
+        <div class="fav-heart"></div>
     </div>
 
     <div class="fav-row">
-        <span class="inst">기관명</span>
-        <span class="benefit">혜택명</span>
-        <span class="heart"></span>
+        <div class="fav-title-cell"></div>
+        <div class="fav-cell">고용노동부</div>
+        <div class="fav-cell">청년 구직 활동 지원금</div>
+        <div class="fav-heart"></div>
     </div>
     </section>
 
@@ -167,12 +238,187 @@
   
   <script src="auth.js"></script>
   <script>
-    // 로그인해야 접근 가능
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      alert('로그인이 필요한 서비스입니다.');
-      location.href = 'login.html';
-    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      const STORAGE_KEY = 'bokbok_mypage';
+      let mypageState = {
+        profile: {
+          name: '',
+          birth: '',
+          address: '',
+          status: ''
+        }, favorites: [] 
+      };
+      const fieldLabels = {
+        name: '이름',
+        birth: '생년월일',
+        address: '주소',
+        status: '현재 상황'
+      };
+
+      // 로그인해야 접근 가능
+      if (!isLoggedIn) {
+        alert('로그인이 필요한 서비스입니다.');
+        location.href = 'login.html';
+        return;
+      }
+      
+      // 저장된 페이지 불러오기
+      const saved = loadFromStorage();
+      if (saved) {
+        mypageState = saved; 
+      } 
+      else {
+        mypageState = initStateFromDOM(); 
+      }
+
+      applyStateToDOM(); // 현재 값들을 화면에 반영
+      initEditableProfile(); // 프로필 수정
+      initFavoriteHearts(); // 찜 하트
+      initSaveButton(); // 수정 완료 버튼
+
+      // 데이터 객체로 반환
+      function loadFromStorage() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch (e) {
+          console.error('load error', e);
+          return null;
+        }
+      }
+
+      // 프로필, 찜 불러오기
+      function initStateFromDOM() {
+        const profile = {
+          name: getText('[data-field="name"]'),
+          birth: getText('[data-field="birth"]'),
+          address: getText('[data-field="address"]'),
+          status: getText('[data-field="status"]')
+        };
+
+        const favorites = [];
+        const rows = document.querySelectorAll('.fav-row');
+        rows.forEach((row, index) => {
+          const cells = row.querySelectorAll('.fav-cell');
+          if (cells.length < 2) return;
+          const org = cells[0].textContent.trim();
+          const benefit = cells[1].textContent.trim();
+          const liked = true;
+
+          favorites.push({ org, benefit, liked });
+          row.dataset.index = index;
+
+          const heart = row.querySelector('.fav-heart');
+          if (heart) {
+            heart.classList.add('liked');
+          }
+        });
+
+        return { profile, favorites };
+      }
+
+      // 화면에 적용
+      function applyStateToDOM() {
+        const p = mypageState.profile;
+        setText('[data-field="name"]', p.name);
+        setText('[data-field="birth"]', p.birth);
+        setText('[data-field="address"]', p.address);
+        setText('[data-field="status"]', p.status);
+
+        const rows = document.querySelectorAll('.fav-row');
+        rows.forEach((row, index) => {
+          const fav = mypageState.favorites[index];
+          if (!fav) return;
+
+          const cells = row.querySelectorAll('.fav-cell');
+          if (cells[0]) cells[0].textContent = fav.org;
+          if (cells[1]) cells[1].textContent = fav.benefit;
+
+          const heart = row.querySelector('.fav-heart');
+          if (heart) {
+            heart.classList.toggle('liked', fav.liked);
+          }
+
+          row.dataset.index = index;
+        });
+      }
+
+      function getText(selector) {
+        const el = document.querySelector(selector);
+        return el ? el.textContent.trim() : '';
+      }
+
+      function setText(selector, value) {
+        const el = document.querySelector(selector);
+        if (el) el.textContent = value ?? '';
+      }
+
+      // 프로필 수정
+      function initEditableProfile() {
+        document.querySelectorAll('.info-box .editable').forEach((el) => {
+          el.style.cursor = 'pointer';
+
+          el.addEventListener('click', () => {
+            const field = el.dataset.field; 
+            const label = fieldLabels[field];
+            const current = el.textContent.trim();
+            const next = prompt(`${label}을(를) 입력하세요`, current);
+
+            if (next !== null) {
+              const trimmed = next.trim();
+              el.textContent = trimmed;
+
+              if (mypageState.profile[field] !== undefined) {
+                mypageState.profile[field] = trimmed;
+              }
+            }
+          });
+        });
+      }
+
+      // 찜 하트 키고 끄기
+      function initFavoriteHearts() {
+        const rows = document.querySelectorAll('.fav-row');
+
+        rows.forEach((row, index) => {
+          row.dataset.index = index;
+          const heart = row.querySelector('.fav-heart');
+          if (!heart) return;
+
+          heart.style.cursor = 'pointer';
+
+          heart.addEventListener('click', () => {
+            const idx = parseInt(row.dataset.index, 10);
+            const fav = mypageState.favorites[idx];
+            if (!fav) return;
+
+            fav.liked = !fav.liked;
+            heart.classList.toggle('liked', fav.liked);
+          });
+        });
+      }
+
+      // 수정 완료 버튼
+      function initSaveButton() {
+        const btn = document.querySelector('.login-btn');
+        if (!btn) return;
+
+        btn.addEventListener('click', (e) => {
+          e.preventDefault(); 
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(mypageState));
+            alert('마이페이지 정보가 저장되었습니다.');
+          } catch (err) {
+            console.error(err);
+            alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+          }
+        });
+      }
+    });
+
   </script>
   
 </body>

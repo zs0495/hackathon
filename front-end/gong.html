@@ -5,596 +5,630 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공공 복지 혜택 모아보기 | bokbok</title>
     <style>
-        
-        /* 페이지 헤더 (로고 + 햄버거 메뉴) */
-        .welfare-page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+    /* ---------------------------------------------------- */
+    /* 1. 글로벌 및 헤더 스타일 */
+    /* ---------------------------------------------------- */
+    
+    body {
+        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+    }
 
-        .welfare-logo img {
-            width: 120px;
-            height: auto;
-        }
+    /* 페이지 헤더 (로고 + 햄버거 메뉴) */
+    .welfare-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
 
-        /* 햄버거 버튼 */
-        .menu-toggle-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            width: 40px;
-            height: 40px;
-        }
-        .menu-toggle-btn svg {
-            width: 100%;
-            height: 100%;
-        }
+    .welfare-logo img {
+        width: 120px;
+        height: auto;
+    }
 
-        /* ★ 세로 사이드 메뉴 바 */
-        .side-menu {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 250px; /* 메뉴 너비 */
-            height: 100%;
-            background-color: #f5f9ff;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-            transform: translateX(100%); /* 기본적으로 숨김 */
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000;
-            padding: 30px;
-            text-align: right;
-        }
+    /* 햄버거 버튼 */
+    .menu-toggle-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        width: 40px;
+        height: 40px;
+    }
+    .menu-toggle-btn svg {
+        width: 100%;
+        height: 100%;
+    }
 
-        .side-menu.open {
-            transform: translateX(0); /* 열림 상태 */
-        }
+    /* 사이드 메뉴 바 */
+    .side-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 250px;
+        height: 100%;
+        background-color: #f5f9ff;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 1000;
+        padding: 30px;
+        text-align: right;
+    }
 
-        .menu-close-btn {
-            background: none;
-            border: none;
-            font-size: 30px;
-            cursor: pointer;
-            color: #333;
-            margin-bottom: 30px;
-        }
+    .side-menu.open {
+        transform: translateX(0);
+    }
 
-        .side-menu-nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+    .menu-close-btn {
+        background: none;
+        border: none;
+        font-size: 30px;
+        cursor: pointer;
+        color: #333;
+        margin-bottom: 30px;
+    }
 
-        .side-menu-nav li {
-            margin-bottom: 15px;
-        }
+    .side-menu-nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
 
-        .side-menu-nav a {
-            text-decoration: none;
-            color: #333;
-            font-size: 16px;
-            font-weight: 500;
-            display: block;
-            padding: 8px 0;
-        }
+    .side-menu-nav li {
+        margin-bottom: 15px;
+    }
 
-        /* 현재 페이지 색상 적용 */
-        .side-menu-nav a.active-page {
-            color: #79A0DF; /* 복복이 메인 컬러 */
-            font-weight: 700;
-        }
+    .side-menu-nav a {
+        text-decoration: none;
+        color: #333;
+        font-size: 16px;
+        font-weight: 500;
+        display: block;
+        padding: 8px 0;
+    }
 
-        /* -------------------
-        * 입력 폼 및 결과 페이지 공통 스타일
-        * ------------------- */
-        .welfare-container {
-            max-width: 800px; /* 폭 유지 */
-            margin: 0 auto;
-            padding: 20px;
-            display: none; 
-        }
-        .welfare-container.active {
-            display: block; 
-        }
+    /* 현재 페이지 색상 적용 */
+    .side-menu-nav a.active-page {
+        color: #79A0DF;
+        font-weight: 700;
+    }
 
-        .welfare-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            text-align: left;
-        }
+    /* ---------------------------------------------------- */
+    /* 2. 폼 및 페이지 공통 스타일 */
+    /* ---------------------------------------------------- */
+    
+    .welfare-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        display: none; 
+    }
+    .welfare-container.active {
+        display: block; 
+    }
 
-        /* 폼 그룹 (레이블을 왼쪽에 배치) */
-        .form-group-welfare {
-            margin-bottom: 25px;
-            text-align: left;
-            position: relative; 
-            display: flex; 
-            align-items: center;
-        }
-        
-        /* ★ 입력 필드 컨테이너의 가로 크기를 절반으로 축소 (최대 350px) */
-        .form-group-welfare:not(:last-child) > input[type="text"],
-        .form-group-welfare:not(:last-child) > div.input-group-inline,
-        .form-group-welfare.keyword-select-group > div {
-            max-width: 350px; 
-        }
-        
-        /* ★ 유효성 검사 실패 시 경고 느낌표 색상 변경 효과 (하늘색 테두리) */
-        input:required:invalid:focus,
-        select:required:invalid:focus,
-        textarea:required:invalid:focus {
-             /* 기본 브라우저 아웃라인 제거 */
-            outline: none; 
-            /* 복복이 메인 컬러로 테두리 변경 */
-            border-color: #79A0DF; 
-            box-shadow: 0 0 0 1px #79A0DF;
-        }
-        
-        /* [핵심 수정] JavaScript가 토글할 회색 플레이스홀더 스타일 */
-        .form-group-welfare select.placeholder-color {
-            color: #999 !important; 
-        }
+    .welfare-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-align: left;
+    }
 
-        /* [추가] 실제 옵션은 항상 검은색으로 유지하여 드롭다운 목록에서 잘 보이게 함 */
-        .form-group-welfare select option {
-            color: #333;
-        }
+    /* 폼 그룹 (레이블 왼쪽에 배치) */
+    .form-group-welfare {
+        margin-bottom: 25px;
+        text-align: left;
+        display: flex; 
+        align-items: center;
+    }
+    
+    /* 입력 필드 컨테이너의 가로 크기 제한 */
+    .form-group-welfare:not(:last-child) > input[type="text"],
+    .form-group-welfare:not(:last-child) > div.input-group-inline,
+    .form-group-welfare.keyword-select-group > div {
+        max-width: 350px; 
+    }
+    
+    /* 유효성 검사 실패 시 경고 스타일 */
+    input:required:invalid:focus,
+    select:required:invalid:focus,
+    textarea:required:invalid:focus {
+        outline: none; 
+        border-color: #79A0DF; 
+        box-shadow: 0 0 0 1px #79A0DF;
+    }
+    
+    /* SELECT 플레이스홀더 색상 */
+    .form-group-welfare select.placeholder-color {
+        color: #999 !important; 
+    }
 
-        .form-group-welfare label {
-            /* 레이블 스타일 */
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-            width: 100px; /* 레이블 너비 고정 */
-            margin-bottom: 0;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
+    .form-group-welfare select option {
+        color: #333;
+    }
 
-        .form-group-welfare input[type="text"],
-        .form-group-welfare select,
-        .form-group-welfare textarea {
-            flex-grow: 1; 
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 15px;
-            width: auto; 
-            /* 🔥 글씨체 통일을 위해 추가/수정: 모든 폼 요소가 동일한 글꼴을 사용하도록 명시 */
-            font-family: inherit;
-        }
+    .form-group-welfare label {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        width: 100px; 
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
 
-        .form-group-welfare textarea {
-            /* ★ 나의 상황 입력 칸 높이 2배 */
-            min-height: 240px; 
-            padding: 15px;
-            resize: none;
-        }
+    .form-group-welfare input[type="text"],
+    .form-group-welfare select,
+    .form-group-welfare textarea {
+        flex-grow: 1; 
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 15px;
+        width: auto; 
+        font-family: inherit;
+    }
 
-        /* 인라인 그룹 (생년월일, 주소) */
-        .input-group-inline {
-            display: flex;
-            gap: 10px;
-            flex-grow: 1; 
-        }
-        
-        .birthdate-input-group,
-        .address-input-group {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-        }
+    .form-group-welfare textarea {
+        min-height: 240px; 
+        padding: 15px;
+        resize: none;
+    }
 
-        .birthdate-input-group select {
-            flex-grow: 1;
-            width: 100%;
-        }
-        
-        /* 년/월 텍스트 스타일 */
-        .birthdate-input-group span {
-            margin-left: 5px; 
-            color: #333;
-            font-weight: 500;
-            font-size: 15px;
-            white-space: nowrap; 
-            padding-right: 5px;
-        }
+    /* 인라인 그룹 (생년월일, 주소) */
+    .input-group-inline {
+        display: flex;
+        gap: 10px;
+        flex-grow: 1; 
+    }
+    
+    .birthdate-input-group,
+    .address-input-group {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
 
-        /* 1. SELECT-WRAPPER (아이콘 기준점 및 Flex 역할) */
-        .select-wrapper {
-            position: relative; /* ::after의 기준점 */
-            display: flex;
-            flex-grow: 1; 
-            min-width: 0;
-        }
+    .birthdate-input-group select {
+        flex-grow: 1;
+        width: 100%;
+    }
 
-        /* 2. Custom Icon (▼) 설정 */
-        .select-wrapper::after {
-            content: '▼'; /* 아이콘 문자 */
-            position: absolute;
-            top: 50%;
-            right: 15px; /* 아이콘 오른쪽 여백 설정 */
-            transform: translateY(-50%);
-            color: #999; /* 아이콘 색상 */
-            font-size: 12px; /* 아이콘 크기 */
-            pointer-events: none; /* 아이콘 클릭 방지 (뒤의 <select>가 클릭되도록) */
-            z-index: 10;
-        }
+    /* SELECT Custom Icon 및 UI 제거 */
+    .select-wrapper {
+        position: relative;
+        display: flex;
+        flex-grow: 1; 
+        min-width: 0;
+    }
 
-        /* 3. SELECT 기본 스타일 및 UI 제거 */
-        .select-wrapper select {
-            /* 기본 UI 숨기기 (필수) */
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            
-            /* 아이콘 겹침 방지 및 여백 확보 */
-            padding-right: 35px; /* 아이콘 + 여백 공간 확보 */
-            
-            /* Flexbox 레이아웃 안정화 (width: 100% 역할) */
-            flex-grow: 0 !important;
-            flex-basis: auto !important;
-            min-width: 0 !important;
-            position: static;
-            
-            /* 나머지 디자인 스타일 (width, padding, border, color 등)은 일반 입력 필드와 공유됩니다. */
-            width: 100%;
-            padding: 12px 15px;
-            /* ... (기타 border, font-size 등) ... */
-        }
+    .select-wrapper::after {
+        content: '▼';
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 12px;
+        pointer-events: none;
+        z-index: 10;
+    }
 
+    .select-wrapper select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 35px;
+        flex-grow: 0 !important;
+        flex-basis: auto !important;
+        min-width: 0 !important;
+        position: static;
+        width: 100%;
+        padding: 12px 15px;
+    }
 
-        /* 4. 플레이스홀더 텍스트 색상 */
-        .select-wrapper select:invalid {
-            color: #bbb; 
-        }
-        select option[value=""] {
-            color: #bbb; 
-        }
-        select option:not([value=""]) {
-            color: #333; /* 선택 후 일반 텍스트 색상 */
-        }
+    .select-wrapper select:invalid {
+        color: #bbb; 
+    }
+    select option[value=""] {
+        color: #bbb; 
+    }
+    select option:not([value=""]) {
+        color: #333;
+    }
 
-        /* 플레이스홀더 공통 스타일 */
-        input::placeholder,
-        textarea::placeholder {
-            color: #bbb;
-        }
+    /* 플레이스홀더 공통 스타일 */
+    input::placeholder,
+    textarea::placeholder {
+        color: #bbb;
+        opacity: 1; 
+    }
 
-        /* 수정/추가: <textarea> 플레이스홀더의 색상과 투명도를 명시적으로 재설정 */
-        .form-group-welfare textarea::placeholder {
-            color: #bbb;
-            opacity: 1; /* 투명도가 적용되어 색이 진해지는 것을 방지 */
-        }
+    /* 입력 정보 불러오기 버튼 */
+    .fetch-info-btn {
+        position: static; 
+        margin-left: 15px; 
+        background: none;
+        border: none;
+        color: #79A0DF;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 5px 0;
+        flex-shrink: 0; 
+    }
+    
+    /* 매칭하기 버튼 (공통) */
+    .welfare-submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: #111;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 40px;
+        cursor: pointer;
+        transition: background 0.2s;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .welfare-submit-btn:hover {
+        background: #333;
+    }
 
+    /* 키워드 태그 관리 */
+    .selected-keywords-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        text-align: left;
+        min-height: 40px;
+        margin-top: 10px; 
+        margin-bottom: -15px; 
+        max-width: 350px; 
+    }
 
-        /* 입력 정보 불러오기 버튼 */
-        .fetch-info-btn {
-            /* ★ 위치 변경: 입력 칸 오른쪽 */
-            position: static; 
-            margin-left: 15px; 
-            background: none;
-            border: none;
-            color: #79A0DF;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 5px 0;
-            flex-shrink: 0; /* 공간 축소 방지 */
-        }
-        
-        /* 매칭하기 버튼 */
-        .welfare-submit-btn {
-            width: 100%;
-            padding: 14px;
-            background: #111;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 40px;
-            cursor: pointer;
-            transition: background 0.2s;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+    .selected-keyword-tag {
+        display: flex;
+        align-items: center;
+        background-color: #79A0DF;
+        color: white;
+        padding: 8px 12px;
+        padding-right: 5px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        user-select: none;
+    }
 
-        /* 매칭 결과 페이지 스타일 */
-        .result-page {
-            text-align: center; 
-            padding-top: 50px;
-            padding-bottom: 80px;
-        }
-        
-        .result-header {
-            /* ★ Flexbox로 변경하여 텍스트와 이미지 분리 */
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            margin-bottom: 40px;
-            text-align: left; 
-            width: 100%; /* 부모 컨테이너 전체 폭 사용 */
-        }
-        
-        .result-text-group {
-            /* ★ 텍스트 그룹이 이미지 옆의 공간을 유연하게 차지하도록 */
-            flex-grow: 1; 
-            max-width: 80%; 
-            margin-right: 20px;
-        }
+    .remove-tag-btn {
+        background: none;
+        border: none;
+        color: white;
+        margin-left: 8px;
+        font-size: 18px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0 4px;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+    }
+    .error-msg {
+        font-size: 12px;
+        color: #e74c3c;
+        margin-top: 4px;
+        display: none; /* JS로 토글 */
+    }
+    .input-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        width: 100%;
+    }
 
-        .result-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 15px;
-            text-align: left; 
-        }
+    /* ---------------------------------------------------- */
+    /* 3. 매칭 성공 페이지 스타일 */
+    /* ---------------------------------------------------- */
+    
+    .result-page {
+        text-align: center; 
+        padding-top: 50px;
+        padding-bottom: 80px;
+    }
+    
+    .result-header {
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        margin-bottom: 40px;
+        text-align: left; 
+        width: 100%;
+    }
+    
+    .result-text-group {
+        flex-grow: 1; 
+        max-width: 80%; 
+        margin-right: 20px;
+    }
 
-        .result-mascot {
-            width: 180px; 
-            height: auto;
-            margin: 0; 
-            flex-shrink: 0; /* ★ 이미지가 줄어들지 않도록 고정 */
-        }
+    /* 결과 제목 (크기/굵기 확대) */
+    .result-title {
+        font-size: 26px; 
+        font-weight: 800;
+        color: #333;
+        margin-bottom: 15px;
+        line-height: 1.4;
+        text-align: left; 
+    }
 
-        /* 매칭 성공 시 태그 박스 */
-        .tag-box-group {
-            display: flex;
-            justify-content: flex-start; 
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+    .result-mascot {
+        width: 180px; 
+        height: auto;
+        margin: 0; 
+        flex-shrink: 0;
+    }
 
-        .result-tag {
-            background-color: #F0F4FA; 
-            color: #333;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-        }
+    /* 매칭 성공 시 태그 박스 */
+    .tag-box-group {
+        display: flex;
+        justify-content: flex-start; 
+        gap: 10px;
+        flex-wrap: wrap;
+    }
 
-        /* 키워드/태그 관련 스타일 */
-        .keyword-select-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box; 
-            font-size: 15px;
-            transition: border-color 0.2s;
-        }
+    /* 키워드 태그 (크기 확대) */
+    .result-tag {
+        background-color: #F0F4FA; 
+        color: #333;
+        padding: 10px 18px;
+        border-radius: 20px;
+        font-size: 15px; 
+        font-weight: 600;
+    }
 
-        .selected-keywords-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            text-align: left;
-            min-height: 40px;
-            margin-top: 10px; 
-            margin-bottom: -15px; 
-            max-width: 350px; 
-            /* margin-left: 0; */ /* 제거 */
-        }
-        /* 대신, 상위 div의 flex-grow: 1; 설정을 활용해야 함 */
+    /* ---------------------------------------------------- */
+    /* 4. 매칭 결과 목록 스타일 */
+    /* ---------------------------------------------------- */
 
-        .selected-keyword-tag {
-            display: flex;
-            align-items: center;
-            background-color: #79A0DF;
-            color: white;
-            padding: 8px 12px;
-            padding-right: 5px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            user-select: none;
-        }
+    .welfare-result-list {
+        list-style: none;
+        padding: 0;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
 
-        .remove-tag-btn {
-            background: none;
-            border: none;
-            color: white;
-            margin-left: 8px;
-            font-size: 18px;
-            line-height: 1;
-            cursor: pointer;
-            padding: 0 4px;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
+    .welfare-result-list li {
+        display: flex;
+        align-items: center;
+        padding: 16px 25px;
+        border-bottom: 1px solid #f5f5f5;
+        background-color: white;
+        font-size: 16px;
+        position: relative; 
+        flex-wrap: wrap; 
+        transition: background-color 0.2s;
+        cursor: pointer; 
+    }
+    
+    .welfare-result-list li.open {
+        background-color: #f7f9fc;
+    }
 
-        .remove-tag-btn:hover {
-            opacity: 1;
-        }
-        
-        /* 복지 혜택 목록 (이하 스타일은 유지) */
-        .welfare-result-list {
-            list-style: none;
-            padding: 0;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
+    .list-num {
+        font-weight: 700;
+        color: #79A0DF;
+        min-width: 35px;
+        flex-shrink: 0;
+        order: 1; 
+    }
 
-        .welfare-result-list li {
-            display: flex;
-            align-items: center;
-            padding: 16px 25px;
-            border-bottom: 1px solid #f5f5f5;
-            background-color: white;
-            font-size: 16px;
-            position: relative; 
-            flex-wrap: wrap; 
-            transition: background-color 0.2s;
-            cursor: pointer; 
-        }
-        
-        .welfare-result-list li.open {
-            background-color: #f7f9fc;
-        }
+    .list-agency {
+        flex-grow: 0; 
+        text-align: left;
+        color: #666;
+        margin-left: 40px;
+        min-width: 80px;
+        order: 2; 
+    }
 
-        .list-num {
-            font-weight: 700;
-            color: #79A0DF;
-            min-width: 35px;
-            flex-shrink: 0;
-            order: 1; 
-        }
+    .list-benefit {
+        font-weight: 600;
+        color: #333;
+        flex-grow: 1; 
+        flex-basis: auto; 
+        text-align: left;
+        margin: 0;
+        margin-left: 40px; 
+        order: 3; 
+    }
+    
+    .list-heart-btn {
+        background: none;
+        border: none;
+        color: #111; 
+        font-size: 18px; 
+        cursor: pointer;
+        margin-left: 15px; 
+        flex-shrink: 0;
+        order: 4; 
+        padding: 10px 0;
+    }
+    
+    .list-heart-btn::before {
+        content: "♡";
+    }
+    
+    .list-heart-btn.liked::before {
+        content: "♥";
+        color: #7ca2e0; 
+    }
+    
+    .list-detail-content {
+        width: 100%;
+        display: none; 
+        padding: 15px 0 0;
+        margin-top: 10px;
+        border-top: 1px dashed #eee;
+        color: #333;
+        order: 5; 
+    }
 
-        .list-agency {
-            flex-grow: 0; 
-            text-align: left;
-            color: #666;
-            margin-left: 40px;
-            min-width: 80px;
-            order: 2; 
-        }
+    .welfare-result-list li.open .list-detail-content {
+        display: block;
+    }
+    
+    /* 필수 서류 목록 스크롤 박스 */
+    .document-box {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px; /* 통일성을 위해 8px로 변경 */
+        padding: 15px; 
+        max-height: 150px; 
+        overflow-y: auto; 
+        margin-bottom: 15px; 
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
 
-        .list-benefit {
-            font-weight: 600;
-            color: #333;
-            flex-grow: 1; 
-            flex-basis: auto; 
-            text-align: left;
-            margin: 0;
-            margin-left: 40px; 
-            order: 3; 
-        }
-        
-        .list-heart-btn {
-            background: none;
-            border: none;
-            color: #111; 
-            font-size: 18px; 
-            cursor: pointer;
-            margin-left: 15px; 
-            flex-shrink: 0;
-            order: 4; 
-            padding: 10px 0;
-        }
-        
-        /* ---------------------------------------------------- */
-        /* 🔥 하트 버튼 클릭 시 크기 변화 방지 (추가) */
-        /* ---------------------------------------------------- */
-        .list-heart-btn:active {
-            /* 클릭 시 브라우저 기본 축소 효과 방지 */
-            transform: scale(1);
-        }
-        .list-heart-btn.liked {
-            /* 찜 상태일 때 크기 변화 방지 */
-            transform: scale(1);
-        }
-        .list-heart-btn::before {
-            content: "♡";
-        }
-        
-        .list-heart-btn.liked::before {
-            content: "♥";
-            color: #7ca2e0; 
-        }
-        
-        .list-detail-content {
-            width: 100%;
-            display: none; 
-            padding: 15px 0 0;
-            margin-top: 10px;
-            border-top: 1px dashed #eee;
-            color: #333;
-            order: 5; 
-        }
+    .detail-documents {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    
+    .detail-documents li {
+        display: flex; 
+        align-items: center;
+        padding: 5px 0;
+        font-size: 14px;
+        border-bottom: none;
+        background-color: transparent;
+        cursor: default; 
+    }
+    
+    .detail-documents li:before {
+        content: '•';
+        color: #79A0DF;
+        font-weight: 700;
+        display: inline-block;
+        width: 1em;
+        margin-left: 0; /* Box 내부에서는 들여쓰기 제거 */
+        margin-right: 0.5em;
+    }
+    
+    .document-help {
+        color: #79A0DF;
+        font-size: 12px;
+        margin-left: 8px;
+        cursor: help;
+    }
+    
+    .benefit-link {
+        display: block;
+        text-align: right;
+        font-size: 13px;
+        color: #79A0DF;
+        font-weight: 600;
+        text-decoration: none;
+    }
 
-        .welfare-result-list li.open .list-detail-content {
-            display: block;
-        }
-        
-        .detail-documents {
-            padding-left: 0;
-            list-style: none;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            border: none !important;
-        }
-        
-        .detail-documents li {
-            display: flex; 
-            align-items: center;
-            padding: 5px 0;
-            font-size: 14px;
-            border-bottom: none;
-            background-color: transparent;
-            cursor: default; 
-        }
-        
-        .detail-documents li:before {
-            content: '•';
-            color: #79A0DF;
-            font-weight: 700;
-            display: inline-block;
-            width: 1em;
-            margin-left: 18px;
-            margin-right: 0.5em;
-        }
-        
-        .document-help {
-            color: #79A0DF;
-            font-size: 12px;
-            margin-left: 8px;
-            cursor: help;
-        }
-        
-        .benefit-link {
-            display: block;
-            text-align: right;
-            font-size: 13px;
-            color: #79A0DF;
-            font-weight: 600;
-            text-decoration: none;
-        }
-        .error-msg {
-            font-size: 12px;
-            color: #e74c3c;  /* 빨간색 경고 */
-            margin-top: 4px;
-        }
-        .input-wrapper {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            width: 100%;
-        }
-        /* 필수 서류 목록 스크롤 박스 스타일 (추가) */
-        .document-box {
-            background-color: #ffffff; /* 흰색 배경 */
-            border: 1px solid #ddd;
-            border-radius: 0;
-            padding: 15px; /* 내부 여백 */
-            max-height: 150px; /* 최대 높이 설정 (이 높이를 넘으면 스크롤 발생) */
-            overflow-y: auto; /* 세로 스크롤 활성화 */
-            margin-bottom: 15px; /* 박스 아래 여백 */
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* 약간의 음영 추가 */
-        }
+    /* ---------------------------------------------------- */
+    /* 5. 매칭 실패 페이지 스타일 (수정 및 정리) */
+    /* ---------------------------------------------------- */
 
-        /* 기존 문서 목록 스타일 조정 (박스 안에서 잘 보이도록) */
-        .detail-documents {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 0;
-            margin-bottom: 0; /* 부모 박스에 margin-bottom이 있으므로 0으로 설정 */
-        }
+    /* 헤더: 세로 정렬 및 중앙 정렬 */
+    #matchFailPage .result-header {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center;    
+        margin-bottom: 30px;    
+        text-align: center;     
+        width: 100%;
+    }
 
-    </style>
+    /* 텍스트 그룹: 너비 제약 해제 및 중앙 정렬 */
+    #matchFailPage .result-text-group {
+        max-width: 100%; 
+        margin-right: 0; 
+        margin-bottom: 20px; 
+        text-align: center;
+    }
+
+    /* 제목/메시지 스타일 */
+    #matchFailPage .result-title {
+        /* .result-title 대신 상황에 맞는 fail-message를 사용 */
+        display: none; 
+    }
+
+    .fail-message {
+        font-size: 28px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+        margin-top: 30px;
+    }
+
+    .fail-question {
+        font-size: 16px;
+        color: #666;
+    }
+
+    /* 이미지 크기 확대 */
+    #matchFailPage .result-mascot {
+        width: 300px;
+        height: auto;
+        flex-shrink: 0; 
+        margin: 0 auto; 
+        order: -1; /* 이미지를 텍스트 위에 배치 */
+    }
+    
+    /* 액션 버튼과 링크를 감싸는 컨테이너 */
+    .fail-action-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 400px; /* 버튼 너비 */
+        margin: 30px auto 0;
+    }
+
+    /* 민간 복지 이동 버튼 (welfare-submit-btn 재사용) */
+    #goToMinWelfare {
+        background: #111; /* 복복이 메인 색상 */
+        margin-top: 0;
+        margin-bottom: 15px;
+        max-width: none;
+    }
+    #goToMinWelfare:hover {
+        background: #333;
+    }
+
+    /* '홈으로 돌아갈래요' 텍스트 링크 */
+    .fail-cancel-link {
+        color: #666; 
+        font-size: 15px;
+        font-weight: 500;
+        text-decoration: underline;
+        padding: 10px 0;
+        cursor: pointer;
+    }
+    .fail-cancel-link:hover {
+        color: #333;
+    }
+</style>
+
 </head>
 <body>
     <header class="welfare-page-header">
@@ -661,10 +695,8 @@
                 </div>
             </div>
 
-
             <div class="form-group-welfare">
                 <label>주소</label>
-
                 <div class="input-wrapper">
                     <div class="input-group-inline">
                         <div class="address-input-group">
@@ -831,10 +863,15 @@
     <section id="matchFailPage" class="welfare-container result-page">
         <div class="result-header fail-header">
             <img src="../images/crying_bok.png" alt="매칭 실패 캐릭터" class="result-mascot">
-            <p class="fail-message">앗.. 매칭된 공공 복지가 없어요 🥺</p>
-            <p class="fail-question">민간 복지 모아보기로 갈까요?</p>
-            <button class="fail-action-btn">갈래요!</button>
-            <a href="#" class="fail-cancel-link">안가도 돼요</a>
+            <div class="result-text-group">
+                <p class="fail-message">앗.. 매칭된 공공 복지가 없어요 🥺</p>
+                <p class="fail-question">민간 복지 모아보기로 갈까요?</p>
+            </div>
+        </div>
+        
+        <div class="fail-action-group">
+            <button id="goToMinWelfare" class="welfare-submit-btn">민간 복지 혜택 모아보기</button>
+            <a href="index.html" class="fail-cancel-link">홈으로 돌아갈래요</a> 
         </div>
     </section>
     
@@ -899,7 +936,6 @@
         // --- 데이터 상태 ---
         let selectedKeywords = [];
 
-
         // ==========================================================
         // 2. 유효성 검사 함수 (Validation)
         // ==========================================================
@@ -960,7 +996,7 @@
             matchSuccessPage.classList.remove('active');
             matchFailPage.classList.remove('active');
 
-            const isMatch = true; // 실제 매칭 로직으로 대체 필요
+            const isMatch = false; // 실제 매칭 로직으로 대체 필요
 
             if (isMatch) {
                 renderResultTags();
@@ -1270,7 +1306,17 @@
                 validateForm(); // 선택 변경 시 해당 오류 메시지를 즉시 숨김
             });
         });
-    });
+        });
+
+        const goToMinWelfareBtn = document.getElementById('goToMinWelfare'); // 1. 버튼 요소 선택
+
+        if (goToMinWelfareBtn) {
+            goToMinWelfareBtn.addEventListener('click', () => {
+                // 2. 버튼 클릭 시 min.html로 이동
+                window.location.href = 'min.html'; 
+            });
+        }
+
 </script>
 </body>
 </html>

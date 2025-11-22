@@ -1,166 +1,279 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>bokbok</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-</head>
-<body>
+# Flask 웰페어 애플리케이션 - 통합 버전
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify
+import pymysql 
+import pymysql.cursors
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import date
+import logging
 
-  <!-- 네비게이션 -->
-  <nav class="navbar">
-    <div class="logo">
-        <img src="{{ url_for('static', filename='images/bokbok_logo.png') }}" alt="로고">
-    </div>
-    <!-- 드롭다운 설정 -->
-    <div class="menu">
-      <ul>
-        <li>
-          <a href="#">서비스 소개</a>
-          <ul>
-            <li><a href="{{ url_for('service_page') }}">서비스 개요</a></li>
-            <li><a href="{{ url_for('team_page') }}">팀 소개</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="#">주요 기능</a>
-          <ul>
-            <li><a href="{{ url_for('public_page') }}">공공 복지 검색</a></li>
-            <li><a href="{{ url_for('private_page') }}">민간 복지 검색</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="#">라운지</a>
-          <ul>
-            <li><a href="{{ url_for('library_page') }}">자료실</a></li>
-            <li><a href="{{ url_for('guide_page') }}">이용 가이드</a></li>
-            <li><a href="{{ url_for('faq_page') }}">FAQ</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <div class="auth">
-      <a href="{{ url_for('signup_form') }}">회원가입</a> | <a href="{{ url_for('login_form') }}">로그인</a>
-    </div>
-  </nav>
+# 로깅 설정
+logging.basicConfig(level=logging.INFO)
 
-  <section class="hero-wrapper">
-    <div class="hero-slider">
-        <div class="slider-container">
-            <div class="slide slide-1">
-                <div class="slide-content"></div>
-            </div>
-            <div class="slide slide-2">
-                <div class="slide-content"></div>
-            </div>
-            <div class="slide slide-3">
-                <div class="slide-content"></div>
-            </div>
-        </div>
-    </div>
-  </section>
+# Flask 애플리케이션 초기화
+app = Flask(__name__)
 
-  <!-- 바로가기 -->
-  <div class="icon">
-    <a href="#" class="icon-btn">
-      <div class="icon-box">
-        <img src="{{ url_for('static', filename='images/favorite.png') }}" alt="">
-      </div>
-      <span>찜한 복지</span>
-    </a>
-    <a href="#" class="icon-btn">
-      <div class="icon-box">
-        <img src="{{ url_for('static', filename='images/document.png') }}" alt="">
-      </div>
-      <span>필수 서류</span>
-    </a>
-    <a href="{{ url_for('faq_page') }}" class="icon-btn">
-      <div class="icon-box">
-        <img src="{{ url_for('static', filename='images/questionmark.png') }}" alt="">
-      </div>
-      <span>FAQ</span>
-    </a>
-  </div>
+# 세션 사용을 위한 secret_key 필수
+app.secret_key = "your_secret_key_here_1234"   # ★ 반드시 추가되어야 함
 
-  <section class="feature-section">
-    <h2 class="feature-title">지금 당장 클릭 한번으로<br />나에게 딱 맞는 복지 정책을 알아보세요</h2>
-    <div class="card-container">
-      
-      <a href="{{ url_for('gong_benefits_page') }}" class="feature-card public-card">
-        <h3 class="card-title">공공 복지 혜택 모아보기</h3>
-        <p class="card-desc">정부24, 서울복지포털, 복지로, 온통청년의<br />복지 혜택을 찾아볼 수 있어요</p>
-        <span class="card-link">자세히 보기 &gt;</span>
-      </a>
+# ==========================================================
+# 데이터베이스 연결
+# ==========================================================
+def get_db():
+    """MySQL 데이터베이스 연결을 설정하고 DictCursor를 반환"""
+    try:
+        db = pymysql.connect(
+            host='localhost', 
+            port=3306,
+            user='root', 
+            password='Aa0205!!?',  # 실제 MySQL 비밀번호
+            db='welfaredb', 
+            charset='utf8mb4', 
+            autocommit=False,
+            cursorclass=pymysql.cursors.DictCursor
+        )
+        return db
+    except Exception as e:
+        logging.error(f"데이터베이스 연결 실패: {e}")
+        return None
 
-      <a href="{{ url_for('min_benefits_page') }}" class="feature-card private-card">
-        <h3 class="card-title">민간 복지 혜택 모아보기</h3>
-        <p class="card-desc">교보교육재단, 희망나눔온, 이랜드복지재단,<br />우아한사장님살핌기금의 복지 혜택을 찾아볼 수 있어요</p>
-        <span class="card-link">자세히 보기 &gt;</span>
-      </a>
+# ==========================================================
+# 인증 관련 라우트 (로그인/회원가입)
+# ==========================================================
+# 로그인 폼
+@app.route('/login', methods=['GET'])
+def login_form():
+    message = request.args.get('message', '아이디와 비밀번호를 입력해주세요.')
+    return render_template("login.html", message=message)
 
-    </div>
-    <p class="feature-remark">
-      단순히 검색이 아닌 필수 서류까지 꼼꼼히!<br />
-      믿음직한 복복이를 경험해보세요
-    </p>
-  </section>
+# 로그인 처리
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+    
+    if not username or not password:
+        return redirect(url_for('login_form', message="아이디와 비밀번호를 입력하세요."))
+        
+    db = get_db()
+    if not db:
+        return redirect(url_for('login_form', message="시스템 오류: DB 연결 실패"))
 
-  <section class="notice-section">
-    <h2 class="notice-title">NOTICE</h2>
-    <p class="notice-subtitle">복복 이용가이드와 자주하는 질문들을 모아봤어요</p>
+    cur = db.cursor()
+    
+    try:
+        sql = "SELECT user_no, username, password FROM personal_info WHERE username=%s"
+        cur.execute(sql, (username,))
+        user = cur.fetchone()
 
-    <div class="notice-scroll-container">
-      
-      <div class="notice-card">
-        <h3 class="card-heading">복복은 정부 공식 서비스 인가요?</h3>
-        <p class="card-text">복복은 정부와 직접적으로 운영되는 서비스는 아니지만, 공공데이터를 기반으로 정확한 복지 정보를 제공합니다. 추후 지자체 및 복지 기관과 협력하여 신뢰성 높은 정보를 지속적으로 업데이트합니다.</p>
-        <span class="card-date">2025-08-02</span>
-      </div>
+        # 비밀번호 일치 검사
+        if user and check_password_hash(user['password'], password):
+            
+            # ⭐ 필수: 세션 저장
+            session['logged_in'] = True
+            session['username'] = username
+            # ⭐️ 추가: mypage 및 찜하기 기능을 위해 user_no 저장
+            session['user_no'] = user['user_no']
 
-      <div class="notice-card">
-        <h3 class="card-heading">주민등록번호나 계좌정보를 입력해야 하나요?</h3>
-        <p class="card-text">아닙니다. 복복은 민감한 개인정보를 요구하지 않습니다. 복지 추천에 필요한 최소한의 정보(나이, 거주지역, 가구구성 등)만 선택적으로 입력하면 됩니다.</p>
-        <span class="card-date">2025-09-21</span>
-      </div>
-      
-      <div class="notice-card">
-        <h3 class="card-heading">복복이가 실제 신청까지 대신 해주나요?</h3>
-        <p class="card-text">복복은 사용자가 직접 신청할 수 있도록 신청 절차·서류·링크를 안내합니다. 자동으로 신청을 대행하진 않지만, 신청 과정을 이해하기 쉽게 단계별로 도와드립니다.</p>
-        <span class="card-date">2025-11-02</span>
-      </div>
-      
-      <div class="notice-card">
-        <h3 class="card-heading">복복에서 제공하는 정보는 어디서 가져오나요?</h3>
-        <p class="card-text">복복은 정부·지자체의 공개 데이터, 공식 복지 사이트 정보, 민간단체·재단의 지원 프로그램 등을 기반으로 정보를 직접 정리하여 제공합니다. 정보 출처는 공신력 있는 기관이지만, 서비스 자체는 공식 기관과는 독립적으로 운영됩니다.</p>
-        <span class="card-date">2025-11-15</span>
-      </div>
+            return redirect(url_for('index', message=f"{username}님, 로그인 성공!"))
+        else:
+            return redirect(url_for('login_form', message="로그인 실패 - 아이디 또는 비밀번호를 확인하세요."))
 
-      <div class="notice-card">
-        <h3 class="card-heading">복복의 정보는 최신 정책을 반영하나요?</h3>
-        <p class="card-text">네, 복복은 정기적으로 데이터베이스를 업데이트하여 정부·지자체·민간 복지 정보를 가능한 최신 상태로 유지하고 있습니다. 또한 향후 자동 업데이트 시스템을 통해 새로운 정책이나 변경 사항도 신속하게 반영될 수 있도록 확장할 계획입니다.</p>
-        <span class="card-date">2025-11-18</span>
-      </div>
+    except Exception as e:
+        logging.error(f"로그인 처리 중 오류 발생: {e}")
+        return redirect(url_for('login_form', message="로그인 처리 중 시스템 오류가 발생했습니다."))
+    finally:
+        db.close()
 
-      <div class="notice-card guide-card">
-        <p class="guide-text">복복 A to Z : 복복을 200% 활용하는 방법!</p>
-        <a href="{{ url_for('guide_page') }}" class="guide-link">이용 가이드 바로가기 &gt;</a>
-      </div>
-      
-    </div>
-  </section>
+# 회원가입 폼
+@app.route('/signup', methods=['GET'])
+def signup_form():
+    message = request.args.get('message', '모든 정보를 입력해주세요.')
+    current_year = date.today().year
+    return render_template('signup.html', message=message, today_year=current_year)
+    
+# 회원가입 처리
+@app.route('/signup', methods=['POST'])
+def signup():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    name = request.form.get('name')
+    birth_year = request.form.get('birth_year')
+    birth_month = request.form.get('birth_month')
+    phone = request.form.get('phone')
+    city = request.form.get('city')
+    district = request.form.get('district')
+    situation = request.form.get('situation')
 
-  <section class="bottom-banner-section">
-    <div class="bottom-banner-image">
-        <img src="{{ url_for('static', filename='images/guide.png') }}" alt="복복이가 알려주는 복지 가이드">
-    </div>
-  </section>
+    # 1. 필수 항목 체크
+    if not all([username, password, name, birth_year, birth_month, city, district]):
+        return redirect(url_for('signup_form', message="필수 항목을 모두 입력해주세요."))
 
-  <footer class="footer">
-    © 2025 bokbok. All rights reserved.
-  </footer>
+    if not password or len(password) < 8:
+        return redirect(url_for('signup_form', message="비밀번호는 최소 8자 이상이어야 합니다."))
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
-  <!-- <script src="auth.js"></script>  로그인 구현-->
-</body>
-</html>
+    # 생년월 유효성 검사
+    try:
+        birth_year = int(birth_year)
+        birth_month = int(birth_month)
+        
+        if birth_year < 1900 or birth_year > date.today().year:
+            return redirect(url_for('signup_form', message="올바른 생년을 입력해주세요."))
+        
+        if birth_month < 1 or birth_month > 12:
+            return redirect(url_for('signup_form', message="생월은 1-12 사이여야 합니다."))
+    except ValueError:
+        return redirect(url_for('signup_form', message="생년월을 숫자로 입력해주세요."))
+
+    hashed_password = generate_password_hash(password)
+    
+    db = get_db()
+    if not db:
+        return redirect(url_for('signup_form', message="시스템 오류: DB 연결 실패."))
+
+    cur = db.cursor()
+
+    try:
+        # 중복 확인
+        cur.execute("SELECT username FROM personal_info WHERE username=%s", (username,))
+        if cur.fetchone():
+            return redirect(url_for('signup_form', message="이미 존재하는 아이디입니다."))
+
+        # 저장
+        sql = """
+        INSERT INTO personal_info 
+        (username, password, name, birth_year, birth_month, phone, city, district, situation) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        cur.execute(sql, (
+            username, hashed_password, name, birth_year,
+            birth_month, phone, city, district, situation
+        ))
+        db.commit()
+        
+        if cur.rowcount == 1:
+            return redirect(url_for('login_form', message="회원가입 성공! 이제 로그인 해주세요."))    
+        
+        else:
+            logging.error("회원가입 INSERT 실패: rowcount=0")
+            return redirect(url_for('signup_form', message="회원가입 실패: DB에 저장되지 않았습니다."))
+
+    except Exception as e:
+        logging.exception("회원가입 처리 중 예외 발생")
+        return redirect(url_for('signup_form', message="회원가입 처리 중 시스템 오류가 발생했습니다."))
+    finally:
+            db.close()
+
+# ==========================================================
+# 메인 페이지
+# ==========================================================
+@app.route('/')
+def index():
+    message = request.args.get('message', None)
+    return render_template('index.html', message=message)
+
+# ==========================================================
+# 단순 페이지 라우트
+# ==========================================================
+@app.route('/service')
+def service_page():
+    return render_template('service.html')
+
+@app.route('/team')
+def team_page():
+    return render_template('team.html')
+
+@app.route('/public')
+def public_page():
+    return render_template('public.html')
+
+@app.route('/private')
+def private_page():
+    return render_template('private.html')
+
+@app.route('/library')
+def library_page():
+    return render_template('library.html')
+
+@app.route('/guide')
+def guide_page():
+    return render_template('guide.html')
+
+@app.route('/faq')
+def faq_page():
+    return render_template('faq.html')
+
+@app.route('/gong')
+def gong_benefits_page():
+    return render_template('gong.html')
+
+@app.route('/min')
+def min_benefits_page():
+    return render_template('min.html')
+
+# ==========================================================
+# API - 로그인 상태 확인
+# ==========================================================
+@app.route('/api/check-login')
+def check_login():
+    return jsonify({
+        'isLoggedIn': session.get('logged_in', False),
+        'username': session.get('username', None)
+    })
+
+# 로그아웃
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return jsonify({'success': True})
+
+# ==========================================================
+# 마이페이지 (로그인 필요)
+# ==========================================================
+@app.route('/mypage')
+def mypage():
+    if not session.get('logged_in'):
+        return redirect(url_for('login_form', message='로그인이 필요한 서비스입니다.'))
+    
+    username = session.get('username')
+    
+    db = get_db()
+    if not db:
+        return render_template('mypage.html', username=username, user_info={}, favorites=[])
+
+    try:
+        cur = db.cursor()
+
+        # 사용자 기본 정보 읽기
+        sql = """
+        SELECT name, birth_year, birth_month, city, district, situation 
+        FROM personal_info 
+        WHERE username=%s
+        """
+        cur.execute(sql, (username,))
+        user_info = cur.fetchone()
+
+        favorites = []  # TODO: 찜 기능은 나중에 구현
+
+        return render_template('mypage.html', 
+            username=username, 
+            user_info=user_info or {}, 
+            favorites=favorites)
+
+    except Exception as e:
+        logging.error(f"마이페이지 오류: {e}")
+        return render_template('mypage.html', username=username, user_info={}, favorites=[])
+    finally:
+        if db:
+            db.close()
+
+@app.route('/edit-profile')
+def edit_profile():
+    if not session.get('logged_in'):
+        return redirect(url_for('login_form', message='로그인이 필요한 서비스입니다.'))
+    return "정보 수정 페이지 (준비중)"
+
+# ==========================================================
+# 실행
+# ==========================================================
+if __name__ == '__main__':
+    app.run(debug=True)

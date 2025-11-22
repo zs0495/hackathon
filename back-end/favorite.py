@@ -37,31 +37,27 @@ def mypage():
        
        
        #찜한 항목
-@app.route('/liked')
-def liked():
-    if 'user_no' not in session:
-        return redirect('/login')
 
     user_id = session['user_no']
     db = get_db()
     try:
         cur = db.cursor(pymysql.cursors.DictCursor)
 
-        cur.execute("SELECT fb.user_no, s.site_name, b.title AS benefit_title, b.description
+        cur.execute("""
+        SELECT fb.user_no, s.site_name, b.title AS benefit_title
             FROM favorite_benefit fb
             JOIN sites s ON fb.site_id = s.site_id
             JOIN benefits b ON fb.benefit_no = b.benefit_no
             WHERE fb.user_no = %s
-            ORDER BY fb.benefit_no", (user_no, site_name, benefit_title, description))
-        liked_raw = cur.fetchall()
-        liked_set = {row['benefit_no'] for row in liked_raw}
+            ORDER BY fb.benefit_no
+            """,
+            (user_no))
+        favorites = cur.fetchall()
+       
     finally:
         db.close()
-        
-    #프론트엔드 (임시)mypage.html 만들면 연결하기 -> 마이페이지
-    return render_template("mypage.html",fav.org=site_name, fav.benefits=benefit_title)
 
-
+    return render_template("mypage.html", favorites=favorites)
 
 
 
@@ -69,64 +65,69 @@ def liked():
 @app.route('/like/<int:benefit_no>')
 def like(benefit_no):
     if 'user_no' not in session:
-        return redirect('/login')
+        return redirect({'error': 'Not logged in'}), 401
+        
     user_no = session['user_no']
     db = get_db()
 
     
     try:
-    
-    # benefit_no로 site_id 조회
-     cur.execute("SELECT site_id FROM benefits WHERE benefit_no=%s", (benefit_no,))
-        result = cur.fetchone()
-        if not result:
-            # 혜택이 DB에 없을 경우 예외처리
-            return redirect('/mypage')
-        site_id = result[0]
         cur = db.cursor()
+    
+    # site_id 조회
+     cur.execute("SELECT site_id FROM benefits WHERE benefit_no=%s", (benefit_no,))
+     result = cur.fetchone()
+        if not result:
+            return jsonify({'error': 'Benefit not found'}), 404
+            
+        site_id = result[0]
+        
 
-        # 이미 찜한 상태인지 확인
-        cur.execute("SELECT * FROM favorite_benefits WHERE user_no=%s AND benefit_no=%s",
-                    (user_no, benefit_no))
-        exists = cur.fetchone()
+        # 중복 체크
+        cur.execute("""
+            SELECT * FROM favorite_benefit
+            WHERE user_no=%s AND benefit_no=%s
+            """, (user_no, benefit_no))
+            
+        if not cur.fetchone():
+            cur.execute("""
+                    INSERT INTO favorite_benefit(user_no, benefit_no, site_id)
+                    VALUES(%s, %s, %s)
+                """, (user_no, benefit_no, site_id))
 
-        if not exists: #찜한 상태가 아니라면
-            # 찜하기 목록에 추가
-            cur.execute("INSERT INTO favorite_benefit(user_no, benefit_no, site_id)
-                VALUES(%s, %s, %s)", (user_no, benefit_no, site_id))
+        return jsonify({'success': True})
 
     finally:
         db.close()
-
-    return redirect('/mypage')
 
 
 #찜하기 취소 라우트
 @app.route('/unlike/<int:benefit_no>')
 def unlike(benefit_no):
     if 'user_no' not in session:
-        return redirect('/login')
+        return jsonify({'error': 'Not logged in'}), 401
 
     user_no = session['user_no']
-
     db = get_db()
+    
     try:
         cur = db.cursor()
-
+        
         #이미 찜했으면 찜하기 취소
-        cur.execute("DELETE FROM favorite_benefit WHERE user_no=%s AND benefit_no=%s",
-                    (user_no, benefit_no))
+        cur.execute("""
+            DELETE FROM favorite_benefit 
+            WHERE user_no=%s AND benefit_no=%s
+            """, (user_no, benefit_no))
+
+     return jsonify({'success': True})
 
     finally:
         db.close()
 
-    return redirect('/mypage')
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 

@@ -54,7 +54,7 @@
 /* -------------- */
 .menu > ul > li > ul {
     position: absolute;
-    top: calc(131% - 2px);
+    top: calc(100% - 2px);
     left: 50%;
     transform: translateX(-50%);
 

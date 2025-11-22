@@ -124,8 +124,6 @@
         border: none;
         cursor: pointer;
     }
-
-
     </style>
 </head>
 <body>
@@ -154,6 +152,7 @@
     <script>
         const pwInput = document.getElementById("passwordInput");
         const pwBtn = document.getElementById("pwToggleBtn");
+        const loginBtn = document.getElementById("loginButton");
 
         pwBtn.addEventListener("mousedown", () => {
             pwInput.type = "text";
@@ -166,6 +165,14 @@
         pwBtn.addEventListener("mouseleave", () => {
             pwInput.type = "password";
         });
+
+        // 2. 로그인 버튼 클릭 이벤트 리스너를 추가합니다.
+        loginBtn.addEventListener("click", () => {
+        // ⭐ 이 부분이 로그인 성공 후 실행될 페이지 이동 코드입니다.
+        // 실제 서비스에서는 여기에 아이디/비밀번호 유효성 검사 및 서버 통신 코드가 들어갑니다.
+        // **index_LoggedIn.html 페이지로 이동**
+        window.location.href = "index_LoggedIn.html"; 
+    });
     </script>
 
 </body>

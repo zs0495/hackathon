@@ -87,7 +87,18 @@ function sendWelfareRequest() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
-    .then(r => r.json())
+    .then(r => {
+        if (!r.ok) { 
+            // 401, 500 등 오류 상태일 경우 
+            // JSON 응답을 시도하거나, 텍스트로 처리
+            return r.json().catch(() => {
+                // JSON이 아닌 경우 (예: 로그인 페이지 HTML) 텍스트로 변환
+                return r.text().then(text => ({ error: "Failed to parse JSON. Server response was likely HTML or plain text." + (text.substring(0, 100)) }));
+            });
+        }
+        return r.json();
+    })
+
     .then(res => {
         const box = document.getElementById("resultBox");
         if (res.error) {

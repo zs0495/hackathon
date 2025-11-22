@@ -89,15 +89,17 @@
             font-weight: 700;
         }
 
-        /* 입력 폼 및 결과 페이지 공통 스타일 */
+        /* -------------------
+        * 입력 폼 및 결과 페이지 공통 스타일
+        * ------------------- */
         .welfare-container {
-            max-width: 440px;
+            max-width: 800px; /* 폭 유지 */
             margin: 0 auto;
             padding: 20px;
-            display: none; /* 기본적으로 모든 컨테이너 숨김 */
+            display: none; 
         }
         .welfare-container.active {
-            display: block; /* 활성화된 컨테이너만 표시 */
+            display: block; 
         }
 
         .welfare-title {
@@ -107,44 +109,72 @@
             text-align: left;
         }
 
-        /* 폼 그룹 */
+        /* 폼 그룹 (레이블을 왼쪽에 배치) */
         .form-group-welfare {
             margin-bottom: 25px;
             text-align: left;
-            position: relative; /* 버튼 위치 조정을 위해 */
+            position: relative; 
+            display: flex; 
+            align-items: center;
+        }
+        
+        /* ★ 입력 필드 컨테이너의 가로 크기를 절반으로 축소 (최대 350px) */
+        .form-group-welfare:not(:last-child) > input[type="text"],
+        .form-group-welfare:not(:last-child) > div.input-group-inline,
+        .form-group-welfare.keyword-select-group > div {
+            max-width: 350px; 
+        }
+        
+        /* ★ 유효성 검사 실패 시 경고 느낌표 색상 변경 효과 (하늘색 테두리) */
+        input:required:invalid:focus,
+        select:required:invalid:focus,
+        textarea:required:invalid:focus {
+             /* 기본 브라우저 아웃라인 제거 */
+            outline: none; 
+            /* 복복이 메인 컬러로 테두리 변경 */
+            border-color: #79A0DF; 
+            box-shadow: 0 0 0 1px #79A0DF;
+        }
+        
+        /* [핵심 수정] JavaScript가 토글할 회색 플레이스홀더 스타일 */
+        .form-group-welfare select.placeholder-color {
+            color: #999 !important; 
         }
 
-        .form-group-welfare label {
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
+        /* [추가] 실제 옵션은 항상 검은색으로 유지하여 드롭다운 목록에서 잘 보이게 함 */
+        .form-group-welfare select option {
             color: #333;
         }
 
+
+        .form-group-welfare label {
+            /* 레이블 스타일 */
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            width: 100px; /* 레이블 너비 고정 */
+            margin-bottom: 0;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
         .form-group-welfare input[type="text"],
-        .form-group-welfare select {
-            width: 100%;
+        .form-group-welfare select,
+        .form-group-welfare textarea {
+            flex-grow: 1; 
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 15px;
-        }
-        
-        /* 이름 입력 칸의 특수 패딩 제거 (버튼을 위로 올렸으므로) */
-        .form-group-welfare:first-child input[type="text"] {
-            padding-right: 15px; 
+            width: auto; 
         }
 
         .form-group-welfare textarea {
-            width: 100%;
-            min-height: 120px;
+            /* ★ 나의 상황 입력 칸 높이 2배 */
+            min-height: 240px; 
             padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 15px;
             resize: none;
         }
 
@@ -152,17 +182,36 @@
         .input-group-inline {
             display: flex;
             gap: 10px;
+            flex-grow: 1; 
+        }
+        
+        .birthdate-input-group,
+        .address-input-group {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
         }
 
-        .input-group-inline select {
+        .birthdate-input-group select {
             flex-grow: 1;
+            width: 100%;
+        }
+        
+        /* 년/월 텍스트 스타일 */
+        .birthdate-input-group span {
+            margin-left: 5px; 
+            color: #333;
+            font-weight: 500;
+            font-size: 15px;
+            white-space: nowrap; 
+            padding-right: 5px;
         }
 
         /* 입력 정보 불러오기 버튼 */
         .fetch-info-btn {
-            position: absolute;
-            top: 0; 
-            right: 0; 
+            /* ★ 위치 변경: 입력 칸 오른쪽 */
+            position: static; 
+            margin-left: 15px; 
             background: none;
             border: none;
             color: #79A0DF;
@@ -170,8 +219,9 @@
             font-weight: 500;
             cursor: pointer;
             padding: 5px 0;
+            flex-shrink: 0; /* 공간 축소 방지 */
         }
-
+        
         /* 매칭하기 버튼 */
         .welfare-match-btn {
             width: 100%;
@@ -185,9 +235,12 @@
             margin-top: 40px;
             cursor: pointer;
             transition: background 0.2s;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* 매칭 결과 페이지 스타일 (성공/실패) */
+        /* 매칭 결과 페이지 스타일 */
         .result-page {
             text-align: center; 
             padding-top: 50px;
@@ -195,17 +248,20 @@
         }
         
         .result-header {
+            /* ★ Flexbox로 변경하여 텍스트와 이미지 분리 */
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
             margin-bottom: 30px;
             text-align: left; 
+            width: 100%; /* 부모 컨테이너 전체 폭 사용 */
         }
         
         .result-text-group {
+            /* ★ 텍스트 그룹이 이미지 옆의 공간을 유연하게 차지하도록 */
             flex-grow: 1; 
-            max-width: 70%; 
-            margin-right: 15px;
+            max-width: 80%; 
+            margin-right: 20px;
         }
 
         .result-title {
@@ -220,7 +276,7 @@
             width: 100px; 
             height: auto;
             margin: 0; 
-            flex-shrink: 0; 
+            flex-shrink: 0; /* ★ 이미지가 줄어들지 않도록 고정 */
         }
 
         /* 매칭 성공 시 태그 박스 */
@@ -240,192 +296,6 @@
             font-weight: 500;
         }
 
-        /* 복지 혜택 목록 */
-        .welfare-result-list {
-            list-style: none;
-            padding: 0;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        /* 리스트 항목 (제목 영역) */
-        .welfare-result-list li {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #f5f5f5;
-            background-color: white;
-            font-size: 15px;
-            position: relative; 
-            flex-wrap: wrap; 
-            transition: background-color 0.2s;
-            cursor: pointer; /* 클릭 가능 표시 */
-        }
-        
-        .welfare-result-list li.open {
-            background-color: #f7f9fc;
-        }
-
-        .welfare-result-list li:last-child {
-            border-bottom: none;
-        }
-
-        /* 리스트 제목 요소 */
-        .list-num {
-            font-weight: 700;
-            color: #79A0DF;
-            min-width: 30px;
-            flex-shrink: 0;
-            order: 1; /* ★ 순서 지정 */
-        }
-
-        .list-agency {
-            flex-grow: 0; /* 공간을 차지하지 않고 내용 너비만 사용 */
-            text-align: left;
-            color: #666;
-            margin-left: 10px;
-            min-width: 60px;
-            order: 2; /* ★ 순서 지정 */
-        }
-
-        .list-benefit {
-            font-weight: 600;
-            color: #333;
-            flex-grow: 1; /* ★★★ 남은 공간 모두 차지 (하트를 오른쪽으로 밀어냄) ★★★ */
-            flex-basis: auto; 
-            text-align: left;
-            margin: 0;
-            margin-left: 10px; /* 기관명과의 간격 */
-            order: 3; /* ★ 순서 지정: 기관명 다음 */
-        }
-        
-        /* ★★★ 찜 버튼 스타일 수정: 가장 오른쪽에 배치 ★★★ */
-        .list-heart-btn {
-            background: none;
-            border: none;
-            color: #111; /* 기본 검은색 */
-            font-size: 18px; 
-            cursor: pointer;
-            margin-left: 15px; /* 혜택명과의 간격 */
-            flex-shrink: 0;
-            order: 4; /* ★ 순서 지정: 가장 오른쪽 */
-            padding: 0;
-        }
-        
-        /* 기본 빈 하트 (검은색 라인) */
-        .list-heart-btn::before {
-            content: "♡";
-        }
-        
-        /* 찜 된 상태 (채워진 하트, #7ca2e0) */
-        .list-heart-btn.liked::before {
-            content: "♥";
-            color: #7ca2e0; 
-        }
-        
-
-        /* --- 상세 내용 영역 (클릭 시 펼쳐지는 영역) --- */
-        .list-detail-content {
-            width: 100%;
-            display: none; 
-            padding: 15px 0 0;
-            margin-top: 10px;
-            border-top: 1px dashed #eee;
-            color: #333;
-            order: 5; /* 항상 마지막에 배치 */
-        }
-
-        /* 상세 내용이 활성화 되었을 때 */
-        .welfare-result-list li.open .list-detail-content {
-            display: block;
-        }
-        
-        /* 상세 내용 - 필수 서류 목록 */
-        .detail-documents {
-            padding-left: 0;
-            list-style: none;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .detail-documents li {
-            display: flex; 
-            align-items: center;
-            padding: 5px 0;
-            font-size: 14px;
-            border-bottom: none;
-            background-color: transparent;
-            cursor: default; /* 리스트 항목 클릭 이벤트 중복 방지 */
-        }
-        
-        .detail-documents li:before {
-            content: '•';
-            color: #79A0DF;
-            font-weight: 700;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1em;
-            margin-right: 0.5em;
-        }
-        
-        .document-help {
-            color: #79A0DF;
-            font-size: 12px;
-            margin-left: 8px;
-            cursor: help;
-        }
-        
-        /* 혜택 바로가기 버튼 */
-        .benefit-link {
-            display: block;
-            text-align: right;
-            font-size: 13px;
-            color: #79A0DF;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-
-        /* 매칭 실패 페이지 스타일 */
-        .fail-header {
-            padding-bottom: 30px;
-        }
-        .fail-message {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .fail-question {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .fail-action-btn {
-            width: 100%;
-            max-width: 250px;
-            padding: 14px;
-            background: #111;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .fail-cancel-link {
-            display: block;
-            font-size: 13px;
-            color: #999;
-            text-decoration: none;
-        }
-
         /* 키워드/태그 관련 스타일 */
         .keyword-select-group select {
             width: 100%;
@@ -434,7 +304,6 @@
             border-radius: 8px;
             box-sizing: border-box; 
             font-size: 15px;
-            color: #333;
             transition: border-color 0.2s;
         }
 
@@ -446,6 +315,8 @@
             min-height: 40px;
             margin-top: 10px; 
             margin-bottom: -15px; 
+            max-width: 350px; 
+            margin-left: 115px;
         }
 
         .selected-keyword-tag {
@@ -477,13 +348,146 @@
         .remove-tag-btn:hover {
             opacity: 1;
         }
+        
+        /* 복지 혜택 목록 (이하 스타일은 유지) */
+        .welfare-result-list {
+            list-style: none;
+            padding: 0;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .welfare-result-list li {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f5f5f5;
+            background-color: white;
+            font-size: 15px;
+            position: relative; 
+            flex-wrap: wrap; 
+            transition: background-color 0.2s;
+            cursor: pointer; 
+        }
+        
+        .welfare-result-list li.open {
+            background-color: #f7f9fc;
+        }
+
+        .list-num {
+            font-weight: 700;
+            color: #79A0DF;
+            min-width: 30px;
+            flex-shrink: 0;
+            order: 1; 
+        }
+
+        .list-agency {
+            flex-grow: 0; 
+            text-align: left;
+            color: #666;
+            margin-left: 10px;
+            min-width: 60px;
+            order: 2; 
+        }
+
+        .list-benefit {
+            font-weight: 600;
+            color: #333;
+            flex-grow: 1; 
+            flex-basis: auto; 
+            text-align: left;
+            margin: 0;
+            margin-left: 10px; 
+            order: 3; 
+        }
+        
+        .list-heart-btn {
+            background: none;
+            border: none;
+            color: #111; 
+            font-size: 18px; 
+            cursor: pointer;
+            margin-left: 15px; 
+            flex-shrink: 0;
+            order: 4; 
+            padding: 0;
+        }
+        
+        .list-heart-btn::before {
+            content: "♡";
+        }
+        
+        .list-heart-btn.liked::before {
+            content: "♥";
+            color: #7ca2e0; 
+        }
+        
+        .list-detail-content {
+            width: 100%;
+            display: none; 
+            padding: 15px 0 0;
+            margin-top: 10px;
+            border-top: 1px dashed #eee;
+            color: #333;
+            order: 5; 
+        }
+
+        .welfare-result-list li.open .list-detail-content {
+            display: block;
+        }
+        
+        .detail-documents {
+            padding-left: 0;
+            list-style: none;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-documents li {
+            display: flex; 
+            align-items: center;
+            padding: 5px 0;
+            font-size: 14px;
+            border-bottom: none;
+            background-color: transparent;
+            cursor: default; 
+        }
+        
+        .detail-documents li:before {
+            content: '•';
+            color: #79A0DF;
+            font-weight: 700;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+            margin-right: 0.5em;
+        }
+        
+        .document-help {
+            color: #79A0DF;
+            font-size: 12px;
+            margin-left: 8px;
+            cursor: help;
+        }
+        
+        .benefit-link {
+            display: block;
+            text-align: right;
+            font-size: 13px;
+            color: #79A0DF;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
     </style>
 </head>
 <body>
 
     <header class="welfare-page-header">
         <div class="welfare-logo">
-            
             <a href="index.html">
                 <img src="../images/bokbok_logo.png" alt="로고">
             </a>
@@ -501,8 +505,8 @@
         <button id="menuClose" class="menu-close-btn">&times;</button>
         <nav class="side-menu-nav">
             <ul>
-                <li><a href="public.html" class="active-page">공공 복지 혜택 모아보기</a></li>
-                <li><a href="private.html">민간 복지 혜택 모아보기</a></li>
+                <li><a href="gong.html" class="active-page">공공 복지 혜택 모아보기</a></li>
+                <li><a href="min.html">민간 복지 혜택 모아보기</a></li>
                 <li><a href="index.html">홈으로</a></li>
             </ul>
         </nav>
@@ -514,54 +518,64 @@
         <form id="welfareForm">
             <div class="form-group-welfare">
                 <label for="userName">이름</label>
-                <input type="text" id="userName" placeholder="이름을 입력하세요" />
+                <input type="text" id="userName" placeholder="복복이" required/> 
                 <button type="button" class="fetch-info-btn">입력 정보 불러오기</button>
             </div>
 
             <div class="form-group-welfare">
                 <label>생년월일</label>
-                <div class="input-group-inline birthdate-group">
-                    <select name="birthYear"><option value="">년</option></select>
-                    <select name="birthMonth"><option value="">월</option></select>
+                <div class="input-group-inline">
+                    <div class="birthdate-input-group">
+                        <select name="birthYear" required><option value="" disabled selected>년</option></select>
+                    </div>
+                    <div class="birthdate-input-group">
+                        <select name="birthMonth" required><option value="" disabled selected>월</option></select>
+                    </div>
                 </div>
             </div>
 
             <div class="form-group-welfare">
                 <label>주소</label>
-                <div class="input-group-inline address-group">
-                    <select name="city"><option value="">도/시</option></select>
-                    <select name="district"><option value="">시/군/구</option></select>
+                <div class="input-group-inline">
+                    <div class="address-input-group">
+                        <select name="city" required><option value="" disabled selected>도/시</option></select>
+                    </div>
+                    <div class="address-input-group">
+                        <select name="district" required><option value="" disabled selected>시/군/구</option></select>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group-welfare keyword-select-group">
-                <label for="keywordSelect">나의 키워드</label>
-                <select id="keywordSelect" name="keywordSelect">
-                    <option value="" disabled selected>키워드 선택 (하나씩 선택)</option>
-                    <option value="국가유공자">국가유공자</option>
-                    <option value="아동">아동</option>
-                    <option value="자영업">자영업</option>
-                    <option value="학생(청소년)">학생(청소년)</option>
-                    <option value="청년">청년</option>
-                    <option value="질병">질병</option>
-                    <option value="한부모가정">한부모가정</option>
-                    <option value="취업">취업</option>
-                    <option value="장학금">장학금</option>
-                    <option value="차상위/저소득">차상위/저소득</option>
-                    <option value="장애인">장애인</option>
-                    <option value="교육">교육</option>
-                    <option value="임산부">임산부</option>
-                    <option value="금융">금융</option>
-                    <option value="노인">노인</option>
-                    <option value="거주">거주</option>
-                    <option value="(신혼)부부">(신혼)부부</option>
-                </select>
-                <div id="selectedKeywordsContainer" class="selected-keywords-container">
+            <div class="form-group-welfare keyword-select-group" style="align-items: flex-start;">
+                <label for="keywordSelect" style="padding-top: 12px;">나의 키워드</label>
+                <div style="flex-grow: 1;">
+                    <select id="keywordSelect" name="keywordSelect">
+                        <option value="" disabled selected>키워드 선택 (하나씩 선택)</option>
+                        <option value="국가유공자">국가유공자</option>
+                        <option value="아동">아동</option>
+                        <option value="자영업">자영업</option>
+                        <option value="학생(청소년)">학생(청소년)</option>
+                        <option value="청년">청년</option>
+                        <option value="질병">질병</option>
+                        <option value="한부모가정">한부모가정</option>
+                        <option value="취업">취업</option>
+                        <option value="장학금">장학금</option>
+                        <option value="차상위/저소득">차상위/저소득</option>
+                        <option value="장애인">장애인</option>
+                        <option value="교육">교육</option>
+                        <option value="임산부">임산부</option>
+                        <option value="금융">금융</option>
+                        <option value="노인">노인</option>
+                        <option value="거주">거주</option>
+                        <option value="(신혼)부부">(신혼)부부</option>
+                    </select>
+                    <div id="selectedKeywordsContainer" class="selected-keywords-container" style="margin-left: 0;"> 
                     </div>
+                </div>
             </div>
 
-            <div class="form-group-welfare">
-                <label>나의 상황</label>
+            <div class="form-group-welfare" style="align-items: flex-start;">
+                <label style="padding-top: 12px;">나의 상황</label>
                 <textarea 
                     placeholder='"이번 달 월세가 너무 부담돼요"와 같은 실직, 주거 부담, 의료비 필요, 교육/양육, 긴급 생계 등 직접적인 키워드가 들어갈수록 정확한 결과가 나와요'
                 ></textarea>
@@ -643,46 +657,76 @@
     </section>
     
     <script>
+        const districtData = {
+            seoul: ["종로구","중구","용산구","성동구","광진구","동대문구","중랑구","성북구","강북구","도봉구","노원구","은평구","서대문구","마포구","양천구","강서구","구로구","금천구","영등포구","동작구","관악구","서초구","강남구","송파구","강동구"],
+            busan: ["중구","서구","동구","영도구","부산진구","동래구","남구","북구","해운대구","사하구","금정구","강서구","연제구","수영구","사상구","기장군"],
+            daegu: ["중구","동구","서구","남구","북구","수성구","달서구","달성군"],
+            incheon: ["중구","동구","미추홀구","연수구","남동구","부평구","계양구","서구","강화군","옹진군"],
+            gwangju: ["동구","서구","남구","북구","광산구"],
+            daejeon: ["동구","중구","서구","유성구","대덕구"],
+            ulsan: ["중구","남구","동구","북구","울주군"],
+            sejong: ["세종특별자치시"],
+            gyeonggi: ["수원시","성남시","의정부시","안양시","부천시","광명시","평택시","동두천시","안산시","고양시","과천시","구리시","남양주시","오산시","시흥시","군포시","의왕시","하남시","용인시","파주시","이천시","안성시","김포시","화성시","광주시","여주시","양주시","포천시","연천군","가평군","양평군"],
+            chungbuk: ["청주시","충주시","제천시","보은군","옥천군","영동군","증평군","진천군","괴산군","음성군","단양군"],
+            chungnam: ["천안시","공주시","보령시","아산시","서산시","논산시","계룡시","당진시","금산군","부여군","서천군","청양군","홍성군","예산군","태안군"],
+            jeonbuk: ["전주시","군산시","익산시","정읍시","남원시","김제시","완주군","진안군","무주군","장수군","임실군","순창군","고창군","부안군"],
+            jeonnam: ["목포시","여수시","순천시","나주시","광양시","담양군","곡성군","구례군","고흥군","보성군","화순군","장흥군","강진군","해남군","영암군","무안군","함평군","영광군","장성군","완도군","진도군","신안군"],
+            gyeongbuk: ["포항시","경주시","김천시","안동시","구미시","영주시","영천시","상주시","문경시","경산시","의성군","청송군","영양군","영덕군","청도군","고령군","성주군","칠곡군","예천군","봉화군","울진군","울릉군"],
+            gyeongnam: ["창원시","진주시","통영시","사천시","김해시","밀양시","거제시","양산시","의령군","함안군","창녕군","고성군","남해군","하동군","산청군","함양군","거창군","합천군"],
+            jeju: ["제주시","서귀포시"]
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
-            // --- DOM 요소 정의 ---
+
+            // --- 1. [추가] 플레이스홀더 색상 토글 함수 ---
+            function updateSelectColor(selectElement) {
+                // select의 현재 값이 빈 문자열("")이면 placeholder-color 클래스를 추가합니다.
+                if (selectElement.value === "") {
+                    selectElement.classList.add('placeholder-color');
+                } else {
+                    selectElement.classList.remove('placeholder-color');
+                }
+            }
+            
+            // --- 2. [추가] 모든 select 요소를 가져옵니다. ---
+            const allSelects = document.querySelectorAll('.form-group-welfare select');
+
+            allSelects.forEach(select => {
+                // A. 페이지 로드 시 초기 상태를 설정
+                updateSelectColor(select);
+                
+                // B. 값이 변경될 때마다 클래스 업데이트
+                select.addEventListener('change', function() {
+                    updateSelectColor(this);
+                });
+            });
+
+            // --- DOM 요소 ---
             const menuToggle = document.getElementById('menuToggle');
             const menuClose = document.getElementById('menuClose');
             const sideMenu = document.getElementById('sideMenu');
-
             const form = document.getElementById('welfareForm');
             const inputFormPage = document.getElementById('inputFormPage');
             const matchSuccessPage = document.getElementById('matchSuccessPage');
             const matchFailPage = document.getElementById('matchFailPage');
-            
-            // 키워드 관련 요소
             const keywordSelect = document.getElementById('keywordSelect');
             const selectedKeywordsContainer = document.getElementById('selectedKeywordsContainer');
             const tagBoxGroup = document.querySelector('#matchSuccessPage .tag-box-group');
-
-            // ★ 리스트 항목 (li) 전체
             const listItems = document.querySelectorAll('.welfare-result-list li');
+            const citySelectBox = document.querySelector('select[name="city"]');
+            const districtSelectBox = document.querySelector('select[name="district"]');
+            const yearSelect = document.querySelector('select[name="birthYear"]');
+            const monthSelect = document.querySelector('select[name="birthMonth"]');
 
-
-            // 현재 선택된 키워드를 저장하는 배열
             let selectedKeywords = [];
 
+            // --- 1. 메뉴 토글 ---
+            menuToggle.addEventListener('click', () => sideMenu.classList.add('open'));
+            menuClose.addEventListener('click', () => sideMenu.classList.remove('open'));
 
-            // --- 1. 메뉴 토글 기능 ---
-            menuToggle.addEventListener('click', () => {
-                sideMenu.classList.add('open');
-            });
-            
-            menuClose.addEventListener('click', () => {
-                sideMenu.classList.remove('open');
-            });
-
-
-            // --- 2. 키워드 드롭다운 및 태그 생성 기능 ---
-
-            // 헬퍼: 키워드 태그를 DOM에 렌더링
+            // --- 2. 키워드 선택 ---
             function renderKeywords() {
-                selectedKeywordsContainer.innerHTML = ''; // 컨테이너 초기화
-                
+                selectedKeywordsContainer.innerHTML = '';
                 selectedKeywords.forEach(keyword => {
                     const tag = document.createElement('div');
                     tag.classList.add('selected-keyword-tag');
@@ -691,64 +735,61 @@
 
                     const removeBtn = document.createElement('button');
                     removeBtn.classList.add('remove-tag-btn');
-                    removeBtn.innerHTML = '&times;'; 
-                    
-                    removeBtn.addEventListener('click', function() {
-                        removeKeyword(keyword);
-                    });
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.addEventListener('click', () => removeKeyword(keyword));
 
                     tag.appendChild(removeBtn);
                     selectedKeywordsContainer.appendChild(tag);
                 });
-                
-                // 드롭다운 초기 상태로 복원
-                keywordSelect.value = ""; 
+                keywordSelect.value = '';
             }
-
-            // 헬퍼: 키워드 제거
             function removeKeyword(keyword) {
                 selectedKeywords = selectedKeywords.filter(k => k !== keyword);
                 renderKeywords();
             }
-
-            // 드롭다운 선택 이벤트 리스너
             keywordSelect.addEventListener('change', function() {
                 const selectedKeyword = this.value;
-
-                // 이미 선택된 항목을 제외하고 추가
                 if (selectedKeyword && !selectedKeywords.includes(selectedKeyword)) {
                     selectedKeywords.push(selectedKeyword);
                     renderKeywords();
                 } else if (selectedKeywords.includes(selectedKeyword)) {
                     alert('이미 선택된 키워드입니다.');
-                    this.value = ""; 
+                    this.value = '';
                 }
             });
-            
-            // --- 3. 매칭 결과 전환 기능 ---
 
-            // 헬퍼: 매칭 성공 페이지에 키워드 태그 출력
-            function renderResultTags() {
-                tagBoxGroup.innerHTML = ''; // 컨테이너 초기화
-
-                const citySelect = document.querySelector('select[name="city"]');
-                const districtSelect = document.querySelector('select[name="district"]');
-                const situationTextarea = document.querySelector('.form-group-welfare textarea');
-                
-                const currentTags = [...selectedKeywords];
-                
-                // 주소 정보 추가 (선택된 시/군/구만 태그로 사용)
-                if (districtSelect.value) {
-                    currentTags.push(districtSelect.options[districtSelect.selectedIndex].text);
-                } else if (citySelect.value) {
-                    currentTags.push(citySelect.options[citySelect.selectedIndex].text);
+            // --- 3. city → district 연동 ---
+            districtSelectBox.innerHTML = `<option value="" disabled selected>시/군/구</option>`;
+            citySelectBox.addEventListener('change', function() {
+                const cityValue = this.value;
+                districtSelectBox.innerHTML = `<option value="" disabled selected>시/군/구</option>`;
+                if (districtData[cityValue]) {
+                    districtData[cityValue].forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.textContent = district;
+                        districtSelectBox.appendChild(option);
+                    });
                 }
-                
-                // 상황 키워드 추가 (텍스트를 간단히 가공하여 태그로 사용)
+            });
+
+            // --- 4. 결과 페이지 태그 출력 ---
+            function renderResultTags() {
+                tagBoxGroup.innerHTML = '';
+                const situationTextarea = document.querySelector('.form-group-welfare textarea');
+                const currentTags = [...selectedKeywords];
+
+                // 주소
+                if (districtSelectBox.value) {
+                    currentTags.push(districtSelectBox.value);
+                } else if (citySelectBox.value) {
+                    currentTags.push(citySelectBox.options[citySelectBox.selectedIndex].text);
+                }
+
+                // 상황
                 const situation = situationTextarea.value.trim();
                 if (situation) {
-                    const tagText = situation.length > 15 ? situation.substring(0, 15) + '...' : situation;
-                    currentTags.push(tagText);
+                    currentTags.push(situation.length > 15 ? situation.substring(0,15)+'...' : situation);
                 }
 
                 if (currentTags.length === 0) {
@@ -756,7 +797,6 @@
                     return;
                 }
 
-                // 모든 키워드를 결과 페이지에 태그로 출력
                 currentTags.forEach(keyword => {
                     const tag = document.createElement('span');
                     tag.classList.add('result-tag');
@@ -765,110 +805,82 @@
                 });
             }
 
-
+            // --- 5. 폼 제출 ---
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
                 inputFormPage.classList.remove('active');
                 matchSuccessPage.classList.remove('active');
                 matchFailPage.classList.remove('active');
 
-                // ★ 매칭 성공을 테스트하기 위해 isMatch = true 고정
-                const isMatch = true; 
+                const isMatch = true; // 테스트용
 
                 if (isMatch) {
-                    renderResultTags(); // ★ 매칭 성공 시 선택된 키워드 출력
+                    renderResultTags();
                     matchSuccessPage.classList.add('active');
-                    
-                    // 이름 변경
                     const userName = document.getElementById('userName').value || '김복복';
                     document.querySelector('.result-title').textContent = `${userName}님에게 딱 맞는 공공 복지 혜택이에요`;
                 } else {
                     matchFailPage.classList.add('active');
                 }
-                window.scrollTo(0, 0); 
+                window.scrollTo(0,0);
             });
-            
-            // --- 4. 찜 기능 및 상세 내용 토글 기능 (수정됨) ---
-            
-            // 혜택 목록 전체 클릭 이벤트 리스너 추가
+
+            // --- 6. 리스트 클릭 & 찜 ---
             listItems.forEach(item => {
-                // 1. 상세 내용 토글 (li 클릭 시)
-                item.addEventListener('click', function(event) {
-                    // 클릭된 요소가 찜 버튼이 아닌 경우에만 토글 실행
-                    if (!event.target.closest('.list-heart-btn')) {
-                         // 현재 열려있는 항목이 있다면 닫기
-                        const currentlyOpen = document.querySelector('.welfare-result-list li.open');
-                        if (currentlyOpen && currentlyOpen !== item) {
-                            currentlyOpen.classList.remove('open');
-                            currentlyOpen.setAttribute('aria-expanded', 'false');
+                item.addEventListener('click', function(e) {
+                    if (!e.target.closest('.list-heart-btn')) {
+                        const openItem = document.querySelector('.welfare-result-list li.open');
+                        if (openItem && openItem !== item) {
+                            openItem.classList.remove('open');
+                            openItem.setAttribute('aria-expanded','false');
                         }
-                        
-                        // 현재 항목 토글
                         const isExpanded = item.classList.toggle('open');
-                        item.setAttribute('aria-expanded', isExpanded);
+                        item.setAttribute('aria-expanded',isExpanded);
                     }
                 });
-
-                // 2. 찜 버튼 클릭 이벤트 리스너 추가
-                const heartButton = item.querySelector('.list-heart-btn');
-                if (heartButton) {
-                    heartButton.addEventListener('click', function(e) {
-                        e.stopPropagation(); // li 클릭 이벤트로 전파되는 것 방지
+                const heartBtn = item.querySelector('.list-heart-btn');
+                if (heartBtn) {
+                    heartBtn.addEventListener('click', function(e){
+                        e.stopPropagation();
                         this.classList.toggle('liked');
-
-                        // 찜 상태에 따라 aria-label 변경 (접근성)
                         if (this.classList.contains('liked')) {
-                            alert('찜 목록에 추가되었습니다.'); // 확인용 알림
-                            this.setAttribute('aria-label', '찜하기 취소');
+                            alert('찜 목록에 추가되었습니다.');
+                            this.setAttribute('aria-label','찜하기 취소');
                         } else {
-                             alert('찜 목록에서 제거되었습니다.'); // 확인용 알림
-                            this.setAttribute('aria-label', '찜하기');
+                            alert('찜 목록에서 제거되었습니다.');
+                            this.setAttribute('aria-label','찜하기');
                         }
                     });
                 }
             });
-            
-            // --- 5. 기타 초기화 기능 ---
 
-            // 초기화: 입력 폼만 표시
+            // --- 7. 초기화 ---
             inputFormPage.classList.add('active');
 
-            // 매칭 실패 페이지의 '갈래요!' 버튼
-            const failActionButton = document.querySelector('.fail-action-btn');
-            failActionButton.addEventListener('click', function() {
-                window.location.href = 'private.html'; 
-            });
-            
-            // 매칭 실패 페이지의 '안가도 돼요' 버튼
-            const failCancelLink = document.querySelector('.fail-cancel-link');
-            failCancelLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                matchFailPage.classList.remove('active');
-                inputFormPage.classList.add('active');
-                window.scrollTo(0, 0);
-            });
-            
-            // 생년월일 드롭다운 초기화
-            const yearSelect = document.querySelector('select[name="birthYear"]');
-            const monthSelect = document.querySelector('select[name="birthMonth"]');
-
+            // 생년월일
             const currentYear = new Date().getFullYear();
-            for (let i = currentYear; i >= currentYear - 100; i--) {
-                yearSelect.innerHTML += `<option value="${i}">${i}</option>`;
-            }
-            for (let i = 1; i <= 12; i++) {
-                monthSelect.innerHTML += `<option value="${i}">${i}월</option>`; 
-            }
-            
-            // 주소 드롭다운 임시 데이터 (선택 사항)
-            document.querySelector('select[name="city"]').innerHTML += `
+            for (let i = currentYear; i >= currentYear - 100; i--) yearSelect.innerHTML += `<option value="${i}">${i}</option>`;
+            for (let i = 1; i <= 12; i++) monthSelect.innerHTML += `<option value="${i}">${i}</option>`;
+
+            // 주소 select 초기값
+            citySelectBox.innerHTML += `
                 <option value="seoul">서울특별시</option>
+                <option value="busan">부산광역시</option>
+                <option value="daegu">대구광역시</option>
+                <option value="incheon">인천광역시</option>
+                <option value="gwangju">광주광역시</option>
+                <option value="daejeon">대전광역시</option>
+                <option value="ulsan">울산광역시</option>
+                <option value="sejong">세종특별자치시</option>
                 <option value="gyeonggi">경기도</option>
-            `;
-            document.querySelector('select[name="district"]').innerHTML += `
-                <option value="guro">구로구</option>
-                <option value="gangnam">강남구</option>
+                <option value="gangwon">강원특별자치도</option>
+                <option value="chungbuk">충청북도</option>
+                <option value="chungnam">충청남도</option>
+                <option value="jeonbuk">전북특별자치도</option>
+                <option value="jeonnam">전라남도</option>
+                <option value="gyeongbuk">경상북도</option>
+                <option value="gyeongnam">경상남도</option>
+                <option value="jeju">제주특별자치도</option>
             `;
         });
     </script>

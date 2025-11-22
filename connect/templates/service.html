@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>bokbok service</title>
+  <title>bokbok_service</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
@@ -42,13 +42,7 @@
       </ul>
     </div>
     <div class="auth">
-      {% if session.get('logged_in') %}
-        <a href="/mypage">마이페이지</a> | 
-        <a href="/logout" onclick="event.preventDefault(); if(confirm('로그아웃 하시겠습니까?')) { fetch('/logout', {method: 'POST'}).then(() => location.href='/'); }">로그아웃</a>
-      {% else %}
-        <a href="{{ url_for('signup_form') }}">회원가입</a> | 
-        <a href="{{ url_for('login_form') }}">로그인</a>
-      {% endif %}
+        <a href="{{ url_for('signup_form') }}">회원가입</a> | <a href="{{ url_for('login_form') }}" id="loginBtn">로그인</a>
     </div>
   </nav>
 
@@ -101,7 +95,7 @@
   <footer class="footer">
     © 2025 bokbok. All rights reserved.
   </footer>
-
+  <script src="{{ url_for('static', filename='auth.js') }}"></script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>

@@ -27,18 +27,17 @@ def mypage():
     try:
         cur = db.cursor(pymysql.cursors.DictCursor)
 
-        #전체 혜택 목록 -> 수정필요*******
+        #전체 혜택 목록
         cur.execute("SELECT s.site_name, b.title AS benefit_title
             FROM benefits b
             JOIN sites s ON s.site_id = b.site_id
-            WHERE *****
             ORDER BY b.benefit_no ")
         benefits = cur.fetchall()
 
        
        
        #찜한 항목
-       @app.route('/liked')
+@app.route('/liked')
 def liked():
     if 'user_id' not in session:
         return redirect('/login')
@@ -48,14 +47,12 @@ def liked():
     try:
         cur = db.cursor(pymysql.cursors.DictCursor)
 
-        cur.execute("SELECT
-fb.user_no, s.site_name, b.title AS benefit_title, b.description
-FROM favorite_benefit fb
-JOIN sites s ON fb.site_id = s.site_id
-JOIN benefits b ON fb.benefit_no = b.benefit_no
-WHERE fb.user_no = %s
-ORDER BY fb.benefit_no
-", (user_id,))
+        cur.execute("SELECT fb.user_no, s.site_name, b.title AS benefit_title, b.description
+            FROM favorite_benefit fb
+            JOIN sites s ON fb.site_id = s.site_id
+            JOIN benefits b ON fb.benefit_no = b.benefit_no
+            WHERE fb.user_no = %s
+            ORDER BY fb.benefit_no", (user_id,))
         liked_raw = cur.fetchall()
         liked_set = {row['benefit_no'] for row in liked_raw}
     finally:
@@ -122,5 +119,6 @@ def unlike(benefit_no):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 

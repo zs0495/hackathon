@@ -1,230 +1,224 @@
-# Flask 웰페어 애플리케이션 - 통합 버전
-from flask import Flask, request, render_template, redirect, url_for
-import pymysql 
-import pymysql.cursors
-from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import date
-import logging
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-# 로깅 설정
-logging.basicConfig(level=logging.INFO)
-
-# Flask 애플리케이션 초기화
-app = Flask(__name__)
-
-# ==========================================================
-# 데이터베이스 연결
-# ==========================================================
-def get_db():
-    """MySQL 데이터베이스 연결을 설정하고 DictCursor를 반환"""
-    try:
-        db = pymysql.connect(
-            host='localhost', 
-            port=3308,
-            user='root', 
-            password='Aa0205!!?',  # 실제 MySQL 비밀번호
-            db='welfaredb', 
-            charset='utf8mb4', 
-            autocommit=True,
-            cursorclass=pymysql.cursors.DictCursor
-        )
-        return db
-    except Exception as e:
-        logging.error(f"데이터베이스 연결 실패: {e}")
-        return None
-
-# ==========================================================
-# 인증 관련 라우트 (로그인/회원가입)
-# ==========================================================
-# 로그인 폼
-@app.route('/login', methods=['GET'])
-def login_form():
-    """로그인 폼 페이지를 렌더링합니다."""
-    message = request.args.get('message', '아이디와 비밀번호를 입력해주세요.')
-    return render_template("login.html", message=message)
-
-# 로그인 처리
-@app.route('/login', methods=['POST'])
-def login():
-    """로그인 요청을 처리하고, 성공/실패 여부에 따라 리다이렉트합니다."""
-    username = request.form['username']
-    password = request.form['password']
-    db = get_db()
+    <title>로그인 | bokbok</title>
     
-    if not db:
-        return redirect(url_for('login_form', message="시스템 오류: DB 연결 실패"))
+    <style>
+    /* 로그인 페이지 레이아웃 스타일 */
     
-    cur = db.cursor()
+    /* 1. 전체 화면 배경 및 중앙 정렬 */
+    body {
+        background-color: #ffffff; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0 20px;
+    }
     
-    try:
-        sql = "SELECT username, password FROM personal_info WHERE username=%s"
-        cur.execute(sql, (username,))
-        user = cur.fetchone()
+    /* 2. 로그인 컨테이너 */
+    .login-page-container {
+        position: relative;
+        width: 100%;
+        max-width: 440px;
+        padding: 60px 0;
+        text-align: center;
+        margin: 40px 0;
+    }
 
-        if user and check_password_hash(user['password'], password):
-            # 로그인 성공
-            return redirect(url_for('index', message=f"'{username}'님, 로그인 성공!"))
-        else:
-            # 로그인 실패
-            return redirect(url_for('login_form', message="로그인 실패 - 아이디 또는 비밀번호를 확인하세요."))
+    /* 3. 뒤로 가기 버튼 */
+    .fixed-top-left {
+        position: fixed;
+        top: 25px;
+        left: 25px;
+        z-index: 100;
+    }
 
-    except Exception as e:
-        logging.error(f"로그인 처리 중 오류 발생: {e}")
-        return redirect(url_for('login_form', message="로그인 처리 중 시스템 오류가 발생했습니다."))
-    finally:
-        if db:
-            db.close()
+    .back-btn {
+        background: none;
+        border: none;
+        font-size: 36px;
+        color: #333;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 600;
+    }
 
-# 회원가입 폼
-@app.route('/signup', methods=['GET'])
-def signup_form():
-    """회원가입 폼을 렌더링합니다."""
-    message = request.args.get('message', '모든 정보를 입력해주세요.')
-    return render_template('signup.html', message=message)
-    
-# 회원가입 처리
-@app.route('/signup', methods=['POST'])
-def signup():
-    """회원가입 데이터를 처리하고 데이터베이스에 저장합니다."""
-    username = request.form.get('username')
-    password = request.form.get('password')
-    name = request.form.get('name')
-    birth_year = request.form.get('birth_year')
-    birth_month = request.form.get('birth_month')
-    phone = request.form.get('phone')
-    city = request.form.get('city')
-    district = request.form.get('district')
-    situation = request.form.get('situation')
+    /* 4. 로고 */
+    .login-logo {
+        position: fixed;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 160px;
+        height: auto;
+        z-index: 200; 
+    }
 
-    # 1. 데이터 유효성 검사
-    if not password or len(password) < 8:
-        return redirect(url_for('signup_form', message="비밀번호는 최소 8자 이상이어야 합니다."))
+    /* 5. 제목 */
+    .login-page-container h2 {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 40px;
+        margin-top: 30px;
+    }
     
-    if not all([username, password, name, birth_year, birth_month, city, district]):
-        return redirect(url_for('signup_form', message="필수 항목을 모두 입력해주세요."))
-    
-    # 생년월 유효성 검사
-    try:
-        birth_year = int(birth_year)
-        birth_month = int(birth_month)
+    /* 6. 로그인 폼 */
+    .login-form {
+        width: 100%;
+    }
+
+    .login-form input {
+        width: 100%;
+        padding: 14px 15px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 15px;
+        transition: border-color 0.2s;
+    }
+
+    .login-form input:focus {
+        border-color: #555;
+        outline: none;
+    }
+
+    .login-btn {
+        width: 100%;
+        padding: 14px;
+        background: #111;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .login-btn:hover {
+        background: #333;
+    }
+
+    /* 7. 링크 */
+    .login-links {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .login-links a {
+        color: #666;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .login-links a:hover {
+        color: #111;
+    }
+
+    /* 8. 구분선 */
+    hr {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 40px 0 30px;
+    }
+
+    /* 9. SNS 로그인 텍스트 */
+    .sns-login-text {
+        font-size: 13px;
+        color: #777;
+        position: relative;
+        top: -15px;
+        background: #fff;
+        display: inline-block;
+        padding: 0 10px;
+    }
+
+    /* 10. 카카오 버튼 */
+    .kakao {
+        background: #FEE500;
+        border: none;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        color: #3A1D1D;
+        cursor: pointer;
+        font-size: 15px;
+        transition: background 0.2s;
+    }
+
+    .kakao:hover {
+        background: #FDD835;
+    }
+
+    /* 11. 메시지 표시 */
+    .message {
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .message.error {
+        background-color: #fee;
+        color: #c33;
+        border: 1px solid #fcc;
+    }
+
+    .message.success {
+        background-color: #efe;
+        color: #3c3;
+        border: 1px solid #cfc;
+    }
+
+    .message.info {
+        background-color: #eef;
+        color: #33c;
+        border: 1px solid #ccf;
+    }
+    </style>
+</head>
+<body>
+
+    <a href="{{ url_for('index') }}" class="back-btn fixed-top-left">‹</a>
+
+    <div class="login-page-container">
         
-        if birth_year < 1900 or birth_year > date.today().year:
-            return redirect(url_for('signup_form', message="올바른 생년을 입력해주세요."))
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/bokbok_logo.png') }}" alt="로고" class="login-logo">
+        </a>
+
+        <h2>로그인</h2>
+
+        <!-- 메시지 표시 (있을 경우) -->
+        {% if message %}
+        <div class="message {% if '성공' in message %}success{% elif '실패' in message or '오류' in message %}error{% else %}info{% endif %}">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('login') }}" class="login-form">
+            <input type="text" name="username" placeholder="아이디를 입력해주세요" required />
+            <input type="password" name="password" placeholder="비밀번호를 입력해주세요" required />
+            <button type="submit" class="login-btn">로그인</button>
+        </form>
+
+        <div class="login-links">
+            <a href="{{ url_for('signup_form') }}">회원가입</a> | <a href="#">아이디·비밀번호 찾기</a>
+        </div>
         
-        if birth_month < 1 or birth_month > 12:
-            return redirect(url_for('signup_form', message="생월은 1-12 사이여야 합니다."))
-            
-    except ValueError:
-        return redirect(url_for('signup_form', message="생년월을 숫자로 입력해주세요."))
- 
-    # 2. 비밀번호 해싱 및 DB 연결
-    hashed_password = generate_password_hash(password)
-    
-    db = get_db()
-    if not db:
-        return redirect(url_for('signup_form', message="시스템 오류: DB 연결 실패."))
-    
-    cur = db.cursor()
+        <hr />
+        <p class="sns-login-text">SNS 계정으로 로그인</p>
 
-    try:
-        # 중복 체크
-        cur.execute("SELECT username FROM personal_info WHERE username=%s", (username,))
-        if cur.fetchone():
-            return redirect(url_for('signup_form', message="이미 존재하는 아이디입니다."))
+        <button class="kakao">카카오로 시작하기</button>
+    </div>
 
-        # personal_info table에 삽입
-        sql = """
-        INSERT INTO personal_info 
-        (username, password, name, birth_year, birth_month, phone, city, district, situation) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """
-        cur.execute(sql, (
-            username, 
-            hashed_password, 
-            name, 
-            birth_year, 
-            birth_month, 
-            phone, 
-            city, 
-            district,
-            situation
-        ))
-            
-        return redirect(url_for('login_form', message="회원가입 성공! 이제 로그인 해주세요."))
-
-    except pymysql.Error as e:
-        logging.error(f"MySQL 오류 발생: {e}")
-        return redirect(url_for('signup_form', message=f"DB 오류 발생: {e}"))
-    except Exception as e:
-        logging.error(f"회원가입 처리 중 오류 발생: {e}")
-        return redirect(url_for('signup_form', message="회원가입 처리 중 시스템 오류가 발생했습니다."))
-    finally:
-        if db:
-            db.close()
-
-# ==========================================================
-# 메인 페이지 라우트
-# ==========================================================
-@app.route('/')
-def index():
-    """메인 페이지 (index.html)를 렌더링합니다."""
-    message = request.args.get('message', None)
-    return render_template('index.html', message=message)
-
-# ==========================================================
-# 네비게이션 메뉴 라우트
-# ==========================================================
-@app.route('/service')
-def service_page():
-    """서비스 개요 페이지 (service.html)를 렌더링합니다."""
-    return render_template('service.html')
-
-@app.route('/team')
-def team_page():
-    """팀 소개 페이지 (team.html)를 렌더링합니다."""
-    return render_template('team.html')
-
-@app.route('/public')
-def public_page():
-    """공공 복지 검색 페이지 (public.html)를 렌더링합니다."""
-    return render_template('public.html')
-
-@app.route('/private')
-def private_page():
-    """민간 복지 검색 페이지 (private.html)를 렌더링합니다."""
-    return render_template('private.html')
-
-@app.route('/library')
-def library_page():
-    """자료실 페이지 (library.html)를 렌더링합니다."""
-    return render_template('library.html')
-
-@app.route('/guide')
-def guide_page():
-    """이용 가이드 페이지 (guide.html)를 렌더링합니다."""
-    return render_template('guide.html')
-
-@app.route('/faq')
-def faq_page():
-    """FAQ 페이지 (faq.html)를 렌더링합니다."""
-    return render_template('faq.html')
-
-# ==========================================================
-# 피처 섹션 (Feature Section) 라우트
-# ==========================================================
-@app.route('/gong')
-def gong_benefits_page():
-    """공공 복지 혜택 페이지 (gong.html)를 렌더링합니다."""
-    return render_template('gong.html')
-
-@app.route('/min')
-def min_benefits_page():
-    """민간 복지 혜택 페이지 (min.html)를 렌더링합니다."""
-    return render_template('min.html')
-
-# ==========================================================
-# 애플리케이션 실행
-# ==========================================================
-if __name__ == '__main__':
-    # 디버그 모드로 애플리케이션 실행
-    app.run(debug=True)
+</body>
+</html>

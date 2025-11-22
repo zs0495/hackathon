@@ -633,8 +633,8 @@
 <body>
     <header class="welfare-page-header">
         <div class="welfare-logo">
-            <a href="index.html">
-                <img src="../images/bokbok_logo.png" alt="로고">
+            <a href="{{url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/bokbok_logo.png') }}" alt="로고">
             </a>
         </div>
         <button id="menuToggle" class="menu-toggle-btn">
@@ -650,9 +650,9 @@
         <button id="menuClose" class="menu-close-btn">&times;</button>
         <nav class="side-menu-nav">
             <ul>
-                <li><a href="gong.html">공공 복지 혜택 모아보기</a></li>
-                <li><a href="min.html" class="active-page">민간 복지 혜택 모아보기</a></li>
-                <li><a href="index.html">홈으로</a></li>
+                <li><a href="{{url_for('gong') }}">공공 복지 혜택 모아보기</a></li>
+                <li><a href="{{url_for('min') }}" class="active-page">민간 복지 혜택 모아보기</a></li>
+                <li><a href="{{url_for('index' }}">홈으로</a></li>
             </ul>
         </nav>
     </aside>
@@ -769,7 +769,7 @@
                 <div class="tag-box-group">
                     </div>
             </div>
-            <img src="../images/search_bok.png" alt="매칭 성공 캐릭터" class="result-mascot">
+            <img src="{{ url_for('static', filename='images/search_bok.png') }}" alt="매칭 성공 캐릭터" class="result-mascot">
         </div>
 
         <div class="result-list-container">
@@ -862,8 +862,7 @@
 
     <section id="matchFailPage" class="welfare-container result-page">
         <div class="result-header fail-header">
-            <img src="../images/crying_bok.png" alt="매칭 실패 캐릭터" class="result-mascot">
-            <div class="result-text-group">
+            <img src="{{ url_for('static', filename='images/crying_bok.png') }}" alt="매칭 실패 캐릭터" class="result-mascot">
                 <p class="fail-message">앗.. 매칭된 민간 복지가 없어요 🥺</p>
                 <p class="fail-question">공공 복지 모아보기로 갈까요?</p>
             </div>
@@ -871,7 +870,7 @@
         
         <div class="fail-action-group">
             <button id="goToMinWelfare" class="welfare-submit-btn">공공 복지 혜택 모아보기</button>
-            <a href="index.html" class="fail-cancel-link">홈으로 돌아갈래요</a> 
+            <a href="{{url_for(;index') }}" class="fail-cancel-link">홈으로 돌아갈래요</a> 
         </div>
     </section>
 
@@ -1374,7 +1373,7 @@ function sendWelfareRequest() {
         if (goToMinWelfareBtn) {
             goToMinWelfareBtn.addEventListener('click', () => {
                 // 2. 버튼 클릭 시 min.html로 이동
-                window.location.href = 'gong.html'; 
+                window.location.href = "{{url_from('gong' }}"; 
 
 // 조회 버튼 클릭 시 위 함수 실행
 document.getElementById('searchButton').addEventListener('click', sendWelfareRequest);

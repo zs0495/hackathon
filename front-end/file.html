@@ -29,34 +29,35 @@
 
     .login-logo {
         position: fixed;  /* 스크롤해도 유지됨 */
-        top: 50px;        /* 화면 상단에서 50px 아래 */
+        top: 25px;        
         left: 50%;
         transform: translateX(-50%); /* 정확한 가로 중앙 정렬 */
         width: 160px;     /* 로고 크기 */
         height: auto;
         z-index: 200; 
     }
-
+    
+    /* [수정] 메인 콘텐츠 시작 위치 조정 (구분선과 로고 공간만큼 아래로) */
     .doc-page {
-    margin: 80px 0 40px; 
-    padding: 30px 0 40px;
-    box-sizing: border-box;
+        margin: 53px 0 40px;
+        padding: 30px 0 40px;
+        box-sizing: border-box;
     }
 
     /* 2. 페이지 제목 */
     .doc-header {
-    background: #f5f9ff; 
-    border: 1px solid #ddd;
-    padding: 30px 0;      
-    text-align: center;
-    border-left: 0;          
-    border-right: 0;
+        background: #f5f9ff; 
+        border: 1px solid #ddd;
+        padding: 30px 0;      
+        text-align: center;
+        border-left: 0;          
+        border-right: 0;
     }
 
     .doc-header h2 {
-    font-size: 26px;
-    font-weight: 700;
-    margin: 0;
+        font-size: 26px;
+        font-weight: 700;
+        margin: 0;
     }
 
     /* 3. 혜택 리스트 */
@@ -67,163 +68,163 @@
     }
 
     .doc-row {
-    display: flex;
-    align-items: center;
-    padding: 14px 20px;
-    border-bottom: 1px solid #f2f2f2;
-    font-size: 16px;
+        display: flex;
+        align-items: center;
+        padding: 14px 20px;
+        border-bottom: 1px solid #f2f2f2;
+        font-size: 16px;
     }
 
     .doc-col {
-    display: inline-block;
+        display: inline-block;
     }
 
     .doc-col-index {
-    width: 32px;
-    text-align: left;
-    margin-right: 80px;
+        width: 32px;
+        text-align: left;
+        margin-right: 80px;
     }
 
     .doc-col-org {
-    flex: 1;
-    text-align: left;
+        flex: 1;
+        text-align: left;
     }
 
     .doc-col-benefit {
-    flex: 1;
-    text-align: left;
+        flex: 1;
+        text-align: left;
     }
 
     .doc-col-arrow {
-    width: 24px;
-    text-align: right;
-    font-size: 16px;
+        width: 24px;
+        text-align: right;
+        font-size: 16px;
     }
 
     .doc-row {
-    cursor: pointer;
+        cursor: pointer;
     }
     .doc-row:hover {
-    background-color: #fafafa;
+        background-color: #fafafa;
     }
 
     /* 4. 필수 서류 자세히 보기 */
     .hidden {
-    display: none !important;
+        display: none !important;
     }
 
     .detail-page {
-    max-width: 80%;
-    margin: 100px 50px 0 0;
-    padding: 0 20px;
-    border-top: 1px solid #e5e5e5;
-    box-sizing: border-box;
-    display: flex;
-    gap: 80px;
-    
-    min-height: 100vh; 
-    align-items: stretch;
+        max-width: 80%;
+        margin: 100px auto 0;
+        padding: 0 20px;
+        box-sizing: border-box;
+        display: flex;
+        gap: 80px;
+        
+        min-height: 100vh; 
+        align-items: stretch;
     }
 
     /* 왼쪽 사이드 */
     .detail-sidebar {
-    width: 240px;
-    background: #f5f9ff;
-    border-right: 1px solid #e5e5e5;
-    padding: 30px 0;
-    margin-right: 40px;
+        width: 240px;
+        background: #f5f9ff;
+        border-right: 1px solid #e5e5e5;
+        padding: 30px 0;
+        margin: 53px 0 40px; 
+        flex-shrink: 0; /* 크기 유지 */
     }
     .detail-sidebar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+        list-style: none;
+        margin: 0;
+        padding: 0;
     }
     .detail-sidebar li {
-    display: flex;
-    padding: 10px 20px;
-    font-size: 14px;
-    cursor: pointer;
-    color: #aaa;
+        display: flex;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #aaa;
     }
     .detail-sidebar li.active {
-    color: #7CA2E0;
+        color: #7CA2E0;
     }
     .detail-sidebar .index { 
-    width: 20px; 
-    margin-right: 8px; 
+        width: 20px; 
+        margin-right: 8px; 
     }
     .detail-sidebar .org {
-    margin-right: 20px;  
+        margin-right: 20px;  
     }
 
     /* 오른쪽 내용 */
     .detail-content {
-    flex: 1;
-    padding-top: 40px;
-    padding-left: 100px;
+        flex: 1;
+        padding-top: 40px; 
+        padding-left: 20px; 
     }
     .benefit-title {
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 18px;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 18px;
     }
     .doc-list {
-    list-style: disc;
-    margin-left: 20px;
-    padding-left: 0;
+        list-style: disc;
+        margin-left: 20px;
+        padding-left: 0;
     }
     .doc-list li {
-    font-size: 17px;
-    line-height: 1.8;  
-    margin-bottom: 8px;   
+        font-size: 17px;
+        line-height: 1.8;  
+        margin-bottom: 8px;   
     }
 
     .tooltip-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin-left: 4px;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 4px;
     }
 
     .tooltip-box {
-    position: absolute;
-    top: 24px;          /* 아이콘/링크 아래로 */
-    left: 0;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 8px 12px;
-    font-size: 12px;
-    color: #555;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    white-space: nowrap;
+        position: absolute;
+        top: 24px;          /* 아이콘/링크 아래로 */
+        left: 0;
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 8px 12px;
+        font-size: 12px;
+        color: #555;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        white-space: nowrap;
 
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(4px);
-    transition: opacity 0.15s ease, transform 0.15s ease;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(4px);
+        transition: opacity 0.15s ease, transform 0.15s ease;
     }
 
     /* 마우스 올라갔을 때 보이게 */
     .tooltip-wrapper:hover .tooltip-box {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
     }
     .tooltip-icon {
-    background: #7CA2E0;
-    color: #fff;
-    font-size: 8px;
-    padding: 1px 6px;
-    border-radius: 50%;
-    margin-left: 6px;
+        background: #7CA2E0;
+        color: #fff;
+        font-size: 8px;
+        padding: 1px 6px;
+        border-radius: 50%;
+        margin-left: 6px;
     }
     .tooltip-link {
-    color: #7CA2E0;
-    font-size: 15px;
-    margin-left: 4px;
+        color: #7CA2E0;
+        font-size: 15px;
+        margin-left: 4px;
     }
-    </style>
+</style>
 </head>
 <body>
 

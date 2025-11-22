@@ -120,7 +120,7 @@ def get_user_info():
 @app.route('/match_welfare', methods=['POST'])
 def match_welfare():
     if 'user_no' not in session:
-        return jsonify({'error': 'Not logged in'}), 401
+        return jsonify({'error': 'Not logged in. Please log in first'}), 401
 
     try:
         data = request.get_json()

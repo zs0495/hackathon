@@ -33,11 +33,8 @@ def mypage():
             JOIN sites s ON s.site_id = b.site_id
             ORDER BY b.benefit_no ")
         benefits = cur.fetchall()
-
-       
-       
+        
        #찜한 항목
-
     user_id = session['user_no']
     db = get_db()
     try:
@@ -81,7 +78,6 @@ def like(benefit_no):
             return jsonify({'error': 'Benefit not found'}), 404
             
         site_id = result[0]
-        
 
         # 중복 체크
         cur.execute("""
@@ -99,7 +95,6 @@ def like(benefit_no):
 
     finally:
         db.close()
-
 
 #찜하기 취소 라우트
 @app.route('/unlike/<int:benefit_no>')
@@ -124,12 +119,5 @@ def unlike(benefit_no):
     finally:
         db.close()
 
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-
-

@@ -89,30 +89,7 @@
         border-top: 1px solid #ddd;
         margin: 40px 0 30px;
     }
-    /* 일단 카카오연동은 보류
-    .sns-login-text {
-        font-size: 13px;
-        color: #777;
-        position: relative;
-        top: -15px;
-        background: #fff;
-        display: inline-block;
-        padding: 0 10px;
-    }
-
-    .signup-page-container .kakao {
-        background: #FEE500;
-        border: none;
-        width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        font-weight: 600;
-        color: #3A1D1D;
-        margin-top: 0;
-        cursor: pointer;
-        font-size: 15px;
-    } */
-
+    
     /* 단계 표시 */
     .steps {
         font-size: 14px;
@@ -364,12 +341,6 @@
         opacity: 1;
     }
 
-    /* 소득 분위 드롭다운 */ /* (이 부분은 유지됩니다) */
-    /* ... */
-
-    /* 나의 상황 텍스트 영역 */ /* (이 부분은 유지됩니다) */
-    /* ... */
-
     /* 나의 상황 텍스트 영역 */
     .status-group {
         text-align: left;
@@ -552,18 +523,6 @@
                         </select>
                         <select name="birthMonth" required>
                             <option value="">월</option>
-                            <option value="1">1월</option>
-                            <option value="1">2월</option>
-                            <option value="1">3월</option>
-                            <option value="1">4월</option>
-                            <option value="1">5월</option>
-                            <option value="1">6월</option>
-                            <option value="1">7월</option>
-                            <option value="1">8월</option>
-                            <option value="1">9월</option>
-                            <option value="1">10월</option>
-                            <option value="1">11월</option>
-                            <option value="12">12월</option>
                             </select>
                     </div>
                     <div class="error-msg" id="birthError"></div>
@@ -619,10 +578,6 @@
         </form>
 
         <button class="login-btn">다음</button>
-        <!-- 카카오  보류
-        <hr />
-        <p class="sns-login-text">SNS 계정으로 로그인</p>
-        <button class="kakao">카카오로 시작하기</button> -->
     </div>
 
     <script>
@@ -690,12 +645,22 @@
         // 연도 옵션 자동 생성 (최근 → 과거 순)
         for (let y = currentYear; y >= currentYear - 100; y--) {
             const option = document.createElement('option');
-            option.value = y;
-            option.textContent = y;
+            option.value = y;            // 실제 전송되는 값은 숫자 (예: 2025)
+            option.textContent = `${y}년`; // 사용자에게 표시되는 텍스트 (예: 2025년)
             yearSelect.appendChild(option);
         }
+
+        // ★ 월 옵션 자동 생성 
+        for (let m = 1; m <= 12; m++) {
+            const option = document.createElement('option');
+            option.value = m;            // 실제 전송되는 값은 숫자 (예: 1)
+            option.textContent = `${m}월`; // 사용자에게 표시되는 텍스트 (예: 1월)
+            monthSelect.appendChild(option);
+        }
+        
         citySelectBox.addEventListener('change', function () {
         const cityValue = this.value;
+
 
         // 기본 옵션으로 초기화
         districtSelectBox.innerHTML = `<option value="">시/군/구 선택</option>`;

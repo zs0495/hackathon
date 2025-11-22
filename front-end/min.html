@@ -748,7 +748,6 @@
         // --- 데이터 상태 ---
         let selectedKeywords = [];
 
-
         // ==========================================================
         // 2. 유효성 검사 함수 (Validation)
         // ==========================================================
@@ -1069,9 +1068,23 @@
 
         // --- 5-2. 생년월일 셀렉트 박스 채우기 ---
         const currentYear = new Date().getFullYear();
-        for (let i = currentYear; i >= currentYear - 100; i--) yearSelect.innerHTML += `<option value="${i}">${i}</option>`;
-        for (let i = 1; i <= 12; i++) monthSelect.innerHTML += `<option value="${i}">${i}</option>`;
         
+        // 연도 옵션 자동 생성 (최근 → 과거 순)
+        for (let y = currentYear; y >= currentYear - 100; y--) {
+            const option = document.createElement('option');
+            option.value = y;            // 실제 전송되는 값은 숫자 (예: 2025)
+            option.textContent = `${y}년`; // 사용자에게 표시되는 텍스트 (예: 2025년)
+            yearSelect.appendChild(option);
+        }
+
+        // ★ 월 옵션 자동 생성 
+        for (let m = 1; m <= 12; m++) {
+            const option = document.createElement('option');
+            option.value = m;            // 실제 전송되는 값은 숫자 (예: 1)
+            option.textContent = `${m}월`; // 사용자에게 표시되는 텍스트 (예: 1월)
+            monthSelect.appendChild(option);
+        }
+
         // --- 5-3. 주소 select 초기값 (시/도) ---
         citySelectBox.innerHTML += `
             <option value="seoul">서울특별시</option>

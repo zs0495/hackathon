@@ -39,7 +39,7 @@
 
     /* 2. 페이지 제목 */
     .mypage-page {
-    margin: 80px 0 40px; 
+    margin: 64px 0 40px; 
     padding: 30px 0 40px;
     box-sizing: border-box;
     }
@@ -207,6 +207,7 @@
     <section class="fav-list">
     <div class="fav-row">
         <div class="fav-title-cell">찜한 복지</div>
+        <!-- 예시 데이터 (나중에 백엔드 연결하면 삭제) -->
         <div class="fav-cell">서울시청</div>
         <div class="fav-cell">청년 월세 지원</div>
         <div class="fav-heart"></div>
@@ -408,13 +409,16 @@
 
         btn.addEventListener('click', (e) => {
           e.preventDefault(); 
-          try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(mypageState));
-            alert('마이페이지 정보가 저장되었습니다.');
-          } catch (err) {
-            console.error(err);
-            alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
-          }
+          const rows = document.querySelectorAll('.fav-row');
+          rows.forEach((row, idx) => {
+            const fav = mypageState.favorites[idx];
+            if (fav && !fav.liked) {
+              row.remove();
+            }
+          });
+
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(mypageState));
+          alert("마이페이지 정보가 저장되었어요.");
         });
       }
     });

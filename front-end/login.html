@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="style.css" /> 
     
     <style>
-    /* --------------------------
-     * 로그인 페이지 레이아웃 스타일
-     * -------------------------- */
     
     /* 1. 전체 화면 배경 및 중앙 정렬 */
     body {
@@ -57,7 +54,7 @@
         /* 위치 스타일은 .fixed-top-left가 담당하므로 여기서는 제거 */
         background: none;
         border: none;
-        font-size: px;
+        font-size: 36px;
         color: #333;
         cursor: pointer;
         text-decoration: none;
@@ -87,16 +84,49 @@
     /* 나머지 내부 요소 스타일은 그대로 유지 */
 
     .login-logo {
-    position: fixed;  /* 스크롤해도 유지됨 */
-    top: 50px;        /* 화면 상단에서 40px 아래 */
-    left: 50%;
-    transform: translateX(-50%); /* 정확한 가로 중앙 정렬 */
-    width: 160px;     /* 로고 크기 */
-    height: auto;
-    z-index: 200; 
-}
+        position: fixed;  /* 스크롤해도 유지됨 */
+        top: 25px;        /* 화면 상단에서 40px 아래 */
+        left: 50%;
+        transform: translateX(-50%); /* 정확한 가로 중앙 정렬 */
+        width: 160px;     /* 로고 크기 */
+        height: auto;
+        z-index: 200; 
+    }
 
-</style>
+    .login-links a {
+        color: #777;          /* 회색 텍스트 */
+        text-decoration: none; /* 밑줄 제거 */
+        font-size: 14px;
+    }
+
+    .login-links a:hover {
+        color: #555;    
+    }
+
+    .password-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .password-wrapper input {
+        width: 100%;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;       /* 버튼 크기 지정 */
+        height: 20px;
+        background: url("../images/Fermata.png") no-repeat center;
+        background-size: contain;   /* 이미지가 버튼에 맞게 조절됨 */
+        border: none;
+        cursor: pointer;
+    }
+
+
+    </style>
 </head>
 <body>
 
@@ -110,18 +140,33 @@
 
         <h2>로그인</h2>
         <input type="text" placeholder="아이디를 입력해주세요" />
-        <input type="password" placeholder="비밀번호를 입력해주세요" />
+        <div class="password-wrapper">
+            <input type="password" id="passwordInput" placeholder="비밀번호를 입력해주세요" />
+            <button type="button" class="toggle-password" id="pwToggleBtn"></button>
+        </div>
         <button class="login-btn">로그인</button>
 
         <div class="login-links">
             <a href="signup.html">회원가입</a> | <a href="#">아이디·비밀번호 찾기</a>
         </div>
-<!--    카카오 연동 보류
-        <hr />
-        <p class="sns-login-text">SNS 계정으로 로그인</p>
-
-        <button class="kakao">카카오로 시작하기</button> -->
     </div>
+
+    <script>
+        const pwInput = document.getElementById("passwordInput");
+        const pwBtn = document.getElementById("pwToggleBtn");
+
+        pwBtn.addEventListener("mousedown", () => {
+            pwInput.type = "text";
+        });
+
+        pwBtn.addEventListener("mouseup", () => {
+            pwInput.type = "password";
+        });
+
+        pwBtn.addEventListener("mouseleave", () => {
+            pwInput.type = "password";
+        });
+    </script>
 
 </body>
 </html>

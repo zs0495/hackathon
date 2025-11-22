@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bokbok_service</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <!-- 네비게이션 -->
+  <nav class="navbar">
+    <div class="logo">
+        <a href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='images/bokbok_logo.png') }}" alt="로고">
+        </a>
+    </div>
+    <div class="menu">
+
+        <ul>
+        <li>
+            <a href="#">서비스 소개</a>
+            <ul>
+            <li><a href="{{ url_for('service_page') }}">서비스 개요</a></li>
+            <li><a href="{{ url_for('team_page') }}">팀 소개</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">주요 기능</a>
+            <ul>
+            <li><a href="{{ url_for('public_page') }}">공공 복지 검색</a></li>
+            <li><a href="{{ url_for('private_page') }}">민간 복지 검색</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">라운지</a>
+            <ul>
+            <li><a href="{{ url_for('library_page') }}">자료실</a></li>
+            <li><a href="{{ url_for('guide_page') }}">이용 가이드</a></li>
+            <li><a href="{{ url_for('faq_page') }}">FAQ</a></li>
+            </ul>
+        </li>
+        </ul>
+
+    </div>
+    <div class="auth">
+        <a href="{{ url_for('signup_form') }}">회원가입</a> | <a href="{{ url_for('login_form') }}" id="loginBtn">로그인</a>
+    </div>
+  </nav>
+
+  <!-- 자료실 페이지 -->
+    <main class="library-page">
+        <section class="library-header">
+        <h2>자료실</h2>
+        </section>
+
+        <section class="library-layout">
+            <aside class="library-side">
+                <button class="library-filter active" data-type="PUBLIC">현재 등록된 공공 복지 기관</button>
+                <button class="library-filter" data-type="PRIVATE">현재 등록된 민간 복지 기관</button>
+            </aside>
+
+            <div class="library-content">
+                <table class="library-table">
+                    <thead>
+                    <tr>
+                        <th>기관명</th>
+                        <th>혜택명</th>
+                    </tr>
+                    </thead>
+                    <tbody id="resourceTableBody">
+                    <!-- 데이터 불러오기 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+  <footer class="footer">
+    © 2025 bokbok. All rights reserved.
+  </footer>
+  
+  <script src="{{ url_for('static', filename='auth.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

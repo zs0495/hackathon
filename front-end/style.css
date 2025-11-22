@@ -302,7 +302,7 @@
 
 .library-layout {
   max-width: 1100px;
-  margin: 0 auto 10px;
+  margin: 0 auto 80px;
   display: flex;
   border-left: 1px solid #f0f0f0;
   border-right: 1px solid #f0f0f0;
@@ -314,7 +314,7 @@
   width: 250px;
   padding: 40px 24px;
   border-right: 1px solid #f0f0f0;
-  font-size: 15px;
+  font-size: 14px;
   color: #999;
   line-height: 1.8;
 }
@@ -325,7 +325,7 @@
   background: transparent;
   text-align: left;
   padding: 10px 8px;
-  font-size: 15px;
+  font-size: 14px;
   color: #999;
   cursor: pointer;
 }
@@ -548,7 +548,7 @@
 }
 
 .notice-title {
-    font-size: 13px;
+    font-size: 26px;
     font-weight: 600;
     color: #79A0DF; /* 메인 컬러 */
     letter-spacing: 2px;
@@ -559,7 +559,7 @@
     font-size: 24px;
     font-weight: 700;
     color: #333;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
 }
 
 /* ★ 좌우 스크롤 컨테이너 */
@@ -582,8 +582,8 @@
 
 /* ★ NOTICE 카드 스타일 */
 .notice-card {
-    min-width: 260px; /* 카드 최소 너비 고정 */
-    height: 200px;
+    max-width: 300px; /* 카드 너비 고정 */
+    height: 300px;
     background-color: #fafafa;
     border: 1px solid #eee;
     border-radius: 12px;
@@ -601,20 +601,20 @@
 }
 
 .card-heading {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     color: #333;
     margin-bottom: 10px;
 }
 
 .card-text {
-    font-size: 14px;
+    font-size: 15px;
     color: #666;
     line-height: 1.5;
     /* 텍스트가 넘칠 경우 처리 */
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* 두 줄까지 표시 */
+    /* -webkit-line-clamp: 2; 두 줄까지 표시 */
     -webkit-box-orient: vertical;
 }
 
@@ -640,7 +640,7 @@
 
 .guide-text {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 20px;
     color: white;
     margin-bottom: 12px;
     -webkit-line-clamp: unset; /* 줄 제한 해제 */
@@ -649,7 +649,7 @@
 .guide-link {
     color: white;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
 }
 
@@ -687,16 +687,10 @@
     height: auto;
     display: block; 
 }
-/* -------------------
- * 로그인 페이지 스타일
- * ------------------- */
-
-/* login.html에서 전체 화면 중앙에 박스가 오도록 설정하는 클래스 */
-/* .login-modal 스타일은 index.html에서만 사용되므로, login.html에서 필요한 스타일만 남깁니다. */
+/* 로그인 페이지 스타일 */
 
 /* 기존 .login-modal, .login-box 스타일을 .login-page-container로 통합 및 조정 */
 .login-page-container {
-    /* 모달 박스 스타일 재정의 */
     position: relative;
     width: 100%;
     max-width: 440px; /* 로그인 폼의 최대 너비 고정 */
@@ -704,8 +698,6 @@
     text-align: center;
     margin: 40px 0; /* body의 flex와 함께 중앙에 배치 */
 }
-
-/* 닫기 버튼은 login.html에서 제거되었으므로, .close-btn은 제거하거나 유지해도 무방합니다. */
 
 /* ★ 뒤로 가기 버튼 스타일 */
 .back-btn {
@@ -729,8 +721,6 @@
 }
 
 /* 입력 필드 (기존 스타일 재사용) */
-/* .login-box input { ... } 대신 .login-page-container input을 사용할 수 있으나, 
-   기존 input 스타일을 그대로 쓰려면 login.html에서 input에 별도 클래스 없이 사용합니다. */
 .login-page-container input {
     width: 100%;
     padding: 14px; /* 높이 증가 */

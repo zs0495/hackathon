@@ -22,18 +22,18 @@
     .signup-page-container {
         position: relative;
         width: 100%;
-        max-width: 440px; /* 최대 너비만 유지하여 내용이 중앙에 모이도록 */
-        padding: 60px 0; /* 좌우 패딩 제거, 상하 패딩만 유지 */
+        max-width: 440px; 
+        padding: 60px 0; 
         text-align: center;
         margin: 40px 0;
     }
 
     /* 3. 뒤로 가기 버튼 및 로고 */
     .fixed-top-left {
-        position: fixed; /* 뷰포트 기준으로 위치 고정 */
-        top: 25px;       /* 상단에서 25px */
-        left: 25px;      /* 좌측에서 25px */
-        z-index: 100;    /* 다른 요소 위에 보이도록 */
+        position: fixed; 
+        top: 25px;       
+        left: 25px;      
+        z-index: 100;    
     }
 
     .back-btn {
@@ -44,16 +44,15 @@
         cursor: pointer;
         text-decoration: none;
         font-weight: 600;
-        /* font-size: px; 오타 수정 */
         line-height: 1;
     }
 
      .login-logo {
-        position: fixed;  /* 스크롤해도 유지됨 */
+        position: fixed; 
         top: 34px;        
         left: 50%;
-        transform: translateX(-50%); /* 정확한 가로 중앙 정렬 */
-        width: 160px;     /* 로고 크기 */
+        transform: translateX(-50%); 
+        width: 160px;    
         height: auto;
         z-index: 200; 
     }
@@ -89,30 +88,6 @@
         border-top: 1px solid #ddd;
         margin: 40px 0 30px;
     }
-    /* 일단 카카오연동은 보류
-    .sns-login-text {
-        font-size: 13px;
-        color: #777;
-        position: relative;
-        top: -15px;
-        background: #fff;
-        display: inline-block;
-        padding: 0 10px;
-    }
-
-    .signup-page-container .kakao {
-        background: #FEE500;
-        border: none;
-        width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        font-weight: 600;
-        color: #3A1D1D;
-        margin-top: 0;
-        cursor: pointer;
-        font-size: 15px;
-    } */
-
     /* 단계 표시 */
     .steps {
         font-size: 14px;
@@ -128,7 +103,7 @@
         color: #000000;
     }
     
-    /* --- 단계별 화면 표시/숨김 --- */
+    /* 단계별 화면 표시/숨김 */
     .step {
         display: none;
     }
@@ -136,7 +111,7 @@
         display: block;
     }
 
-    /* --- 1단계 약관동의 스타일 --- */
+    /* 1단계 약관동의 스타일 */
     .section-title {
         text-align: left;
         margin-bottom: 15px;
@@ -169,15 +144,15 @@
         text-decoration: underline;
         cursor: pointer;
         white-space: nowrap;
-        margin-left: auto; /* 상세보기를 오른쪽 끝으로 밀어냄 */
+        margin-left: auto; 
     }
 
-    /* --- 2단계 정보 입력 폼 스타일 (오류 수정 및 분리) --- */
+    /* 2단계 정보 입력 폼 스타일 (오류 수정 및 분리) */
     
     /* 개별 폼 그룹 컨테이너 */
     .form-group {
         text-align: left;
-        margin-bottom: 40px; /* 각 입력 필드 사이의 간격 */
+        margin-bottom: 40px; 
     }
 
     /* 필수 항목 표시 (파란색 점) */
@@ -206,7 +181,6 @@
     content: none !important;
     }
 
-    /* 서브 레이블은 점 없이 400 폰트 웨이트 */
     .form-group .sub-label {
         font-weight: 400;
         margin-top: 15px;
@@ -234,7 +208,7 @@
 
     input::placeholder {
     color: #bbb;
-}
+    }
 
     /* 입력 필드 설명 텍스트 */
     .input-description {
@@ -249,17 +223,15 @@
     /* 주소 및 생년월일 드롭다운 그룹 */
     .address-group, .birthdate-group {
         display: flex;
-        gap: 10px; /* 드롭다운 사이 간격 */
+        gap: 10px; 
         margin-top: 8px;
     }
 
-    /* 드롭다운 개별 너비 조정 */
     .address-group select, .birthdate-group select {
         flex-grow: 1; 
         min-width: 0; 
     }
 
-    /* 생년월일: 연(Year) 드롭다운 너비를 조금 더 넓게 */
     .birthdate-group select:first-child {
         flex-basis: 40%; 
         flex-grow: 0;
@@ -270,9 +242,9 @@
         flex-grow: 0;
     }
 
-    /* --- 2-2단계 추가 스타일 --- */
+    /* 2-2단계 추가 스타일 */
 
-    /* 섹션 제목 (나의 키워드, 소득 분위) */
+    /* 섹션 제목 */
     .section-title-2 {
         text-align: left;
         font-size: 16px;
@@ -294,9 +266,8 @@
     margin-right: 6px;
     }
 
-    /* ★★★ 새로운 키워드 드롭다운 스타일 ★★★ */
+    /* 새로운 키워드 드롭다운 스타일 */
     .keyword-select-group select {
-        /* 기존 폼 입력 필드 스타일 재사용 */
         width: 100%;
         padding: 12px 15px;
         border: 1px solid #bbb;
@@ -307,46 +278,41 @@
         transition: border-color 0.2s;
     }
 
-    /* 드롭다운 기본 선택 옵션(placeholder) 색상 연하게 */
+    /* 드롭다운 placeholder 색상 연하게 */
     select option[value=""] {
-        color: #bbb;  /* 원하는 만큼 연하게 조절 */
+        color: #bbb;  
     }
 
-    /* 드롭다운 선택하면 일반 텍스트 색으로 */
     select {
         color: #333;
     }
 
-    /* 선택된 값의 색 유지 */
     select:invalid {
         color: #bbb;
     }
 
-    /* ★★★ 선택된 키워드 컨테이너 스타일 ★★★ */
     .selected-keywords-container {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
         text-align: left;
-        min-height: 0px; /* 키워드가 없을 때도 공간 유지 */
+        min-height: 0px; 
         margin-bottom: 20px;
     }
 
-    /* ★★★ 개별 선택된 키워드 태그 스타일 ★★★ */
     .selected-keyword-tag {
         display: flex;
         align-items: center;
-        background-color: #79A0DF; /* 배경색: 청년색(파란색 계열) */
+        background-color: #79A0DF; 
         color: white;
         padding: 8px 12px;
-        padding-right: 5px; /* X 버튼 공간 확보 */
+        padding-right: 5px; 
         border-radius: 20px;
         font-size: 14px;
         font-weight: 600;
         user-select: none;
     }
 
-    /* ★★★ 태그 내 취소 버튼 스타일 (X) ★★★ */
     .remove-tag-btn {
         background: none;
         border: none;
@@ -363,12 +329,6 @@
     .remove-tag-btn:hover {
         opacity: 1;
     }
-
-    /* 소득 분위 드롭다운 */ /* (이 부분은 유지됩니다) */
-    /* ... */
-
-    /* 나의 상황 텍스트 영역 */ /* (이 부분은 유지됩니다) */
-    /* ... */
 
     /* 나의 상황 텍스트 영역 */
     .status-group {
@@ -394,18 +354,21 @@
     /* 텍스트 영역 축소 시 스타일 */
     .status-group.collapsed textarea {
         min-height: 0;
-        height: 0; /* 시각적으로 완전히 접힘 */
+        height: 0; 
         padding-top: 0;
         padding-bottom: 0;
         border-color: transparent;
     }
+
     .status-group.collapsed .status-description {
         display: none;
     }
+
     .status-group.collapsed .input-later-btn {
         text-align: right;
         margin-top: 15px;
     }
+
     /* 다음에 입력할게요 버튼 */
     .input-later-btn {
         display: block;
@@ -417,7 +380,7 @@
         margin-top: 10px;
     }
 
-    /* --- 3단계 (가입 완료) 추가 스타일 --- */
+    /* 3단계 (가입 완료) 추가 스타일 */
     .step-3-content {
         display: flex;
         flex-direction: column;
@@ -428,16 +391,14 @@
     }
 
     .step-3-content img {
-        width: 200px; /* 이미지 크기 조정 */
+        width: 200px; 
         height: auto;
         margin-bottom: 50px;
     }
 
-    /* 완료 버튼 (기존 .login-btn 스타일을 재사용하되 텍스트 변경을 위해 스크립트 사용) */
-
     .error-msg {
     font-size: 12px;
-    color: #e74c3c;  /* 빨간색 경고 */
+    color: #e74c3c; 
     margin-top: 4px;
     }
 
@@ -628,10 +589,6 @@
         </form>
 
     <button class="login-btn">다음</button>
-        <!-- 카카오  보류
-        <hr />
-        <p class="sns-login-text">SNS 계정으로 로그인</p>
-        <button class="kakao">카카오로 시작하기</button> -->
     </div>
 
 <script>
@@ -640,12 +597,12 @@
             const step1 = document.querySelector('.step-1');
             const step2 = document.querySelector('.step-2');
             const step2_2 = document.querySelector('.step-2-2');
-            const step3 = document.querySelector('.step-3'); // 3단계 요소 추가
+            const step3 = document.querySelector('.step-3'); 
             
             // 단계 표시 아이템들
             const step1Indicator = document.querySelector('.step-item[data-step="1"]');
             const step2Indicator = document.querySelector('.step-item[data-step="2"]');
-            const step3Indicator = document.querySelector('.step-item[data-step="3"]'); // 3단계 표시 추가
+            const step3Indicator = document.querySelector('.step-item[data-step="3"]'); 
 
             // 약관 동의 관련 요소
             const allAgreeCheckbox = document.getElementById('allAgree');
@@ -733,7 +690,7 @@
             step1.classList.add('active');
             nextButton.textContent = '다음';
 
-            /* --- 1. 전체 동의 체크박스 연동 기능 --- */
+            /* 1. 전체 동의 체크박스 연동 기능 */
             allAgreeCheckbox.addEventListener('change', function() {
                 requiredAgrees.forEach(checkbox => {
                     checkbox.checked = this.checked;
@@ -752,7 +709,7 @@
                 });
             });
 
-            /* --- 2. 키워드 드롭다운 및 태그 생성 기능 --- */
+            /* 2. 키워드 드롭다운 및 태그 생성 기능 */
             const keywordSelect = document.getElementById('keywordSelect');
             const selectedKeywordsContainer = document.getElementById('selectedKeywordsContainer');
             
@@ -773,7 +730,7 @@
                     // 취소 버튼 (X) 생성
                     const removeBtn = document.createElement('button');
                     removeBtn.classList.add('remove-tag-btn');
-                    removeBtn.innerHTML = '&times;'; // 'x' 기호
+                    removeBtn.innerHTML = '&times;'; 
                     
                     // 삭제 이벤트 리스너 추가
                     removeBtn.addEventListener('click', function() {
@@ -784,7 +741,7 @@
                     selectedKeywordsContainer.appendChild(tag);
                 });
                 
-                // 드롭다운 초기 상태로 복원
+                // 드롭다운 초기 상태 복원
                 keywordSelect.value = ""; 
             }
 
@@ -803,12 +760,11 @@
                     renderKeywords();
                 } else if (selectedKeywords.includes(selectedKeyword)) {
                     alert('이미 선택된 키워드입니다.');
-                    // 선택 후 드롭다운을 다시 초기 상태로 되돌립니다.
                     this.value = ""; 
                 }
             });
             
-            /* --- 3. '나의 상황' 입력창 축소/확대 기능 --- */
+            /* 3. '나의 상황' 입력창 축소/확대 기능 */
             inputLaterBtn.addEventListener('click', function() {
                 if (statusGroup.classList.contains('collapsed')) {
                     statusGroup.classList.remove('collapsed');
@@ -827,12 +783,11 @@
             });
             
 
-            /* --- 4. 단계 전환 로직 (수정된 부분) --- */
+            /* 4. 단계 전환 로직 (수정된 부분) */
             nextButton.addEventListener('click', function(e) {
                 e.preventDefault(); 
                 
                 if (step1.classList.contains('active')) {
-                    // 1단계 -> 2단계
                     let allRequiredAgreed = true;
                     requiredAgrees.forEach(checkbox => { if (!checkbox.checked) allRequiredAgreed = false; });
                     if (allRequiredAgreed) {
@@ -841,12 +796,10 @@
                         step1Indicator.classList.remove('active');
                         step2Indicator.classList.add('active');
                         nextButton.textContent = '다음';
-                        window.scrollTo(0, 0); // 스크롤 초기화
+                        window.scrollTo(0, 0); 
                     } else { alert('필수 약관에 모두 동의해야 다음 단계로 이동할 수 있습니다.'); }
                 
                 } else if (step2.classList.contains('active')) {
-                    // 2단계 -> 2-2단계
-                    // TODO: 2단계 유효성 검사 추가
                     clearErrors(); // 이전 에러들 초기화
 
                     const userId = document.getElementById('userId').value.trim();
@@ -913,7 +866,6 @@
                         isValid = false;
                     }
 
-                    // 하나라도 에러 있으면 다음 단계로 안 감
                     if (!isValid) {
                         return;
                     }
@@ -925,30 +877,23 @@
                     window.scrollTo(0, 0);
 
                 } else if (step2_2.classList.contains('active')) {
-                    // 2-2단계 -> 3단계 (가입 완료)
-                    // TODO: 2-2단계 데이터 전송 로직 추가 (필요시)
                     step2_2.classList.remove('active');
                     step3.classList.add('active');
                     
                     step2Indicator.classList.remove('active');
                     step3Indicator.classList.add('active');
                     
-                    // 버튼 텍스트를 '완료'로 변경
                     nextButton.textContent = '완료'; 
 
-                    window.scrollTo(0, 0); // 스크롤 초기화
-
+                    window.scrollTo(0, 0); 
      
-
             } else if (step3.classList.contains('active')) {
-                // 3단계 (가입 완료) -> 로그인 페이지로 이동
                 // Flask의 login 라우트로 이동
                 window.location.href = "{{ url_for('login_form') }}"; 
             }
         });
     });
 </script>
-
 </body>
 </html>
 

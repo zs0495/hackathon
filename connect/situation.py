@@ -89,25 +89,14 @@ def get_user_info():
     db = get_db()
     try:
         cur = db.cursor(pymysql.cursors.DictCursor)
-        cur.execute("SELECT name, birth_date, address, situation FROM users WHERE user_no = %s", (user_no,))
+        cur.execute("SELECT username, birth_year, birth_month, city_name, district_name, situation FROM users WHERE user_no = %s", (user_no,))
         user = cur.fetchone()
         if not user:
             return jsonify({'success': False}), 404
         birth_year, birth_month, city, district = None, None, '', ''
-        if user['birth_date']:
-            parts = user['birth_date'].split('년')
-            birth_year = parts[0].strip()
-            if len(parts) > 1:
-                birth_month = parts[1].replace('월', '').replace('일', '').strip().split()[0]
-        if user['address']:
-            parts = user['address'].split()
-            if len(parts) > 0:
-                city = parts[0]
-            if len(parts) > 1:
-                district = parts[1]
         return jsonify({
             'success': True,
-            'username': 'username',
+            'username': username,
             'birth_year': birth_year,
             'birth_month': birth_month,
             'city': city,
@@ -179,7 +168,7 @@ def match_welfare():
             LEFT JOIN city c ON ba.city_id = c.city_id
             LEFT JOIN ben_keyword bk ON b.benefit_no = bk.benefit_no
             LEFT JOIN keyword k ON bk.keyword_id = k.keyword_id
-            WHERE b.site_id BETWEEN 8 AND 12
+            WHERE b.site_id BETWEEN 1 AND 7
         """
         if city:
             query += " AND (c.city_name = %s OR b.is_nationwide = TRUE)"
@@ -189,18 +178,17 @@ def match_welfare():
             placeholders = ','.join(['%s'] * len(all_keywords))
             query += f" AND k.keyword_content IN ({placeholders})"
             params.extend(all_keywords)
-
-        query += " ORDER BY b.benefit_no LIMIT 20"
-        cur.execute(query, params)
-        results = cur.fetchall()
+            query += " ORDER BY b.benefit_no LIMIT 20"
+            cur.execute(query, params)
+            results = cur.fetchall()
 
         # 사용자가 찜한 목록 조회
-        cur.execute("SELECT benefit_no FROM favorite_benefit WHERE user_no = %s", (user_no,))
-        liked = {row['benefit_no'] for row in cur.fetchall()}
+            cur.execute("SELECT benefit_no FROM favorite_benefit WHERE user_no = %s", (user_no,))
+            liked = {row['benefit_no'] for row in cur.fetchall()}
 
-        matched = []
-        for row in results:
-            matched.append({
+            matched = []
+            for row in results:
+                matched.append({
                 'benefit_no': row['benefit_no'],
                 'site_name': row['site_name'],
                 'benefit_title': row['benefit_title'],
@@ -213,8 +201,8 @@ def match_welfare():
                 'is_liked': row['benefit_no'] in liked
             })
 
-        db.close()
-        return jsonify({
+            db.close()
+            return jsonify({
             'success': True,
             'matched': len(matched) > 0,
             'welfare_type': welfare_type,
@@ -230,10 +218,10 @@ def match_welfare():
             }
         })
 
-    except Exception as e:
-        print("Error:", e)
-        return jsonify({'error': '서버 내부 오류가 발생했습니다.'}), 500
+            except Exception as e:
+                print("Error:", e)
+                return jsonify({'error': '서버 내부 오류가 발생했습니다.'}), 500
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    if __name__ == '__main__':
+        app.run(debug=True)

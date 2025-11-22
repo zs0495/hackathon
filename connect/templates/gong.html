@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공공 복지 혜택 모아보기 | bokbok</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <style>
         
         /* 페이지 헤더 (로고 + 햄버거 메뉴) */
@@ -596,14 +597,13 @@
 
         
 
-
-    </style>
+</style>
 </head>
 <body>
     <header class="welfare-page-header">
         <div class="welfare-logo">
-            <a href="index.html">
-                <img src="../images/bokbok_logo.png" alt="로고">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/bokbok_logo.png') }}" alt="로고" />
             </a>
         </div>
         <button id="menuToggle" class="menu-toggle-btn">
@@ -614,29 +614,29 @@
             </svg>
         </button>
     </header>
-    
+
     <aside id="sideMenu" class="side-menu">
         <button id="menuClose" class="menu-close-btn">&times;</button>
         <nav class="side-menu-nav">
             <ul>
-                <li><a href="gong.html" class="active-page">공공 복지 혜택 모아보기</a></li>
-                <li><a href="min.html">민간 복지 혜택 모아보기</a></li>
-                <li><a href="index.html">홈으로</a></li>
+                <li><a href="{{ url_for('gong') }}" class="active-page">공공 복지 혜택 모아보기</a></li>
+                <li><a href="{{ url_for('min') }}">민간 복지 혜택 모아보기</a></li>
+                <li><a href="{{ url_for('index') }}">홈으로</a></li>
             </ul>
         </nav>
     </aside>
 
-    <section id="inputFormPage" class="welfare-container active">
+    <section id="inputFormPage" class="welfare-container {% if match_status == 'input' or match_status == None %}active{% endif %}">
         <h2 class="welfare-title">공공 복지 혜택 모아보기</h2>
-        
-        <form id="welfareForm" **novalidate**>
+
+        <form id="welfareForm" method="POST" action="{{ url_for('gong') }}" novalidate>
             <div class="form-group-welfare">
                 <label for="userName">이름</label>
                 <div class="input-wrapper">
-                    <input type="text" id="userName" placeholder="복복이" /> 
+                    <input type="text" id="userName" name="userName" placeholder="복복이" />
                     <div class="error-msg" id="name-error-msg">
+                    </div>
                 </div>
-    </div>
                 <button type="button" id="fetchInfoBtn" class="fetch-info-btn">입력 정보 불러오기</button>
             </div>
 
@@ -646,16 +646,16 @@
                     <div class="input-group-inline">
                         <div class="birthdate-input-group">
                             <div class="select-wrapper">
-                            <select name="birthYear">
-                                <option value="" disabled selected>년</option>
-                            </select>
+                                <select name="birthYear" id="birthYearSelect" required>
+                                    <option value="" disabled selected>년</option>
+                                    </select>
                             </div>
                         </div>
                         <div class="birthdate-input-group">
                             <div class="select-wrapper">
-                            <select name="birthMonth">
-                                <option value="" disabled selected>월</option>
-                            </select>
+                                <select name="birthMonth" id="birthMonthSelect" required>
+                                    <option value="" disabled selected>월</option>
+                                    </select>
                             </div>
                         </div>
                     </div>
@@ -672,16 +672,16 @@
                     <div class="input-group-inline">
                         <div class="address-input-group">
                             <div class="select-wrapper">
-                            <select name="city">
-                                <option value="" disabled selected>도/시</option>
-                            </select>
+                                <select name="city" id="citySelect" required>
+                                    <option value="" disabled selected>도/시</option>
+                                    </select>
                             </div>
                         </div>
                         <div class="address-input-group">
                             <div class="select-wrapper">
-                            <select name="district">
-                                <option value="" disabled selected>시/군/구</option>
-                            </select>
+                                <select name="district" id="districtSelect" required>
+                                    <option value="" disabled selected>시/군/구</option>
+                                    </select>
                             </div>
                         </div>
                     </div>
@@ -695,149 +695,92 @@
                 <label for="keywordSelect" style="padding-top: 12px;">나의 키워드</label>
                 <div style="flex-grow: 1;">
                     <div class="select-wrapper">
-                    <select id="keywordSelect" name="keywordSelect">
-                        <option value="" disabled selected>키워드 선택 (하나씩 선택)</option>
-                        <option value="국가유공자">국가유공자</option>
-                        <option value="아동">아동</option>
-                        <option value="자영업">자영업</option>
-                        <option value="학생(청소년)">학생(청소년)</option>
-                        <option value="청년">청년</option>
-                        <option value="질병">질병</option>
-                        <option value="한부모가정">한부모가정</option>
-                        <option value="취업">취업</option>
-                        <option value="장학금">장학금</option>
-                        <option value="차상위/저소득">차상위/저소득</option>
-                        <option value="장애인">장애인</option>
-                        <option value="교육">교육</option>
-                        <option value="임산부">임산부</option>
-                        <option value="금융">금융</option>
-                        <option value="노인">노인</option>
-                        <option value="거주">거주</option>
-                        <option value="(신혼)부부">(신혼)부부</option>
-                    </select>
+                        <select id="keywordSelect" name="keywordSelect">
+                            <option value="" disabled selected>키워드 선택 (하나씩 선택)</option>
+                            <option value="국가유공자">국가유공자</option>
+                            <option value="아동">아동</option>
+                            <option value="자영업">자영업</option>
+                            <option value="학생(청소년)">학생(청소년)</option>
+                            <option value="청년">청년</option>
+                            <option value="질병">질병</option>
+                            <option value="한부모가정">한부모가정</option>
+                            <option value="취업">취업</option>
+                            <option value="장학금">장학금</option>
+                            <option value="차상위/저소득">차상위/저소득</option>
+                            <option value="장애인">장애인</option>
+                            <option value="교육">교육</option>
+                            <option value="임산부">임산부</option>
+                            <option value="금융">금융</option>
+                            <option value="노인">노인</option>
+                            <option value="거주">거주</option>
+                            <option value="(신혼)부부">(신혼)부부</option>
+                        </select>
                     </div>
-                    <div id="selectedKeywordsContainer" class="selected-keywords-container" style="margin-left: 0;"> 
+                    <div id="selectedKeywordsContainer" class="selected-keywords-container" style="margin-left: 0;">
                     </div>
-                    
+                    <input type="hidden" id="selectedKeywordsInput" name="selectedKeywordsInput" value="">
                 </div>
             </div>
 
             <div class="form-group-welfare" style="align-items: flex-start;">
                 <label style="padding-top: 12px;">나의 상황</label>
-                <textarea 
+                <textarea name="situation"
                     placeholder='"이번 달 월세가 너무 부담돼요"와 같은 실직, 주거 부담, 의료비 필요, 교육/양육, 긴급 생계 등 직접적인 키워드가 들어갈수록 정확한 결과가 나와요'
                 ></textarea>
             </div>
 
-            <button type="button" id="searchButton" class="welfare-submit-btn">매칭하기</button>
+            <button type="submit" id="searchButton" class="welfare-submit-btn">매칭하기</button>
         </form>
     </section>
 
-    <section id="matchSuccessPage" class="welfare-container result-page">
+    <section id="matchSuccessPage" class="welfare-container result-page {% if match_status == 'success' %}active{% endif %}">
         <div class="result-header">
-            <div class="result-text-group"> 
-                <h2 class="result-title">김복복님에게 딱 맞는 공공 복지 혜택이에요</h2>
+            <div class="result-text-group">
+                <h2 class="result-title">{{ user_name }}님에게 딱 맞는 공공 복지 혜택이에요</h2>
                 <div class="tag-box-group">
-                    </div>
+                    {% for keyword in selected_keywords %}
+                    <span class="result-tag">{{ keyword }}</span>
+                    {% endfor %}
+                </div>
             </div>
-            <img src="../images/search_bok.png" alt="매칭 성공 캐릭터" class="result-mascot">
+            <img src="{{ url_for('static', filename='images/search_bok.png') }}" alt="매칭 성공 캐릭터" class="result-mascot">
         </div>
 
         <div class="result-list-container">
             <ul class="welfare-result-list">
-                <li data-benefit-id="benefit-1" role="button" aria-expanded="false">
-                    <span class="list-num">01</span>
-                    <span class="list-agency">보건복지부</span>
-                    <button class="list-heart-btn" aria-label="찜하기"></button>
-                    <span class="list-benefit">긴급 복지 지원</span>
+                {% for benefit in matched_benefits %}
+                <li data-benefit-id="{{ benefit.id }}" role="button" aria-expanded="false" class="{% if benefit.liked %}open{% endif %}">
+                    <span class="list-num">{{ loop.index | string | zfill(2) }}</span>
+                    <span class="list-agency">{{ benefit.agency }}</span>
+                    <button class="list-heart-btn {% if benefit.liked %}liked{% endif %}" aria-label="찜하기" data-benefit-id="{{ benefit.id }}"></button>
+                    <span class="list-benefit">{{ benefit.name }}</span>
                     <div class="list-detail-content">
-                        <p style="font-size: 16px; margin-bottom: 20px; font-weight: 500;">"긴급 복지 지원" 혜택 상세 정보:</p>
+                        <p style="font-size: 16px; margin-bottom: 20px; font-weight: 500;">"{{ benefit.name }}" 혜택 상세 정보:</p>
                             <div class="document-box">
                                 <ul class="detail-documents">
-                                    <li>필수 서류 1 (신분증)</li>
-                                    <li>필수 서류 2 (소득 증빙 자료)</li>
-                                    <li>필수 서류 3 (재산 보유 현황)</li>
-                                    <li>필수 서류 4 (임대차 계약서)</li>
-                                    <li>필수 서류 5 (부양의무자 재산가액) <span class="document-help">?</span></li>
+                                    {% for doc in benefit.documents %}
+                                    <li>{{ doc }}</li>
+                                    {% endfor %}
                                 </ul>
                             </div>
-                            <a href="https://www.bokjiro.go.kr" target="_blank" class="benefit-link">혜택 바로가기</a>
+                            <a href="{{ benefit.link }}" target="_blank" class="benefit-link">혜택 바로가기</a>
                     </div>
                 </li>
-                <li data-benefit-id="benefit-2" role="button" aria-expanded="false">
-                    <span class="list-num">02</span>
-                    <span class="list-agency">서울시</span>
-                    <button class="list-heart-btn" aria-label="찜하기"></button>
-                    <span class="list-benefit">청년 월세 지원</span>
-                    <div class="list-detail-content">
-
-                        <p style="font-size: 16px; margin-bottom: 20px; font-weight: 500;">"청년 월세 지원" 혜택 상세 정보:</p>
-                            <div class="document-box">
-                                <ul class="detail-documents">
-                                    <li>필수 서류 A (주민등록등본)</li>
-                                    <li>필수 서류 B (건강보험자격득실확인서)</li>
-                                    <li>필수 서류 C (주택임대차계약서 사본)</li>
-                                </ul>
-                            </div>
-                        <a href="https://www.bokjiro.go.kr" target="_blank" class="benefit-link">혜택 바로가기</a>
-                    </div>
-                </li>
-                <li data-benefit-id="benefit-3" role="button" aria-expanded="false">
-                    <span class="list-num">03</span>
-                    <span class="list-agency">고용노동부</span>
-                    <button class="list-heart-btn" aria-label="찜하기"></button>
-                    <span class="list-benefit">국민취업지원제도</span>
-                    <div class="list-detail-content">
-                        <p style="font-size: 16px; margin-bottom: 20px; font-weight: 500;">"국민취업지원제도" 혜택 상세 정보:</p>
-                        <div class="document-box">
-                                <ul class="detail-documents">
-                                    <li>필수 서류: 취업지원 신청서</li>
-                                </ul>
-                        </div>
-                            <a href="https://www.bokjiro.go.kr" target="_blank" class="benefit-link">혜택 바로가기</a>
-                    </div>
-                </li>
-                <li data-benefit-id="benefit-4" role="button" aria-expanded="false">
-                    <span class="list-num">04</span>
-                    <span class="list-agency">고용노동부</span>
-                    <button class="list-heart-btn" aria-label="찜하기"></button>
-                    <span class="list-benefit">국민취업지원제도</span>
-                    <div class="list-detail-content">
-                        <p style="font-size: 16px; margin-bottom: 20px; font-weight: 500;">"국민취업지원제도" 혜택 상세 정보:</p>
-                        <div class="document-box">
-                                <ul class="detail-documents">
-                                    <li>필수 서류: 취업지원 신청서</li>
-                                </ul>
-                        </div>
-                            <a href="https://www.bokjiro.go.kr" target="_blank" class="benefit-link">혜택 바로가기</a>
-                    </div>
-                </li>
-                <li data-benefit-id="benefit-5" role="button" aria-expanded="false">
-                    <span class="list-num">05</span>
-                    <span class="list-agency">고용노동부</span>
-                    <button class="list-heart-btn" aria-label="찜하기"></button>
-                    <span class="list-benefit">국민취업지원제도</span>
-                    <div class="list-detail-content">
-                        <p style="font-size: 16px; margin-bottom: 20px; font-weight: 500;">"국민취업지원제도" 혜택 상세 정보:</p>
-                        <div class="document-box">
-                                <ul class="detail-documents">
-                                    <li>필수 서류: 취업지원 신청서</li>
-                                </ul>
-                        </div>
-                            <a href="https://www.bokjiro.go.kr" target="_blank" class="benefit-link">혜택 바로가기</a>
-                    </div>
-                </li>
+                {% endfor %}
+                {% if not matched_benefits %}
+                <li><span class="list-benefit" style="text-align: center; margin-left: 0;">매칭된 혜택이 없습니다.</span></li>
+                {% endif %}
             </ul>
         </div>
     </section>
 
-    <section id="matchFailPage" class="welfare-container result-page">
-        <div class="result-header fail-header">
-            <img src="../images/crying_bok.png" alt="매칭 실패 캐릭터" class="result-mascot">
+    <section id="matchFailPage" class="welfare-container result-page {% if match_status == 'fail' %}active{% endif %}">
+        <div class="result-header fail-header" style="flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+            <img src="{{ url_for('static', filename='images/crying_bok.png') }}" alt="매칭 실패 캐릭터" class="result-mascot" style="max-width: 150px; height: auto;">
             <p class="fail-message">앗.. 매칭된 공공 복지가 없어요 🥺</p>
             <p class="fail-question">민간 복지 모아보기로 갈까요?</p>
-            <button class="fail-action-btn">갈래요!</button>
-            <a href="#" class="fail-cancel-link">안가도 돼요</a>
+            <a href="{{ url_for('min') }}" class="fail-action-btn" style="text-decoration: none;">갈래요!</a>
+            <a href="{{ url_for('gong') }}" class="fail-cancel-link">다시 시도할래요</a>
         </div>
     </section>
     

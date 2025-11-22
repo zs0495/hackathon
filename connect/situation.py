@@ -21,6 +21,7 @@ AGE_RANGES = [
     (0, 6, "아동"),
     (7, 18, "학생(청소년)"),
     (19, 45, "청년"),
+    (46, 59, "중년"),
     (60, 100, "노인")
 ]
 
@@ -70,9 +71,9 @@ def extract_keywords_from_situation(text):
     keywords = set()
     text_lower = text.lower()
 
-    # 기본 키워드 매칭
+    # 기본 키워드 매칭 (값 리스트는 한글이므로 대소문자 구분 필요 없음)
     for key, values in SITUATION_KEYWORDS.items():
-        if key in text_lower:
+        if key in text:
             keywords.update(values)
 
     # 나이 검색
@@ -85,25 +86,23 @@ def extract_keywords_from_situation(text):
 
     return list(keywords)
 
-#공공복지 매칭
+# 공공복지 매칭 페이지 라우팅
 @app.route('/gong')
 def gong():
     return render_template('gong.html')
 
-
-# ------------------------------
 # 복지 매칭 API
-# ------------------------------
 @app.route('/match_welfare', methods=['POST'])
 def match_welfare():
     if 'user_no' not in session:
+        # 로그인 안 된 상태
         return jsonify({'error': 'Not logged in'}), 401
 
     try:
         data = request.get_json()
 
         user_name = data.get('username', '')
-        birth_year = data.get('birthy_ear', '')
+        birth_year = data.get('birth_year', '')  # 키 이름 통일
         birth_month = data.get('birth_month', '')
         city = data.get('city', '')
         district = data.get('district', '')
@@ -123,7 +122,7 @@ def match_welfare():
             if group:
                 age_group_keywords.append(group)
 
-        # 상황 텍스트 키워드
+        # 상황 텍스트 키워드 추출
         situation_keywords = extract_keywords_from_situation(situation_text)
 
         # 모든 키워드 합치기
@@ -170,7 +169,7 @@ def match_welfare():
         cur.execute(query, params)
         results = cur.fetchall()
 
-        # 사용자가 찜한 목록
+        # 사용자가 찜한 목록 조회
         user_no = session['user_no']
         cur.execute("SELECT benefit_no FROM favorite_benefit WHERE user_no = %s", (user_no,))
         liked = {row['benefit_no'] for row in cur.fetchall()}
@@ -211,12 +210,11 @@ def match_welfare():
 
     except Exception as e:
         print("Error:", e)
-        return jsonify({'error': str(e)}), 500
+        # 사용자에게 명확한 오류 메시지 전달
+        return jsonify({'error': '서버 내부 오류가 발생했습니다.'}), 500
 
 
-# ------------------------------------
-# 사용자 정보 로딩
-# ------------------------------------
+# 사용자 정보 로딩 API
 @app.route('/get_user_info', methods=['GET'])
 def get_user_info():
     if 'user_no' not in session:
@@ -268,3 +266,7 @@ def get_user_info():
 
     finally:
         db.close()
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

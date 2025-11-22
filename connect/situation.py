@@ -223,7 +223,7 @@ def match_welfare():
             'age_keywords': age_group_keywords,
             'all_keywords': all_keywords,
             'user_info': {
-                'name': user_name,
+                'name': username,
                 'age': age,
                 'age_group': get_age_group_label(age) if age else None,
                 'location': f"{city} {district}".strip()

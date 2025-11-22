@@ -872,7 +872,7 @@
         
         <div class="fail-action-group">
             <a href="{{ url_for('min') }}">민간 복지 혜택 모아보기</a>
-            <form method="POST" action="{{ url_for('min') }}">
+            <form method="POST" action="{{ url_for('min') }}" novalidate>
             <a href="{{url_for(;index') }}" class="fail-cancel-link">홈으로 돌아갈래요</a> 
         </div>
     </section>
@@ -1321,8 +1321,7 @@ function sendWelfareRequest() {
         type: "PUBLIC"
     };
 
-    fetch("/match_welfare", {
-        method: "POST",
+    fetch("/match_welfare", { method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
@@ -1376,7 +1375,7 @@ function sendWelfareRequest() {
         if (goToMinWelfareBtn) {
             goToMinWelfareBtn.addEventListener('click', () => {
                 // 2. 버튼 클릭 시 min.html로 이동
-                window.location.href = "{{url_from('gong' }}"; 
+                window.location.href = "{{url_for('min' }}"; 
 
 // 조회 버튼 클릭 시 위 함수 실행
 document.getElementById('searchButton').addEventListener('click', sendWelfareRequest);

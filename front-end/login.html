@@ -20,7 +20,7 @@
         padding: 0 20px;
     }
     
-    /* 2. 로그인 컨테이너: 박스 스타일 제거 (핵심 수정) */
+    /* 2. 로그인 컨테이너: 박스 스타일 제거 */
     .login-page-container {
         position: relative;
         width: 100%;
@@ -30,7 +30,7 @@
         margin: 40px 0;
     }
 
-    /* 3. 뒤로 가기 버튼 (와이어프레임 기준) */
+    /* 3. 뒤로 가기 버튼  */
     .back-btn {
         position: absolute;
         top: 25px;
@@ -47,11 +47,10 @@
         position: fixed; 
         top: 25px;    
         left: 25px;    
-        z-index: 100;
+        z-index: 100;    
     }
 
     .back-btn {
-        /* 위치 스타일은 .fixed-top-left가 담당하므로 여기서는 제거 */
         background: none;
         border: none;
         font-size: 36px;
@@ -79,12 +78,11 @@
         margin: 40px 0 40px;
     }
     .login-page-container input {
-        /* ... (기존 스타일 유지) ... */
     }
-    /* 나머지 내부 요소 스타일은 그대로 유지 */
+
 
     .login-logo {
-        position: fixed;  
+        position: fixed; 
         top: 34px;    
         left: 50%;
         transform: translateX(-50%); 
@@ -117,10 +115,10 @@
         right: 12px;
         top: 50%;
         transform: translateY(-50%);
-        width: 20px;       
+        width: 20px;     
         height: 20px;
         background: url("../images/Fermata.png") no-repeat center;
-        background-size: contain;   
+        background-size: contain;  
         border: none;
         cursor: pointer;
     }
@@ -166,11 +164,8 @@
             pwInput.type = "password";
         });
 
-        // 2. 로그인 버튼 클릭 이벤트 리스너를 추가
+
         loginBtn.addEventListener("click", () => {
-        // 로그인 성공 후 실행될 페이지 이동 코드
-        // 아이디/비밀번호 유효성 검사, 서버 통신 코드
-        // **index_LoggedIn.html 페이지로 이동**
         window.location.href = "index_LoggedIn.html"; 
     });
     </script>

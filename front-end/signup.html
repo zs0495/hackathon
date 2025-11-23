@@ -30,10 +30,10 @@
 
     /* 3. 뒤로 가기 버튼 및 로고 */
     .fixed-top-left {
-        position: fixed;
-        top: 25px;      
-        left: 25px;  
-        z-index: 100;  
+        position: fixed; 
+        top: 25px;  
+        left: 25px;    
+        z-index: 100;   
     }
 
     .back-btn {
@@ -44,16 +44,16 @@
         cursor: pointer;
         text-decoration: none;
         font-weight: 600;
-        /* font-size: px; 오타 수정 */
+
         line-height: 1;
     }
 
      .login-logo {
-        position: fixed;  
+        position: fixed; 
         top: 34px;        
         left: 50%;
         transform: translateX(-50%);
-        width: 160px;    
+        width: 160px;   
         height: auto;
         z-index: 200; 
     }
@@ -154,7 +154,7 @@
     /* 개별 폼 그룹 컨테이너 */
     .form-group {
         text-align: left;
-        margin-bottom: 40px; 
+        margin-bottom: 40px;
     }
 
     /* 필수 항목 표시 (파란색 점) */
@@ -183,11 +183,13 @@
     content: none !important;
     }
 
+    /* 서브 레이블은 점 없이 400 폰트 웨이트 */
     .form-group .sub-label {
         font-weight: 400;
         margin-top: 15px;
     }
 
+    /* 입력 필드 (Input) 스타일 */
     .form-group input[type="text"],
     .form-group input[type="password"],
     .form-group select {
@@ -211,19 +213,27 @@
     color: #bbb;
     }
 
+    /* 1. <select> 기본 스타일과 아이콘을 숨김 */
     .form-group select,
     .keyword-select-group select {
+        /* 1. 기본 UI 숨기기 */
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-
-        width: 100% !important; 
-        flex-grow: 0 !important;
-        flex-basis: auto !important;
-        min-width: 0 !important;
+        
+        /* 2. <select> 래퍼 안에서 100% 너비를 가지도록 강제 설정 */
+        width: 100% !important;
+        
+        /* 3. flex 관련 속성 제거 */
+        flex-grow: 0 !important; 
+        flex-basis: auto !important; 
+        min-width: 0 !important; 
+        
+        /* position: static 래퍼에 ::after를 적용하기 위해 유지 */
         position: static; 
     }
 
+    /* 2. 커스텀 아이콘 <select> 뒤에 삽입*/
     .form-group select::after,
     .keyword-select-group select::after {
         content: '▼';
@@ -233,8 +243,10 @@
         transform: translateY(-50%);
         color: #999; 
         font-size: 10px; 
+
         pointer-events: none; 
     }
+    /* 입력 필드 설명 텍스트 */
     .input-description {
         display: block;
         font-size: 13px;
@@ -244,22 +256,24 @@
         margin-bottom: 5px;
     }
 
+    /* 주소 및 생년월일 드롭다운 그룹 */
     .address-group, .birthdate-group {
         display: flex;
-        gap: 10px;
+        gap: 10px; 
         margin-top: 8px;
     }
 
+    /* 드롭다운 개별 너비 조정 */
     .address-group select, 
     .birthdate-group select {
-        /*flex-grow: 1; 
-        min-width: 0; */
+
     }
 
     .birthdate-group .select-wrapper:first-child {
         flex-basis: 40% !important; 
         flex-grow: 0 !important;
     }
+
     .birthdate-group .select-wrapper:nth-child(2),
     .birthdate-group .select-wrapper:nth-child(3) {
         flex-basis: 30% !important;
@@ -305,20 +319,22 @@
 
     .form-group select,
     .keyword-select-group select {
+        /* 기본 UI 숨기기 (필수) */
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        position: static;
+        position: static; 
     }
 
     select option[value=""] {
-        color: #bbb; 
+        color: #bbb;  
     }
 
     select {
         color: #333;
     }
 
+    /* 새로운 래퍼 스타일*/
     .select-wrapper {
         position: relative; 
         display: flex;      
@@ -330,20 +346,23 @@
         width: 100%;
     }
 
+
     .select-wrapper::after {
         content: '▼'; 
         position: absolute;
         top: 50%;
-        right: 15px; 
+        right: 15px;
         transform: translateY(-50%);
         color: #999;
         font-size: 12px;
-        pointer-events: none; 
+        pointer-events: none;
     }
 
+    /* 선택된 값의 색 유지 */
     select:invalid {
         color: #bbb;
     }
+
 
     .selected-keywords-container {
         display: flex;
@@ -360,7 +379,7 @@
         background-color: #79A0DF; 
         color: white;
         padding: 8px 12px;
-        padding-right: 5px; 
+        padding-right: 5px;
         border-radius: 20px;
         font-size: 14px;
         font-weight: 600;
@@ -405,6 +424,7 @@
     color: #bbb;
     }         
 
+    /* 텍스트 영역 축소 시 스타일 */
     .status-group.collapsed textarea {
         min-height: 0;
         height: 0; 
@@ -430,7 +450,7 @@
         margin-top: 10px;
     }
 
-    /* 3단계 (가입 완료) 추가 스타일 */
+    /*  3단계 (가입 완료) 추가 스타일  */
     .step-3-content {
         display: flex;
         flex-direction: column;
@@ -446,9 +466,11 @@
         margin-bottom: 50px;
     }
 
+    /* 완료 버튼 */
+
     .error-msg {
     font-size: 12px;
-    color: #e74c3c;  
+    color: #e74c3c;  /* 빨간색 경고 */
     margin-top: 4px;
     }
 
@@ -635,18 +657,18 @@
             const step1 = document.querySelector('.step-1');
             const step2 = document.querySelector('.step-2');
             const step2_2 = document.querySelector('.step-2-2');
-            const step3 = document.querySelector('.step-3'); // 3단계 요소 추가
+            const step3 = document.querySelector('.step-3'); 
             
-            // 단계 
+            // 단계 표시 아이템들
             const step1Indicator = document.querySelector('.step-item[data-step="1"]');
             const step2Indicator = document.querySelector('.step-item[data-step="2"]');
-            const step3Indicator = document.querySelector('.step-item[data-step="3"]'); // 3단계 표시 추가
+            const step3Indicator = document.querySelector('.step-item[data-step="3"]'); 
 
-            // 약관 동의
+            // 약관 동의 관련 요소
             const allAgreeCheckbox = document.getElementById('allAgree');
             const requiredAgrees = document.querySelectorAll('.required-agree');
             
-            // 키워드, 나의 상황
+            // 키워드 및 나의 상황 관련 요소
             const keywordButtons = document.querySelectorAll('.keyword-btn');
             const inputLaterBtn = document.getElementById('inputLaterBtn');
             const statusGroup = document.getElementById('statusGroup');
@@ -654,7 +676,7 @@
             
             const defaultPlaceholder = '"이번 달 월세가 너무 부담돼요"와 같은 실직, 주거 부담, 의료비 필요, 교육/양육, 긴급 생계 등 직접적인 키워드가 들어갈수록 정확한 결과가 나와요';
 
-            // 에러 메시지
+            // 에러 메시지 요소들
             const userIdError = document.getElementById('userIdError');
             const passwordError = document.getElementById('passwordError');
             const confirmPasswordError = document.getElementById('confirmPasswordError');
@@ -691,7 +713,7 @@
         // 현재 연도
         const currentYear = new Date().getFullYear();
 
-        // 연도 자동 생성
+        // 연도 옵션 자동 생성 (최근 → 과거 순)
         for (let y = currentYear; y >= currentYear - 100; y--) {
             const option = document.createElement('option');
             option.value = y;            // 실제 전송되는 값은 숫자 (예: 2025)
@@ -699,7 +721,7 @@
             yearSelect.appendChild(option);
         }
 
-        // 월 옵션 자동 생성 
+        // ★ 월 옵션 자동 생성 
         for (let m = 1; m <= 12; m++) {
             const option = document.createElement('option');
             option.value = m;            // 실제 전송되는 값은 숫자 (예: 1)
@@ -709,6 +731,7 @@
         
         citySelectBox.addEventListener('change', function () {
         const cityValue = this.value;
+
 
         // 기본 옵션으로 초기화
         districtSelectBox.innerHTML = `<option value="">시/군/구 선택</option>`;
@@ -737,7 +760,7 @@
             step1.classList.add('active');
             nextButton.textContent = '다음';
 
-            /* 1. 전체 동의 체크박스 연동 기능 */
+            /*  1. 전체 동의 체크박스 연동 기능  */
             allAgreeCheckbox.addEventListener('change', function() {
                 requiredAgrees.forEach(checkbox => {
                     checkbox.checked = this.checked;
@@ -760,21 +783,26 @@
             const keywordSelect = document.getElementById('keywordSelect');
             const selectedKeywordsContainer = document.getElementById('selectedKeywordsContainer');
             
+            // 현재 선택된 키워드를 저장하는 배열
             let selectedKeywords = [];
 
+            // 헬퍼: 키워드 태그를 DOM에 렌더링
             function renderKeywords() {
-                selectedKeywordsContainer.innerHTML = ''; 
+                selectedKeywordsContainer.innerHTML = ''; // 컨테이너 초기화
                 
                 selectedKeywords.forEach(keyword => {
+                    // 태그 엘리먼트 생성
                     const tag = document.createElement('div');
                     tag.classList.add('selected-keyword-tag');
                     tag.textContent = keyword;
-                    tag.dataset.keyword = keyword; 
+                    tag.dataset.keyword = keyword; // 데이터 저장을 위해 data-* 사용
 
+                    // 취소 버튼 (X) 생성
                     const removeBtn = document.createElement('button');
                     removeBtn.classList.add('remove-tag-btn');
-                    removeBtn.innerHTML = '&times;'; 
+                    removeBtn.innerHTML = '&times;'; // 'x' 기호
                     
+                    // 삭제 이벤트 리스너 추가
                     removeBtn.addEventListener('click', function() {
                         removeKeyword(keyword);
                     });
@@ -783,14 +811,17 @@
                     selectedKeywordsContainer.appendChild(tag);
                 });
                 
+                // 드롭다운 초기 상태로 복원
                 keywordSelect.value = ""; 
             }
 
+            // 헬퍼: 키워드 제거
             function removeKeyword(keyword) {
                 selectedKeywords = selectedKeywords.filter(k => k !== keyword);
                 renderKeywords();
             }
 
+            // 드롭다운 선택 이벤트 리스너
             keywordSelect.addEventListener('change', function() {
                 const selectedKeyword = this.value;
 
@@ -799,11 +830,12 @@
                     renderKeywords();
                 } else if (selectedKeywords.includes(selectedKeyword)) {
                     alert('이미 선택된 키워드입니다.');
+                    // 선택 후 드롭다운을 다시 초기 상태로 되돌립니다.
                     this.value = ""; 
                 }
             });
             
-            /* 3. '나의 상황' 입력창 축소/확대 기능 */
+            /*  3. '나의 상황' 입력창 축소/확대 기능 */
             inputLaterBtn.addEventListener('click', function() {
                 if (statusGroup.classList.contains('collapsed')) {
                     statusGroup.classList.remove('collapsed');
@@ -827,7 +859,6 @@
                 e.preventDefault(); 
                 
                 if (step1.classList.contains('active')) {
-                    // 1단계 -> 2단계
                     let allRequiredAgreed = true;
                     requiredAgrees.forEach(checkbox => { if (!checkbox.checked) allRequiredAgreed = false; });
                     if (allRequiredAgreed) {
@@ -836,12 +867,11 @@
                         step1Indicator.classList.remove('active');
                         step2Indicator.classList.add('active');
                         nextButton.textContent = '다음';
-                        window.scrollTo(0, 0); // 스크롤 초기화
+                        window.scrollTo(0, 0);
                     } else { alert('필수 약관에 모두 동의해야 다음 단계로 이동할 수 있습니다.'); }
                 
                 } else if (step2.classList.contains('active')) {
-                    // 2단계 -> 2-2단계
-                    // TODO: 2단계 유효성 검사 추가
+
                     clearErrors(); 
 
                     const userId = document.getElementById('userId').value.trim();
@@ -913,15 +943,13 @@
                         return;
                     }
 
-                    // 통과 -> 2-2단계로 이동
+                    // 통과 → 2-2단계로 이동
                     step2.classList.remove('active');
                     step2_2.classList.add('active');
                     nextButton.textContent = '다음';
                     window.scrollTo(0, 0);
 
                 } else if (step2_2.classList.contains('active')) {
-                    // 2-2단계 -> 3단계 (가입 완료)
-                    // TODO: 2-2단계 데이터 전송 로직 추가 (필요시)
                     step2_2.classList.remove('active');
                     step3.classList.add('active');
                     
@@ -933,8 +961,7 @@
                     window.scrollTo(0, 0); 
                 
                 } else if (step3.classList.contains('active')) {
-                    // 3단계 -> 랜딩 페이지로 이동
-                    window.location.href = 'index.html'; // 'index.html'을 랜딩 페이지 URL로 가정
+                    window.location.href = 'index.html'; 
 
                 }
             });

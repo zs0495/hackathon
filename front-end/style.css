@@ -49,7 +49,9 @@
   display: inline-block;
 }
 
+
 /* 드롭다운 메뉴 */
+
 .menu > ul > li > ul {
     position: absolute;
     top: calc(100% - 2px);
@@ -59,7 +61,7 @@
     margin: 0;
     padding: 24px 32px 32px;
     list-style: none;
-    width: 200px;
+    width: 200px; 
     background: #f5f9ff;
     border-radius: 0 0 0 0;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -92,7 +94,7 @@
 }
 
 
-/* 서비스 개요 페이지 추가 */
+/* ### 서비스 개요 페이지 추가 */
 .service-page {
   position: relative;
   background-color: #ffffff;
@@ -142,7 +144,7 @@
   width: 140px;
 }
 
-/* 팀소개 페이지 추가 */
+/* ### 팀소개 페이지 추가 */
 .team-header {
   background: #f5f9ff; 
   border: 1px solid #ddd;
@@ -231,7 +233,7 @@
   width: 140px;
 }
 
-/* 공공복지 페이지 추가 */
+/* ### 공공복지 페이지 추가 */
 .welfare-header {
   background: #f5f9ff; 
   border: 1px solid #ddd;
@@ -288,7 +290,7 @@
   width: 140px;
 }
 
-/* 자료실 페이지 추가 */
+/* ### 자료실 페이지 추가 */
 .library-header {
   background: #f5f9ff; 
   border: 1px solid #ddd;
@@ -386,11 +388,11 @@
 }
 
 .slider-container {
-  display: flex; 
+  display: flex;             
   transition: transform 0.4s ease;
 }
 
-/* 슬라이드: 오직 100%만 차지 */
+
 .slide {
   min-width: 100%;
   height: 100%;
@@ -398,36 +400,36 @@
   overflow: hidden;
 }
 
-/* 슬라이드 내용 컨테이너 (높이와 배경 설정의 핵심) */
+/* ★ 슬라이드 내용 컨테이너  */
 .slide-content {
   position: relative;
   width: 100%;
   height: 480px; 
   max-width: 1000px; 
   margin: 0 auto;
-  border-radius: 24px;
+  border-radius: 24px; 
   
   background-size: cover; 
-  background-position: center;
+  background-position: center; 
   background-repeat: no-repeat;
 }
 
-/* 1번 슬라이드: banner_1.png 설정 */
+/* ★ 1번 슬라이드: banner_1.png 설정 */
 .slide-1 .slide-content { 
-    background-image: url('../images/banner_1.png'); /* 이미지 경로 확인 */
+    background-image: url('../images/banner_1.png'); 
 }
 
-/* 2번 슬라이드: banner_2.png 설정 */
+/* ★ 2번 슬라이드: banner_2.png 설정 */
 .slide-2 .slide-content { 
     background-image: url('../images/banner_2.png');
 }
 
-/* 3번 슬라이드: banner_3.png 설정 */
+/* ★ 3번 슬라이드: banner_3.png 설정 */
 .slide-3 .slide-content { 
     background-image: url('../images/banner_3.png');
 }
 
-/* 바로가기 아이콘 */
+/* ### 바로가기 아이콘 */
 .icon {
   max-width: 960px;
   margin: 40px auto 80px;
@@ -466,8 +468,8 @@
 /* 주요 기능 섹션 */
 .feature-section {
     text-align: center;
-    padding: 80px 20px; /* 패딩 증가 */
-    background-color: #f5f9ff; /* 배경색 추가 */
+    padding: 80px 20px; 
+    background-color: #f5f9ff; 
 }
 
 /* 추가: 섹션 제목 스타일 */
@@ -494,12 +496,12 @@
     width: 380px;
     min-height: 200px;
     padding: 30px;
-    background-color: white;
+    background-color: white; 
     border-radius: 12px;
     text-align: left;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; 
+    justify-content: space-between;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -530,18 +532,16 @@
     align-self: flex-end; 
 }
 
-.feature-remark { /* 기존 feature-section p를 대체 */
+.feature-remark { 
     color: #555;
     line-height: 1.6;
     font-size: 0.95rem;
     font-weight: 500;
 }
 
-/* (NOTICE 섹션 시작) */
-
 /* NOTICE 섹션 */
 .notice-section {
-    padding: 60px 20px 80px;
+    padding: 60px 20px 80px; 
     text-align: center;
     background-color: white;
 }
@@ -549,7 +549,7 @@
 .notice-title {
     font-size: 26px;
     font-weight: 600;
-    color: #79A0DF; 
+    color: #79A0DF;
     letter-spacing: 2px;
     margin-bottom: 8px;
 }
@@ -561,16 +561,15 @@
     margin-bottom: 60px;
 }
 
-/* 좌우 스크롤 컨테이너 */
+/* ★ 좌우 스크롤 컨테이너 */
 .notice-scroll-container {
     display: flex;
     gap: 20px;
-    overflow-x: auto; 
+    overflow-x: auto;
     padding: 10px 0; 
     max-width: 1000px;
     margin: 0 auto;
     
-    /* 스크롤바 숨기기 (선택 사항 - 크롬/파이어폭스) */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
 }
@@ -579,16 +578,16 @@
 }
 
 
-/* NOTICE 카드 스타일 */
+/* ★ NOTICE 카드 스타일 */
 .notice-card {
-    max-width: 300px; 
+    max-width: 300px;
     height: 300px;
     background-color: #fafafa;
     border: 1px solid #eee;
     border-radius: 12px;
     padding: 24px;
     text-align: left;
-    flex-shrink: 0;
+    flex-shrink: 0; 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -618,7 +617,7 @@
 .card-date {
     font-size: 12px;
     color: #aaa;
-    align-self: flex-end; 
+    align-self: flex-end;
 }
 
 /* 이용 가이드 카드 (마지막 카드 디자인 변경) */
@@ -660,6 +659,7 @@
 }
 
 /* 푸터 위 가로 배너 섹션 */
+
 .bottom-banner-section {
     width: 100%;
     padding: 60px 20px; 
@@ -669,8 +669,7 @@
 
 .bottom-banner-image {
     max-width: 1000px; 
-    
-    margin: 0 auto; 
+    margin: 0 auto; /* 중앙 정렬 */
     border-radius: 12px; 
     overflow: hidden; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); 
@@ -681,13 +680,12 @@
     height: auto;
     display: block; 
 }
-/* 로그인 페이지 스타일 */
 
-/* 기존 .login-modal, .login-box 스타일을 .login-page-container로 통합 및 조정 */
+/* 로그인 페이지 스타일 */
 .login-page-container {
     position: relative;
     width: 100%;
-    max-width: 440px;
+    max-width: 440px; 
     padding: 60px 0;
     text-align: center;
     margin: 40px 0; 
@@ -707,24 +705,24 @@
     font-weight: 600;
 }
 
-/* 제목 스타일 (login.html에서 재사용) */
+/* 제목 스타일 */
 .login-page-container h2 {
     font-size: 28px;
     font-weight: 800;
     margin-bottom: 40px;
 }
 
-/* 입력 필드 (기존 스타일 재사용) */
+/* 입력 필드 */
 .login-page-container input {
     width: 100%;
-    padding: 14px; /* 높이 증가 */
+    padding: 14px; 
     margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 16px;
 }
 
-/* 로그인 버튼 (기존 스타일 재사용 및 보강) */
+/* 로그인 버튼  */
 .login-page-container .login-btn {
     width: 100%;
     padding: 14px;
@@ -743,7 +741,7 @@
     background: #333;
 }
 
-/* 링크 스타일 (기존 스타일 재사용) */
+/* 링크 스타일 */
 .login-page-container .login-links {
     font-size: 14px;
     color: #666;
@@ -766,7 +764,7 @@
     padding: 0 10px;
 }
 
-/* 카카오 버튼 (기존 스타일 재사용) */
+/* 카카오 버튼 */
 .login-page-container .kakao {
     background: #FEE500;
     border: none;

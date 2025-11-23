@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>민간 복지 혜택 모아보기 | bokbok</title>
     <style>
-    /* ---------------------------------------------------- */
+   
     /* 1. 글로벌 및 헤더 스타일 */
-    /* ---------------------------------------------------- */
-    
+
     body {
         font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
         margin: 0;
@@ -16,7 +15,7 @@
         background-color: #ffffff;
     }
 
-    /* 페이지 헤더 (로고 + 햄버거 메뉴) */
+    /* 페이지 헤더 */
     .welfare-page-header {
         display: flex;
         justify-content: space-between;
@@ -99,9 +98,7 @@
         font-weight: 700;
     }
 
-    /* ---------------------------------------------------- */
     /* 2. 폼 및 페이지 공통 스타일 */
-    /* ---------------------------------------------------- */
     
     .welfare-container {
         max-width: 800px;
@@ -336,9 +333,7 @@
         width: 100%;
     }
 
-    /* ---------------------------------------------------- */
     /* 3. 매칭 성공 페이지 스타일 */
-    /* ---------------------------------------------------- */
     
     .result-page {
         text-align: center; 
@@ -396,9 +391,7 @@
         font-weight: 600;
     }
 
-    /* ---------------------------------------------------- */
     /* 4. 매칭 결과 목록 스타일 */
-    /* ---------------------------------------------------- */
 
     .welfare-result-list {
         list-style: none;
@@ -493,7 +486,7 @@
     .document-box {
         background-color: #ffffff;
         border: 1px solid #ddd;
-        border-radius: 8px; /* 통일성을 위해 8px로 변경 */
+        border-radius: 8px; 
         padding: 15px; 
         max-height: 150px; 
         overflow-y: auto; 
@@ -524,7 +517,7 @@
         font-weight: 700;
         display: inline-block;
         width: 1em;
-        margin-left: 0; /* Box 내부에서는 들여쓰기 제거 */
+        margin-left: 0; 
         margin-right: 0.5em;
     }
     
@@ -544,9 +537,8 @@
         text-decoration: none;
     }
 
-    /* ---------------------------------------------------- */
+
     /* 5. 매칭 실패 페이지 스타일 (수정 및 정리) */
-    /* ---------------------------------------------------- */
 
     /* 헤더: 세로 정렬 및 중앙 정렬 */
     #matchFailPage .result-header {
@@ -568,7 +560,6 @@
 
     /* 제목/메시지 스타일 */
     #matchFailPage .result-title {
-        /* .result-title 대신 상황에 맞는 fail-message를 사용 */
         display: none; 
     }
 
@@ -604,9 +595,9 @@
         margin: 30px auto 0;
     }
 
-    /* 민간 복지 이동 버튼 (welfare-submit-btn 재사용) */
+    /* 민간 복지 이동 버튼 */
     #goToMinWelfare {
-        background: #111; /* 복복이 메인 색상 */
+        background: #111; 
         margin-top: 0;
         margin-bottom: 15px;
         max-width: none;
@@ -876,7 +867,6 @@
     </section>
     
     <script>
-    // 지역구 데이터는 최상단에 유지합니다.
     const districtData = {
         seoul: ["종로구","중구","용산구","성동구","광진구","동대문구","중랑구","성북구","강북구","도봉구","노원구","은평구","서대문구","마포구","양천구","강서구","구로구","금천구","영등포구","동작구","관악구","서초구","강남구","송파구","강동구"],
         busan: ["중구","서구","동구","영도구","부산진구","동래구","남구","북구","해운대구","사하구","금정구","강서구","연제구","수영구","사상구","기장군"],
@@ -898,9 +888,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
 
-        // ==========================================================
         // 1. DOM 요소 정의
-        // ==========================================================
         
         // --- 메뉴 및 페이지 요소 ---
         const menuToggle = document.getElementById('menuToggle');
@@ -936,12 +924,10 @@
         // --- 데이터 상태 ---
         let selectedKeywords = [];
 
-        // ==========================================================
         // 2. 유효성 검사 함수 (Validation)
-        // ==========================================================
-        
+
         /**
-         * 폼 제출 전 필수 입력 필드의 유효성을 검사하고 오류 메시지를 표시합니다.
+         * 폼 제출 전 필수 입력 필드의 유효성을 검사하고 오류 메시지를 표시
          * @returns {boolean} 유효하면 true, 아니면 false
          */
         function validateForm() {
@@ -975,15 +961,10 @@
             return isValid;
         }
 
-        // ==========================================================
-        // 3. 폼 제출 이벤트 (수정된 핵심 로직)
-        // ==========================================================
+        // 3. 폼 제출 이벤트 
         
-        // form의 submit 이벤트 대신 버튼의 click 이벤트를 리스닝합니다.
         submitButton.addEventListener('click', function(e) { 
-            // e.preventDefault()는 click 이벤트에서는 자동으로 폼 제출을 막아줍니다.
-            
-            // ★ 유효성 검사 실행
+
             if (!validateForm()) {
                 console.log("Validation failed. Showing error messages.");
                 // 오류 메시지를 볼 수 있도록 스크롤
@@ -996,7 +977,7 @@
             matchSuccessPage.classList.remove('active');
             matchFailPage.classList.remove('active');
 
-            const isMatch = true; // 실제 매칭 로직으로 대체 필요
+            const isMatch = true; 
 
             if (isMatch) {
                 renderResultTags();
@@ -1009,14 +990,8 @@
             window.scrollTo(0, 0);
         });
 
-        // ==========================================================
         // 5. 입력 정보 불러오기 (백엔드 연동)
-        // ==========================================================
-        
-        /**
-         * 백엔드 API를 호출하여 사용자 정보를 가져와 폼을 채웁니다.
-         * (이 함수는 이후 실제 백엔드 API 엔드포인트와 인증 로직으로 대체되어야 합니다.)
-         */
+
         async function fetchUserInfo() {
             // 버튼 비활성화 (중복 클릭 방지)
             fetchInfoBtn.disabled = true; 
@@ -1026,13 +1001,6 @@
             const API_ENDPOINT = '/api/v1/user/profile'; 
 
             try {
-                // 가정: 실제 인증 토큰을 사용하여 요청
-                // const response = await fetch(API_ENDPOINT, {
-                //     headers: { 'Authorization': 'Bearer YOUR_AUTH_TOKEN' }
-                // });
-
-                // **[테스트용 임시 데이터]** 실제 백엔드 연동 전까지 이 데이터를 사용합니다.
-                // 백엔드 연동 시 위의 fetch 코드로 대체하고 아래 setTimeout을 삭제하세요.
                 const fakeResponse = {
                     success: true,
                     data: {
@@ -1044,7 +1012,7 @@
                     }
                 };
                 
-                await new Promise(resolve => setTimeout(resolve, 1000)); // 1초 대기 (API 지연 흉내)
+                await new Promise(resolve => setTimeout(resolve, 1000)); 
                 // if (!response.ok) throw new Error('API 호출 실패');
                 // const result = await response.json();
                 const result = fakeResponse;
@@ -1097,8 +1065,7 @@
                 
                 // district가 채워졌으면 최종 값 설정
                 if (data.district) {
-                    // 비동기적인 change 이벤트 처리 후 값을 설정하기 위해 약간의 지연이 필요할 수 있으나, 
-                    // 동기적으로 처리되는 change 이벤트에서는 바로 설정해도 됩니다.
+
                     districtSelectBox.value = data.district;
                     updateSelectColor(districtSelectBox);
                 }

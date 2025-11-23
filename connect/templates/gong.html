@@ -500,7 +500,7 @@
 <body>
     <header class="welfare-page-header">
         <div class="welfare-logo">
-            <a href="index.html">
+            <a href="{{url_for('index')}}">
                 <img src="{{ url_for('static', filename='images/bokbok_logo.png') }}" alt="로고">
             </a>
         </div>
@@ -517,9 +517,9 @@
         <button id="menuClose" class="menu-close-btn">&times;</button>
         <nav class="side-menu-nav">
             <ul>
-                <li><a href="gong.html" class="active-page">공공 복지 혜택 모아보기</a></li>
-                <li><a href="min.html">민간 복지 혜택 모아보기</a></li>
-                <li><a href="index.html">홈으로</a></li>
+                <li><a href="{{url_for('gong')}}" class="active-page">공공 복지 혜택 모아보기</a></li>
+                <li><a href="{{url_for('min')}}">민간 복지 혜택 모아보기</a></li>
+                <li><a href="{{url_for('index')}}">홈으로</a></li>
             </ul>
         </nav>
     </aside>
@@ -678,7 +678,7 @@
 
     <section id="matchFailPage" class="welfare-container result-page">
         <div class="result-header fail-header">
-            <img src="../images/crying_bok.png" alt="매칭 실패 캐릭터" class="result-mascot">
+            <img src="{{ url_for('static', filename='images/crying_bok.png') }}" alt=""" alt="매칭 실패 캐릭터" class="result-mascot">
             <p class="fail-message">앗.. 매칭된 공공 복지가 없어요 🥺</p>
             <p class="fail-question">민간 복지 모아보기로 갈까요?</p>
             <button class="fail-action-btn">갈래요!</button>

@@ -1,4 +1,4 @@
-# Flask 웰페어 애플리케이션 - 통합 버전
+
 from flask import Flask, request, render_template, redirect, url_for, session, jsonify
 import pymysql 
 import pymysql.cursors
@@ -6,18 +6,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
 import logging
 
-# 로깅 설정
+
 logging.basicConfig(level=logging.INFO)
 
-# Flask 애플리케이션 초기화
+
 app = Flask(__name__)
 
-# 세션 사용을 위한 secret_key 필수
-app.secret_key = "your_secret_key_here_1234"   # ★ 반드시 추가되어야 함
 
-# ==========================================================
-# 데이터베이스 연결
-# ==========================================================
+app.secret_key = "your_secret_key_here_1234"   
+
+
 def get_db():
     """MySQL 데이터베이스 연결을 설정하고 DictCursor를 반환"""
     try:
@@ -25,7 +23,7 @@ def get_db():
             host='localhost', 
             port=3306,
             user='root', 
-            password='Aa0205!!?',  # 실제 MySQL 비밀번호
+            password='Aa0205!!?',  
             db='welfaredb', 
             charset='utf8mb4', 
             autocommit=False,
@@ -36,16 +34,14 @@ def get_db():
         logging.error(f"데이터베이스 연결 실패: {e}")
         return None
 
-# ==========================================================
-# 인증 관련 라우트 (로그인/회원가입)
-# ==========================================================
+
 # 로그인 폼
 @app.route('/login', methods=['GET'])
 def login_form():
     message = request.args.get('message', '아이디와 비밀번호를 입력해주세요.')
     return render_template("login.html", message=message)
 
-# 로그인 처리
+
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
@@ -65,13 +61,13 @@ def login():
         cur.execute(sql, (username,))
         user = cur.fetchone()
 
-        # 비밀번호 일치 검사
+    
         if user and check_password_hash(user['password'], password):
             
-            # ⭐ 필수: 세션 저장
+           
             session['logged_in'] = True
             session['username'] = username
-            # ⭐️ 추가: mypage 및 찜하기 기능을 위해 user_no 저장
+            
             session['user_no'] = user['user_no']
 
             return redirect(url_for('index', message=f"{username}님, 로그인 성공!"))
@@ -111,7 +107,7 @@ def signup():
     if not password or len(password) < 8:
         return redirect(url_for('signup_form', message="비밀번호는 최소 8자 이상이어야 합니다."))
 
-    # 생년월 유효성 검사
+    # 생년월검사
     try:
         birth_year = int(birth_year)
         birth_month = int(birth_month)
@@ -133,7 +129,7 @@ def signup():
     cur = db.cursor()
 
     try:
-        # 중복 확인
+      
         cur.execute("SELECT username FROM personal_info WHERE username=%s", (username,))
         if cur.fetchone():
             return redirect(url_for('signup_form', message="이미 존재하는 아이디입니다."))
@@ -163,17 +159,15 @@ def signup():
     finally:
             db.close()
 
-# ==========================================================
+
 # 메인 페이지
-# ==========================================================
+
 @app.route('/')
 def index():
     message = request.args.get('message', None)
     return render_template('index.html', message=message)
 
-# ==========================================================
-# 단순 페이지 라우트
-# ==========================================================
+
 @app.route('/service')
 def service_page():
     return render_template('service.html')
@@ -210,9 +204,9 @@ def gong_benefits_page():
 def min_benefits_page():
     return render_template('min.html')
 
-# ==========================================================
+
 # API - 로그인 상태 확인
-# ==========================================================
+
 @app.route('/api/check-login')
 def check_login():
     return jsonify({
@@ -226,9 +220,10 @@ def logout():
     session.clear()
     return jsonify({'success': True})
 
-# ==========================================================
+
+
 # 마이페이지 (로그인 필요)
-# ==========================================================
+
 @app.route('/mypage')
 def mypage():
     if not session.get('logged_in'):
@@ -252,7 +247,7 @@ def mypage():
         cur.execute(sql, (username,))
         user_info = cur.fetchone()
 
-        favorites = []  # TODO: 찜 기능은 나중에 구현
+        favorites = []  
 
         return render_template('mypage.html', 
             username=username, 
@@ -272,8 +267,7 @@ def edit_profile():
         return redirect(url_for('login_form', message='로그인이 필요한 서비스입니다.'))
     return "정보 수정 페이지 (준비중)"
 
-# ==========================================================
-# 실행
-# ==========================================================
+
 if __name__ == '__main__':
     app.run(debug=True)
+
